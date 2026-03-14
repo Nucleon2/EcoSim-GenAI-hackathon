@@ -17,15 +17,15 @@ export function AiExplanationPanel({ explanation, isPending }: AiExplanationPane
 
       <div className="border-l-2 border-[--color-mission-glow]/50 pl-3 flex-1 overflow-y-auto">
         {isPending ? (
-          <p className="text-sm text-[--color-mission-glow] leading-relaxed font-mono animate-pulse">
+          <p className="text-[11px] text-[--color-mission-glow] leading-snug font-mono animate-pulse">
             Analyzing policy impact...
           </p>
         ) : explanation ? (
-          <p className="text-sm text-[--color-mission-stat] leading-relaxed font-mono">
+          <p className="text-[11px] text-[--color-mission-stat] leading-snug font-mono">
             {explanation}
           </p>
         ) : (
-          <p className="text-sm text-[--color-mission-muted] leading-relaxed font-mono">
+          <p className="text-[11px] text-[--color-mission-muted] leading-snug font-mono">
             Adjust the policy sliders and run a simulation to generate an
             AI-powered climate impact analysis...
           </p>
