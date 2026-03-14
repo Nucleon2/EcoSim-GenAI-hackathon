@@ -7,6 +7,21 @@ import type { PolicyInput } from "@/services/api"
 
 type Mode = "manual" | "goal"
 
+const PRESETS: { label: string; values: PolicyValues }[] = [
+  {
+    label: "Business as Usual",
+    values: { carbonTax: 0, renewableAdoption: 10, deforestationReduction: 5, methaneReduction: 5, evAdoption: 5 },
+  },
+  {
+    label: "Paris Agreement",
+    values: { carbonTax: 100, renewableAdoption: 60, deforestationReduction: 50, methaneReduction: 40, evAdoption: 30 },
+  },
+  {
+    label: "Net Zero 2050",
+    values: { carbonTax: 250, renewableAdoption: 95, deforestationReduction: 85, methaneReduction: 80, evAdoption: 90 },
+  },
+]
+
 interface PolicyPanelProps {
   onSimulate?: (values: PolicyValues) => void
   isPending?: boolean
@@ -70,6 +85,19 @@ export function PolicyPanel({ onSimulate, isPending }: PolicyPanelProps) {
 
       {mode === "manual" ? (
         <>
+          {/* Preset Scenarios */}
+          <div className="flex gap-1.5 flex-wrap">
+            {PRESETS.map((preset) => (
+              <button
+                key={preset.label}
+                onClick={() => setPolicy(preset.values)}
+                className="text-[9px] uppercase tracking-wider px-2 py-1 border border-[--color-mission-border] text-[--color-mission-muted] hover:text-[--color-mission-glow] hover:border-[--color-mission-glow]/30 transition-colors"
+              >
+                {preset.label}
+              </button>
+            ))}
+          </div>
+
           <div className="flex flex-col gap-6 flex-1">
             {SLIDER_CONFIG.map((s) => (
               <PolicySlider
