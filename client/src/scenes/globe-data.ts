@@ -279,16 +279,16 @@ export function buildRingsData(co2Emissions: number): RingDatum[] {
 
 /**
  * Get the dynamic atmosphere color based on risk score (0-100).
- * Low risk  -> teal   rgba(0, 210, 200, 0.15)
- * High risk -> red    rgba(255, 80, 30, 0.2)
+ * Low risk  -> teal   rgb(0, 210, 200)
+ * High risk -> red    rgb(255, 80, 30)
+ * Note: THREE.Color does not support alpha, so we return rgb() only.
  */
 export function getAtmosphereColor(riskScore: number): string {
   const t = normalize(riskScore, 0, 100)
   const r = Math.round(lerp(0, 255, t))
   const g = Math.round(lerp(210, 80, t))
   const b = Math.round(lerp(200, 30, t))
-  const a = lerp(0.15, 0.22, t)
-  return `rgba(${r},${g},${b},${a.toFixed(2)})`
+  return `rgb(${r},${g},${b})`
 }
 
 /**
