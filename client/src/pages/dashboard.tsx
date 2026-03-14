@@ -65,17 +65,7 @@ export function DashboardPage({ onNavigate }: DashboardPageProps) {
 
   return (
     <motion.div
-      className="h-screen overflow-hidden bg-[--color-mission-bg] p-2 gap-2 grid"
-      style={{
-        gridTemplateAreas: `
-          "topbar topbar"
-          "metrics metrics"
-          "policy center"
-          "policy bottom"
-        `,
-        gridTemplateRows: "auto auto 1fr auto",
-        gridTemplateColumns: "320px 1fr",
-      }}
+      className="dashboard-layout bg-[--color-mission-bg] p-2 gap-2"
       variants={pageVariants}
       initial="hidden"
       animate="visible"
@@ -108,14 +98,14 @@ export function DashboardPage({ onNavigate }: DashboardPageProps) {
       <motion.div
         style={{ gridArea: "center" }}
         variants={panelVariants}
-        className="glass-panel glow-ring overflow-hidden min-h-0"
+        className="glass-panel glow-ring overflow-hidden min-h-[300px] md:min-h-0"
       >
         <EarthScene result={simulation.data} />
       </motion.div>
 
       {/* Bottom panel row */}
       <motion.div style={{ gridArea: "bottom" }} variants={panelVariants}>
-        <div className="grid grid-cols-3 gap-2 h-[200px]">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 sm:h-[200px] [&>*]:min-h-[180px] sm:[&>*]:min-h-0">
           <RiskTrendChart riskScore={simulation.data?.risk_score} />
           <TemperatureProjectionChart temperatureRise={simulation.data?.temperature_rise} />
           <AiExplanationPanel

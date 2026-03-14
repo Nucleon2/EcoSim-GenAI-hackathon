@@ -58,7 +58,7 @@ export function SimulationMetrics({ result }: SimulationMetricsProps) {
   const risk = result?.risk_score ?? 68
 
   return (
-    <div className="grid grid-cols-4 gap-2">
+    <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
       <MetricCard
         icon={Thermometer}
         label="Temperature Rise"

@@ -57,7 +57,7 @@ export function ComparisonDiff({ resultA, resultB }: ComparisonDiffProps) {
       <h3 className="text-[10px] uppercase tracking-widest text-[--color-mission-muted] mb-3">
         Scenario Differences — B relative to A
       </h3>
-      <div className="grid grid-cols-4 gap-3">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
         {metrics.map((m) => {
           const delta = m.valueB - m.valueA
           const absDelta = Math.abs(delta)

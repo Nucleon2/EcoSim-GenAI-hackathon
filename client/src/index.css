@@ -155,6 +155,30 @@
   }
 }
 
+@layer components {
+  .dashboard-layout {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    overflow-y: auto;
+  }
+
+  @media (min-width: 768px) {
+    .dashboard-layout {
+      display: grid;
+      height: 100vh;
+      overflow: hidden;
+      grid-template-areas:
+        "topbar topbar"
+        "metrics metrics"
+        "policy center"
+        "policy bottom";
+      grid-template-rows: auto auto 1fr auto;
+      grid-template-columns: 320px 1fr;
+    }
+  }
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;
