@@ -45,33 +45,33 @@ export function OnboardingOverlay({ onDismiss }: OnboardingOverlayProps) {
       >
         <motion.div
           key={step}
-          className="relative max-w-sm w-full mx-4 glass-panel border border-[--color-mission-glow]/20 p-6 flex flex-col gap-4"
+          className="relative max-w-sm w-full mx-4 glass-panel border border-mission-glow/20 p-6 flex flex-col gap-4"
           initial={{ opacity: 0, y: 20, scale: 0.95 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
           transition={{ duration: 0.3 }}
         >
           <button
             onClick={onDismiss}
-            className="absolute top-3 right-3 text-[--color-mission-muted] hover:text-[--color-mission-text] transition-colors"
+            className="absolute top-3 right-3 text-mission-muted hover:text-mission-text transition-colors"
           >
             <X className="size-4" />
           </button>
 
           <div className="flex items-center gap-3">
-            <div className="p-2 bg-[--color-mission-glow]/10 border border-[--color-mission-glow]/20">
-              <Icon className="size-5 text-[--color-mission-glow]" />
+            <div className="p-2 bg-mission-glow/10 border border-mission-glow/20">
+              <Icon className="size-5 text-mission-glow" />
             </div>
             <div className="flex flex-col">
-              <span className="text-[9px] uppercase tracking-wider text-[--color-mission-muted]">
+              <span className="text-[9px] uppercase tracking-wider text-mission-muted">
                 Step {step + 1} of {STEPS.length}
               </span>
-              <h3 className="text-sm font-semibold text-[--color-mission-text]">
+              <h3 className="text-sm font-semibold text-mission-text">
                 {current.title}
               </h3>
             </div>
           </div>
 
-          <p className="text-xs text-[--color-mission-muted] leading-relaxed">
+          <p className="text-xs text-mission-muted leading-relaxed">
             {current.description}
           </p>
 
@@ -91,13 +91,13 @@ export function OnboardingOverlay({ onDismiss }: OnboardingOverlayProps) {
           <div className="flex justify-end gap-2">
             <button
               onClick={onDismiss}
-              className="text-[10px] uppercase tracking-wider px-3 py-1.5 text-[--color-mission-muted] hover:text-[--color-mission-text] transition-colors"
+              className="text-[10px] uppercase tracking-wider px-3 py-1.5 text-mission-muted hover:text-mission-text transition-colors"
             >
               Skip
             </button>
             <button
               onClick={() => (isLast ? onDismiss() : setStep(step + 1))}
-              className="flex items-center gap-1.5 text-[10px] uppercase tracking-wider px-3 py-1.5 border border-[--color-mission-glow]/50 text-[--color-mission-glow] hover:bg-[--color-mission-glow]/10 transition-colors"
+              className="flex items-center gap-1.5 text-[10px] uppercase tracking-wider px-3 py-1.5 border border-mission-glow/50 text-mission-glow hover:bg-mission-glow/10 transition-colors"
             >
               {isLast ? "Get Started" : "Next"}
               {!isLast && <ArrowRight className="size-3" />}

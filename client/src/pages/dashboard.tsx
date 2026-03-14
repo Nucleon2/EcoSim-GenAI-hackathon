@@ -81,7 +81,7 @@ export function DashboardPage({ onNavigate }: DashboardPageProps) {
     <>
     {showOnboarding && <OnboardingOverlay onDismiss={dismissOnboarding} />}
     <motion.div
-      className="dashboard-layout bg-[--color-mission-bg] p-2 gap-2"
+      className="dashboard-layout bg-mission-bg p-2 gap-2"
       variants={pageVariants}
       initial="hidden"
       animate="visible"
@@ -95,7 +95,7 @@ export function DashboardPage({ onNavigate }: DashboardPageProps) {
         <ExportButton result={displayResult} />
         <button
           onClick={() => onNavigate("comparison")}
-          className="glass-panel glow-ring flex items-center gap-2 px-4 text-[--color-mission-muted] hover:text-[--color-mission-glow] hover:border-[--color-mission-glow]/30 transition-colors"
+          className="glass-panel glow-ring flex items-center gap-2 px-4 text-mission-muted hover:text-mission-glow hover:border-mission-glow/30 transition-colors"
         >
           <GitCompareArrows className="size-3.5" />
           <span className="text-xs uppercase tracking-wider">Compare</span>

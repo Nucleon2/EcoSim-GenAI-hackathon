@@ -95,17 +95,17 @@ export function PolicyPanel({ onSimulate, isPending, initialPolicy, onPolicyChan
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
           {mode === "manual" ? (
-            <SlidersHorizontal className="size-3.5 text-[--color-mission-glow]" />
+            <SlidersHorizontal className="size-3.5 text-mission-glow" />
           ) : (
-            <Target className="size-3.5 text-[--color-mission-glow]" />
+            <Target className="size-3.5 text-mission-glow" />
           )}
-          <h2 className="text-xs uppercase tracking-widest text-[--color-mission-muted]">
+          <h2 className="text-xs uppercase tracking-widest text-mission-muted">
             {mode === "manual" ? "Policy Controls" : "Goal Mode"}
           </h2>
         </div>
         <button
           onClick={() => setMode(mode === "manual" ? "goal" : "manual")}
-          className="text-[10px] uppercase tracking-wider px-2 py-1 border border-white/10 text-[--color-mission-muted] hover:text-[--color-mission-glow] hover:border-[--color-mission-glow]/30 transition-colors"
+          className="text-[10px] uppercase tracking-wider px-2 py-1 border border-white/10 text-mission-muted hover:text-mission-glow hover:border-mission-glow/30 transition-colors"
         >
           {mode === "manual" ? "Goal Mode" : "Manual"}
         </button>
@@ -116,8 +116,8 @@ export function PolicyPanel({ onSimulate, isPending, initialPolicy, onPolicyChan
           {/* Year Selector */}
           <div className="flex flex-col gap-1.5">
             <div className="flex items-center gap-1.5">
-              <Calendar className="size-3 text-[--color-mission-muted]" />
-              <span className="text-[10px] uppercase tracking-wider text-[--color-mission-muted]">
+              <Calendar className="size-3 text-mission-muted" />
+              <span className="text-[10px] uppercase tracking-wider text-mission-muted">
                 Projection Year
               </span>
             </div>
@@ -128,8 +128,8 @@ export function PolicyPanel({ onSimulate, isPending, initialPolicy, onPolicyChan
                   onClick={() => updatePolicy({ ...policy, targetYear: year })}
                   className={`flex-1 text-[10px] font-mono py-1 border transition-colors ${
                     policy.targetYear === year
-                      ? "border-[--color-mission-glow]/50 text-[--color-mission-glow] bg-[--color-mission-glow]/10"
-                      : "border-[--color-mission-border] text-[--color-mission-muted] hover:text-[--color-mission-glow] hover:border-[--color-mission-glow]/30"
+                      ? "border-mission-glow/50 text-mission-glow bg-mission-glow/10"
+                      : "border-mission-border text-mission-muted hover:text-mission-glow hover:border-mission-glow/30"
                   }`}
                 >
                   {year}
@@ -144,7 +144,7 @@ export function PolicyPanel({ onSimulate, isPending, initialPolicy, onPolicyChan
               <button
                 key={preset.label}
                 onClick={() => updatePolicy({ ...preset.values, targetYear: policy.targetYear })}
-                className="text-[9px] uppercase tracking-wider px-2 py-1 border border-[--color-mission-border] text-[--color-mission-muted] hover:text-[--color-mission-glow] hover:border-[--color-mission-glow]/30 transition-colors"
+                className="text-[9px] uppercase tracking-wider px-2 py-1 border border-mission-border text-mission-muted hover:text-mission-glow hover:border-mission-glow/30 transition-colors"
               >
                 {preset.label}
               </button>
@@ -168,7 +168,7 @@ export function PolicyPanel({ onSimulate, isPending, initialPolicy, onPolicyChan
           <div className="flex flex-col items-center gap-1">
             <Button
               variant="outline"
-              className="w-full border-[--color-mission-glow]/40 text-[--color-mission-glow] hover:bg-[--color-mission-glow]/10 disabled:opacity-40 disabled:cursor-not-allowed"
+              className="w-full border-mission-glow/40 text-mission-glow hover:bg-mission-glow/10 disabled:opacity-40 disabled:cursor-not-allowed"
               disabled={isPending || !hasChanges}
               onClick={() => {
                 lastSimulated.current = { ...policy }
@@ -183,7 +183,7 @@ export function PolicyPanel({ onSimulate, isPending, initialPolicy, onPolicyChan
               )}
             </Button>
             {!hasChanges && !isPending && (
-              <span className="text-[9px] text-[--color-mission-muted] animate-pulse">
+              <span className="text-[9px] text-mission-muted animate-pulse">
                 Adjust sliders or pick a preset to simulate
               </span>
             )}

@@ -39,8 +39,8 @@ export function PolicySlider({ label, unit, value, min, max, onChange }: PolicyS
   return (
     <div className="flex flex-col gap-2">
       <div className="flex justify-between items-center">
-        <span className="text-xs text-[--color-mission-muted]">{label}</span>
-        <span className="font-mono text-xs text-[--color-mission-stat]">
+        <span className="text-xs text-mission-muted">{label}</span>
+        <span className="font-mono text-xs text-mission-stat">
           {value} {unit}
         </span>
       </div>

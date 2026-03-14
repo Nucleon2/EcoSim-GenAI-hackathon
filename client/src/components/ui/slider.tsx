@@ -39,14 +39,14 @@ function Slider({
         >
           <SliderPrimitive.Indicator
             data-slot="slider-range"
-            className="bg-linear-to-r from-[--color-mission-glow] to-[--color-mission-accent] select-none data-horizontal:h-full data-vertical:w-full"
+            className="bg-linear-to-r from-mission-glow to-mission-accent select-none data-horizontal:h-full data-vertical:w-full"
           />
         </SliderPrimitive.Track>
         {Array.from({ length: _values.length }, (_, index) => (
           <SliderPrimitive.Thumb
             data-slot="slider-thumb"
             key={index}
-            className="policy-slider-thumb relative block size-4 shrink-0 rounded-none border-2 border-[--color-mission-glow] bg-[--color-mission-bg] shadow-[0_0_8px_var(--color-mission-glow)] ring-ring/50 transition-[color,box-shadow] select-none after:absolute after:-inset-2 disabled:pointer-events-none disabled:opacity-50"
+            className="policy-slider-thumb relative block size-4 shrink-0 rounded-none border-2 border-mission-glow bg-mission-bg shadow-[0_0_8px_var(--color-mission-glow)] ring-ring/50 transition-[color,box-shadow] select-none after:absolute after:-inset-2 disabled:pointer-events-none disabled:opacity-50"
           />
         ))}
       </SliderPrimitive.Control>

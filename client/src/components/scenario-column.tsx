@@ -42,7 +42,7 @@ export function ScenarioColumn({
         style={{ borderLeftWidth: 3, borderLeftColor: accent }}
       >
         <div className="size-2" style={{ backgroundColor: accent }} />
-        <span className="text-xs uppercase tracking-widest text-[--color-mission-muted] font-medium">
+        <span className="text-xs uppercase tracking-widest text-mission-muted font-medium">
           {label}
         </span>
       </div>
@@ -66,7 +66,7 @@ export function ScenarioColumn({
       <div className="glass-panel glow-ring overflow-hidden h-[280px]">
         {isPending ? (
           <div className="flex items-center justify-center w-full h-full">
-            <div className="size-12 border-2 border-[--color-mission-glow]/30 border-t-[--color-mission-glow] animate-spin" />
+            <div className="size-12 border-2 border-mission-glow/30 border-t-mission-glow animate-spin" />
           </div>
         ) : (
           <EarthScene result={result} compact />
@@ -114,15 +114,15 @@ interface MetricCellProps {
 function MetricCell({ icon, label, value, accentColor }: MetricCellProps) {
   return (
     <div
-      className="flex items-center gap-2 px-3 py-2 bg-[--color-mission-surface]/50 border border-[--color-mission-border]"
+      className="flex items-center gap-2 px-3 py-2 bg-mission-surface/50 border border-mission-border"
       style={{ borderLeftWidth: 2, borderLeftColor: accentColor }}
     >
       {icon}
       <div className="flex flex-col gap-0.5 min-w-0">
-        <span className="text-[9px] uppercase tracking-widest text-[--color-mission-muted] leading-none">
+        <span className="text-[9px] uppercase tracking-widest text-mission-muted leading-none">
           {label}
         </span>
-        <span className="font-mono text-sm font-bold text-[--color-mission-stat] leading-tight tabular-nums">
+        <span className="font-mono text-sm font-bold text-mission-stat leading-tight tabular-nums">
           {value}
         </span>
       </div>

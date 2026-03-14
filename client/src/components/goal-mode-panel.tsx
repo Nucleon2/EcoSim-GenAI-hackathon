@@ -49,7 +49,7 @@ export function GoalModePanel({ onApply }: GoalModePanelProps) {
   return (
     <div className="flex flex-col gap-4 flex-1">
       <div className="flex flex-col gap-3">
-        <span className="text-xs text-[--color-mission-muted]">Set Climate Targets</span>
+        <span className="text-xs text-mission-muted">Set Climate Targets</span>
         {TARGET_CONFIG.map((t) => (
           <div key={t.key} className="flex items-center gap-2">
             <input
@@ -58,12 +58,12 @@ export function GoalModePanel({ onApply }: GoalModePanelProps) {
               onChange={(e) =>
                 setEnabled((prev) => ({ ...prev, [t.key]: e.target.checked }))
               }
-              className="accent-[--color-mission-glow] size-3.5 shrink-0"
+              className="accent-mission-glow size-3.5 shrink-0"
             />
-            <span className="text-xs text-[--color-mission-muted] w-[100px] shrink-0">{t.label}</span>
+            <span className="text-xs text-mission-muted w-[100px] shrink-0">{t.label}</span>
             {enabled[t.key] && (
               <div className="flex items-center gap-1 flex-1">
-                <span className="text-[10px] text-[--color-mission-muted]">&lt;</span>
+                <span className="text-[10px] text-mission-muted">&lt;</span>
                 <input
                   type="number"
                   step={t.step}
@@ -72,9 +72,9 @@ export function GoalModePanel({ onApply }: GoalModePanelProps) {
                   onChange={(e) =>
                     setValues((prev) => ({ ...prev, [t.key]: e.target.value }))
                   }
-                  className="w-full bg-white/5 border border-white/10 text-xs text-[--color-mission-text] font-mono px-2 py-1 focus:outline-none focus:border-[--color-mission-glow]/50 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                  className="w-full bg-white/5 border border-white/10 text-xs text-mission-text font-mono px-2 py-1 focus:outline-none focus:border-mission-glow/50 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                 />
-                <span className="text-[10px] text-[--color-mission-muted] shrink-0">{t.unit}</span>
+                <span className="text-[10px] text-mission-muted shrink-0">{t.unit}</span>
               </div>
             )}
           </div>
@@ -83,7 +83,7 @@ export function GoalModePanel({ onApply }: GoalModePanelProps) {
 
       <Button
         variant="outline"
-        className="w-full border-[--color-mission-glow]/40 text-[--color-mission-glow] hover:bg-[--color-mission-glow]/10"
+        className="w-full border-mission-glow/40 text-mission-glow hover:bg-mission-glow/10"
         disabled={optimize.isPending || !hasAnyTarget}
         onClick={handleGenerate}
       >
@@ -114,7 +114,7 @@ export function GoalModePanel({ onApply }: GoalModePanelProps) {
 
           {/* Projected Outcomes */}
           <div className="flex flex-col gap-2">
-            <span className="text-xs uppercase tracking-widest text-[--color-mission-muted]">
+            <span className="text-xs uppercase tracking-widest text-mission-muted">
               Projected Outcomes
             </span>
             <div className="grid grid-cols-2 gap-1.5">
@@ -150,7 +150,7 @@ export function GoalModePanel({ onApply }: GoalModePanelProps) {
           </div>
 
           <div className="flex flex-col gap-2">
-            <span className="text-xs uppercase tracking-widest text-[--color-mission-muted]">
+            <span className="text-xs uppercase tracking-widest text-mission-muted">
               Recommended Policies
             </span>
             <div className="grid grid-cols-1 gap-1 text-xs">
@@ -163,10 +163,10 @@ export function GoalModePanel({ onApply }: GoalModePanelProps) {
           </div>
 
           <div className="flex flex-col gap-1">
-            <span className="text-xs uppercase tracking-widest text-[--color-mission-muted]">
+            <span className="text-xs uppercase tracking-widest text-mission-muted">
               AI Analysis
             </span>
-            <p className="text-xs text-[--color-mission-text]/80 leading-relaxed">
+            <p className="text-xs text-mission-text/80 leading-relaxed">
               {result.explanation}
             </p>
           </div>
@@ -200,17 +200,17 @@ function OutcomeCard({
   const met = target == null || actual <= target
   return (
     <div
-      className="flex items-center gap-2 px-2.5 py-2 bg-[--color-mission-surface]/50 border border-[--color-mission-border]"
+      className="flex items-center gap-2 px-2.5 py-2 bg-mission-surface/50 border border-mission-border"
       style={{ borderLeftWidth: 2, borderLeftColor: met ? "oklch(0.72 0.19 145)" : "oklch(0.80 0.18 85)" }}
     >
-      <Icon className="size-3.5 shrink-0 text-[--color-mission-muted]" />
+      <Icon className="size-3.5 shrink-0 text-mission-muted" />
       <div className="flex flex-col min-w-0">
-        <span className="text-[9px] uppercase tracking-wider text-[--color-mission-muted] leading-none">{label}</span>
+        <span className="text-[9px] uppercase tracking-wider text-mission-muted leading-none">{label}</span>
         <span className="font-mono text-sm font-bold tabular-nums" style={{ color: met ? "oklch(0.72 0.19 145)" : "oklch(0.80 0.18 85)" }}>
           {value}
         </span>
         {target != null && (
-          <span className="text-[9px] text-[--color-mission-muted]">
+          <span className="text-[9px] text-mission-muted">
             target: &lt;{target}
           </span>
         )}
@@ -222,8 +222,8 @@ function OutcomeCard({
 function PolicyRow({ label, value }: { label: string; value: string }) {
   return (
     <div className="flex justify-between items-center py-0.5">
-      <span className="text-[--color-mission-muted]">{label}</span>
-      <span className="font-mono text-[--color-mission-stat]">{value}</span>
+      <span className="text-mission-muted">{label}</span>
+      <span className="font-mono text-mission-stat">{value}</span>
     </div>
   )
 }

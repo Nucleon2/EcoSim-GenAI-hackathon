@@ -30,7 +30,7 @@ const BASELINE_RISK = 55
 function GlobeSpinner() {
   return (
     <div className="flex items-center justify-center w-full h-full">
-      <div className="size-16 rounded-full border-2 border-[--color-mission-glow]/30 border-t-[--color-mission-glow] animate-spin" />
+      <div className="size-16 rounded-full border-2 border-mission-glow/30 border-t-mission-glow animate-spin" />
     </div>
   )
 }
@@ -144,7 +144,7 @@ export function EarthScene({ result, compact }: EarthSceneProps) {
     <div ref={containerRef} className="relative w-full h-full overflow-hidden">
       {/* Outer glow ring behind globe */}
       <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
-        <div className="size-[min(60vw,60vh)] rounded-full bg-[--color-mission-glow]/5 blur-3xl" />
+        <div className="size-[min(60vw,60vh)] rounded-full bg-mission-glow/5 blur-3xl" />
       </div>
 
       <Suspense fallback={<GlobeSpinner />}>

@@ -34,7 +34,7 @@ export function ExportButton({ result }: ExportButtonProps) {
   return (
     <button
       onClick={() => exportCsv(result)}
-      className="flex items-center gap-1.5 px-3 py-1.5 border border-[--color-mission-border] text-[--color-mission-muted] hover:text-[--color-mission-glow] hover:border-[--color-mission-glow]/30 transition-colors text-[10px] uppercase tracking-wider"
+      className="flex items-center gap-1.5 px-3 py-1.5 border border-mission-border text-mission-muted hover:text-mission-glow hover:border-mission-glow/30 transition-colors text-[10px] uppercase tracking-wider"
     >
       <Download className="size-3" />
       Export CSV

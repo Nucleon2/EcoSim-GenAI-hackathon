@@ -31,15 +31,15 @@ export function EmissionsBreakdown({ result }: EmissionsBreakdownProps) {
   return (
     <div className="glass-panel glow-ring h-full flex flex-col gap-2 p-4">
       <div className="flex items-center gap-2">
-        <BarChart3 className="size-3.5 text-[--color-mission-glow]" />
-        <h3 className="text-xs uppercase tracking-widest text-[--color-mission-muted]">
+        <BarChart3 className="size-3.5 text-mission-glow" />
+        <h3 className="text-xs uppercase tracking-widest text-mission-muted">
           Emissions Reduction
         </h3>
       </div>
 
       {entries.length === 0 ? (
         <div className="flex-1 flex items-center justify-center">
-          <span className="text-[10px] text-[--color-mission-muted]">
+          <span className="text-[10px] text-mission-muted">
             Run a simulation to see breakdown
           </span>
         </div>
@@ -48,14 +48,14 @@ export function EmissionsBreakdown({ result }: EmissionsBreakdownProps) {
           {entries.map(([key, value]) => (
             <div key={key} className="flex flex-col gap-0.5">
               <div className="flex justify-between items-baseline">
-                <span className="text-[9px] uppercase tracking-wider text-[--color-mission-muted]">
+                <span className="text-[9px] uppercase tracking-wider text-mission-muted">
                   {LABELS[key] ?? key}
                 </span>
-                <span className="font-mono text-[10px] text-[--color-mission-stat] tabular-nums">
+                <span className="font-mono text-[10px] text-mission-stat tabular-nums">
                   {(value * 100).toFixed(1)}%
                 </span>
               </div>
-              <div className="h-1.5 w-full bg-[--color-mission-surface] overflow-hidden">
+              <div className="h-1.5 w-full bg-mission-surface overflow-hidden">
                 <div
                   className="h-full transition-all duration-700 ease-out"
                   style={{

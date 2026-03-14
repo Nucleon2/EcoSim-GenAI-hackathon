@@ -54,7 +54,7 @@ export function ComparisonDiff({ resultA, resultB }: ComparisonDiffProps) {
 
   return (
     <div className="glass-panel glow-ring p-4">
-      <h3 className="text-[10px] uppercase tracking-widest text-[--color-mission-muted] mb-3">
+      <h3 className="text-[10px] uppercase tracking-widest text-mission-muted mb-3">
         Scenario Differences — B relative to A
       </h3>
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
@@ -66,7 +66,7 @@ export function ComparisonDiff({ resultA, resultB }: ComparisonDiffProps) {
           const isNeutral = absDelta < 0.01
           const isBetter = m.lowerIsBetter ? delta < -0.01 : delta > 0.01
           const color = isNeutral
-            ? "text-[--color-mission-muted]"
+            ? "text-mission-muted"
             : isBetter
               ? "text-emerald-400"
               : "text-red-400"
@@ -75,7 +75,7 @@ export function ComparisonDiff({ resultA, resultB }: ComparisonDiffProps) {
 
           return (
             <div key={m.label} className="flex flex-col gap-1">
-              <span className="text-[9px] uppercase tracking-widest text-[--color-mission-muted]">
+              <span className="text-[9px] uppercase tracking-widest text-mission-muted">
                 {m.label}
               </span>
               <div className={`flex items-center gap-1.5 ${color}`}>

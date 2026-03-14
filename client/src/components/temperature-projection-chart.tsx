@@ -39,10 +39,10 @@ function CustomTooltip({ active, payload, label }: any) {
   if (active && payload?.length) {
     return (
       <div
-        className="px-3 py-2 text-xs font-mono border border-[--color-mission-border] space-y-1"
+        className="px-3 py-2 text-xs font-mono border border-mission-border space-y-1"
         style={{ backgroundColor: "oklch(0.13 0.018 240 / 90%)", backdropFilter: "blur(8px)" }}
       >
-        <div className="text-[--color-mission-muted]">{label}</div>
+        <div className="text-mission-muted">{label}</div>
         {payload.map((entry: any) => (
           <div key={entry.dataKey} style={{ color: entry.stroke }}>
             {entry.dataKey === "baseline" ? "Baseline" : "With Policy"}: {entry.value}°C
@@ -64,8 +64,8 @@ export function TemperatureProjectionChart({ temperatureRise }: TemperatureProje
   return (
     <div className="glass-panel glow-ring h-full flex flex-col gap-2 p-4">
       <div className="flex items-center gap-2">
-        <TrendingUp className="size-3.5 text-[--color-mission-glow]" />
-        <h3 className="text-xs uppercase tracking-widest text-[--color-mission-muted]">
+        <TrendingUp className="size-3.5 text-mission-glow" />
+        <h3 className="text-xs uppercase tracking-widest text-mission-muted">
           Temperature Projection
         </h3>
       </div>

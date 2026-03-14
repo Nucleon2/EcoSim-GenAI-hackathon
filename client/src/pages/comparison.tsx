@@ -76,7 +76,7 @@ export function ComparisonPage({ onNavigate }: ComparisonPageProps) {
 
   return (
     <motion.div
-      className="h-screen overflow-y-auto bg-[--color-mission-bg] p-2 flex flex-col gap-2"
+      className="h-screen overflow-y-auto bg-mission-bg p-2 flex flex-col gap-2"
       variants={pageVariants}
       initial="hidden"
       animate="visible"
@@ -86,15 +86,15 @@ export function ComparisonPage({ onNavigate }: ComparisonPageProps) {
         <div className="flex items-center gap-3">
           <button
             onClick={() => onNavigate("dashboard")}
-            className="flex items-center gap-1.5 text-[--color-mission-muted] hover:text-[--color-mission-glow] transition-colors"
+            className="flex items-center gap-1.5 text-mission-muted hover:text-mission-glow transition-colors"
           >
             <ArrowLeft className="size-3.5" />
             <span className="text-xs uppercase tracking-wider">Dashboard</span>
           </button>
-          <div className="w-px h-4 bg-[--color-mission-border]" />
+          <div className="w-px h-4 bg-mission-border" />
           <div className="flex items-center gap-2">
-            <GitCompareArrows className="size-3.5 text-[--color-mission-glow]" />
-            <h1 className="text-xs uppercase tracking-widest text-[--color-mission-muted] font-medium">
+            <GitCompareArrows className="size-3.5 text-mission-glow" />
+            <h1 className="text-xs uppercase tracking-widest text-mission-muted font-medium">
               Scenario Comparison
             </h1>
           </div>
@@ -102,7 +102,7 @@ export function ComparisonPage({ onNavigate }: ComparisonPageProps) {
 
         <Button
           variant="outline"
-          className="border-[--color-mission-glow]/40 text-[--color-mission-glow] hover:bg-[--color-mission-glow]/10 text-xs px-4"
+          className="border-mission-glow/40 text-mission-glow hover:bg-mission-glow/10 text-xs px-4"
           disabled={comparison.isPending}
           onClick={handleCompare}
         >

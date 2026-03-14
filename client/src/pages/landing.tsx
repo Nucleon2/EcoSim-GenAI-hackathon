@@ -8,15 +8,15 @@ interface LandingPageProps {
 
 export function LandingPage({ onEnter }: LandingPageProps) {
   return (
-    <div className="relative h-screen w-screen overflow-hidden bg-[--color-mission-bg]">
+    <div className="relative h-screen w-screen overflow-hidden bg-mission-bg">
       {/* Full-screen globe background */}
       <div className="absolute inset-0">
         <EarthScene />
       </div>
 
       {/* Gradient overlay for text readability */}
-      <div className="absolute inset-0 bg-gradient-to-t from-[--color-mission-bg] via-[--color-mission-bg]/40 to-transparent pointer-events-none" />
-      <div className="absolute inset-0 bg-gradient-to-r from-[--color-mission-bg]/60 to-transparent pointer-events-none" />
+      <div className="absolute inset-0 bg-gradient-to-t from-mission-bg via-mission-bg/40 to-transparent pointer-events-none" />
+      <div className="absolute inset-0 bg-gradient-to-r from-mission-bg/60 to-transparent pointer-events-none" />
 
       {/* Content */}
       <div className="relative z-10 h-full flex flex-col justify-end p-8 md:p-16 pb-16 md:pb-24 max-w-2xl">
@@ -36,14 +36,14 @@ export function LandingPage({ onEnter }: LandingPageProps) {
               visible: { opacity: 1, x: 0, transition: { duration: 0.6 } },
             }}
           >
-            <Globe2 className="size-5 text-[--color-mission-glow]" />
-            <span className="text-xs uppercase tracking-[0.3em] text-[--color-mission-glow]">
+            <Globe2 className="size-5 text-mission-glow" />
+            <span className="text-xs uppercase tracking-[0.3em] text-mission-glow">
               EcoSim
             </span>
           </motion.div>
 
           <motion.h1
-            className="text-4xl md:text-6xl font-bold leading-tight text-[--color-mission-text]"
+            className="text-4xl md:text-6xl font-bold leading-tight text-mission-text"
             variants={{
               hidden: { opacity: 0, y: 30, filter: "blur(8px)" },
               visible: { opacity: 1, y: 0, filter: "blur(0px)", transition: { duration: 0.7 } },
@@ -51,11 +51,11 @@ export function LandingPage({ onEnter }: LandingPageProps) {
           >
             AI Climate Policy
             <br />
-            <span className="text-[--color-mission-glow]">Copilot</span>
+            <span className="text-mission-glow">Copilot</span>
           </motion.h1>
 
           <motion.p
-            className="text-sm md:text-base text-[--color-mission-muted] leading-relaxed max-w-md"
+            className="text-sm md:text-base text-mission-muted leading-relaxed max-w-md"
             variants={{
               hidden: { opacity: 0, y: 20 },
               visible: { opacity: 1, y: 0, transition: { duration: 0.6 } },
@@ -74,7 +74,7 @@ export function LandingPage({ onEnter }: LandingPageProps) {
           >
             <button
               onClick={onEnter}
-              className="group flex items-center gap-3 px-6 py-3 border border-[--color-mission-glow]/50 text-[--color-mission-glow] hover:bg-[--color-mission-glow]/10 transition-all duration-300 text-sm uppercase tracking-wider"
+              className="group flex items-center gap-3 px-6 py-3 border border-mission-glow/50 text-mission-glow hover:bg-mission-glow/10 transition-all duration-300 text-sm uppercase tracking-wider"
             >
               Launch Simulator
               <ArrowRight className="size-4 group-hover:translate-x-1 transition-transform" />
@@ -82,16 +82,16 @@ export function LandingPage({ onEnter }: LandingPageProps) {
           </motion.div>
 
           <motion.div
-            className="flex items-center gap-4 mt-4 text-[9px] uppercase tracking-wider text-[--color-mission-muted]/60"
+            className="flex items-center gap-4 mt-4 text-[9px] uppercase tracking-wider text-mission-muted/60"
             variants={{
               hidden: { opacity: 0 },
               visible: { opacity: 1, transition: { duration: 0.6 } },
             }}
           >
             <span>NASA Climate Data</span>
-            <span className="w-px h-3 bg-[--color-mission-border]" />
+            <span className="w-px h-3 bg-mission-border" />
             <span>World Bank</span>
-            <span className="w-px h-3 bg-[--color-mission-border]" />
+            <span className="w-px h-3 bg-mission-border" />
             <span>Global Carbon Project</span>
           </motion.div>
         </motion.div>

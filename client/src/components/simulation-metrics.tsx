@@ -32,7 +32,7 @@ interface MetricCardProps {
 function MetricCard({ icon: Icon, label, numericValue, format, unit, accentColor, glowColor }: MetricCardProps) {
   return (
     <div
-      className="relative flex items-start gap-3 px-4 py-3 bg-[--color-mission-surface]/50 border border-[--color-mission-border] overflow-hidden group"
+      className="relative flex items-start gap-3 px-4 py-3 bg-mission-surface/50 border border-mission-border overflow-hidden group"
       style={{ borderLeftWidth: 2, borderLeftColor: accentColor }}
     >
       <div
@@ -45,13 +45,13 @@ function MetricCard({ icon: Icon, label, numericValue, format, unit, accentColor
       </div>
 
       <div className="relative flex flex-col gap-0.5 min-w-0">
-        <span className="text-[10px] uppercase tracking-widest text-[--color-mission-muted] leading-none">
+        <span className="text-[10px] uppercase tracking-widest text-mission-muted leading-none">
           {label}
         </span>
         <span className="font-mono text-base font-bold leading-tight tabular-nums" style={{ color: accentColor }}>
           <AnimatedNumber value={numericValue} format={format} />
         </span>
-        <span className="text-[10px] text-[--color-mission-muted] leading-none">
+        <span className="text-[10px] text-mission-muted leading-none">
           {unit}
         </span>
       </div>

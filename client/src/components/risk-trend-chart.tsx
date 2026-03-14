@@ -53,13 +53,13 @@ function CustomTooltip({ active, payload, label }: any) {
   if (active && payload?.length) {
     return (
       <div
-        className="space-y-1 border border-[--color-mission-border] px-3 py-2 font-mono text-xs"
+        className="space-y-1 border border-mission-border px-3 py-2 font-mono text-xs"
         style={{
           backgroundColor: "oklch(0.13 0.018 240 / 90%)",
           backdropFilter: "blur(8px)",
         }}
       >
-        <div className="text-[--color-mission-muted]">{label}</div>
+        <div className="text-mission-muted">{label}</div>
         {payload.map((entry: any) => (
           <div
             key={entry.dataKey}
@@ -94,8 +94,8 @@ export function RiskTrendChart({ riskScore }: RiskTrendChartProps) {
   return (
     <div className="glass-panel glow-ring flex h-full flex-col gap-2 p-4">
       <div className="flex items-center gap-2">
-        <ShieldAlert className="size-3.5 text-[--color-mission-glow]" />
-        <h3 className="text-xs tracking-widest text-[--color-mission-muted] uppercase">
+        <ShieldAlert className="size-3.5 text-mission-glow" />
+        <h3 className="text-xs tracking-widest text-mission-muted uppercase">
           Risk Trend
         </h3>
       </div>
