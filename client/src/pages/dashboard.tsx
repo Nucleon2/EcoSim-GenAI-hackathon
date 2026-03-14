@@ -24,7 +24,7 @@ const panelVariants = {
     opacity: 1,
     y: 0,
     filter: "blur(0px)",
-    transition: { duration: 0.55, ease: [0.25, 0.46, 0.45, 0.94] },
+    transition: { duration: 0.55, ease: [0.25, 0.46, 0.45, 0.94] as const },
   },
 }
 
@@ -96,7 +96,7 @@ export function DashboardPage() {
         variants={panelVariants}
         className="glass-panel glow-ring overflow-hidden min-h-0"
       >
-        <EarthScene />
+        <EarthScene result={simulation.data} />
       </motion.div>
 
       {/* Bottom panel row */}

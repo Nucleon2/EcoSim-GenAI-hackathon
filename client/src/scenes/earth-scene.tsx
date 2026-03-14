@@ -1,6 +1,20 @@
-import { Suspense, lazy, useEffect, useRef, useState } from "react"
+import { Suspense, lazy, useEffect, useMemo, useRef, useState } from "react"
+import type { SimulationResult } from "@/services/api"
+import {
+  buildHeatmapData,
+  buildRingsData,
+  getAtmosphereColor,
+  getHeatmapSaturation,
+} from "./globe-data"
 
 const Globe = lazy(() => import("react-globe.gl"))
+
+// ---------------------------------------------------------------------------
+// Baseline defaults shown before the first simulation runs
+// ---------------------------------------------------------------------------
+const BASELINE_TEMP = 2.0
+const BASELINE_CO2 = 36.8
+const BASELINE_RISK = 55
 
 function GlobeSpinner() {
   return (
@@ -10,7 +24,15 @@ function GlobeSpinner() {
   )
 }
 
-export function EarthScene() {
+// ---------------------------------------------------------------------------
+// Component
+// ---------------------------------------------------------------------------
+
+interface EarthSceneProps {
+  result?: SimulationResult
+}
+
+export function EarthScene({ result }: EarthSceneProps) {
   const containerRef = useRef<HTMLDivElement>(null)
   const [dims, setDims] = useState({ width: 0, height: 0 })
 
@@ -26,6 +48,21 @@ export function EarthScene() {
     return () => ro.disconnect()
   }, [])
 
+  // ---- Derive values from simulation result (or use baselines) ----
+  const temp = result?.temperature_rise ?? BASELINE_TEMP
+  const co2 = result?.co2_emissions ?? BASELINE_CO2
+  const risk = result?.risk_score ?? BASELINE_RISK
+
+  // ---- Heatmap layer data ----
+  const heatmapData = useMemo(() => buildHeatmapData(temp), [temp])
+  const heatmapSaturation = useMemo(() => getHeatmapSaturation(temp), [temp])
+
+  // ---- Rings layer data ----
+  const ringsData = useMemo(() => buildRingsData(co2), [co2])
+
+  // ---- Dynamic atmosphere ----
+  const atmosphereColor = useMemo(() => getAtmosphereColor(risk), [risk])
+
   return (
     <div ref={containerRef} className="relative w-full h-full overflow-hidden">
       {/* Outer glow ring behind globe */}
@@ -40,9 +77,27 @@ export function EarthScene() {
             height={dims.height}
             globeImageUrl="//unpkg.com/three-globe/example/img/earth-night.jpg"
             bumpImageUrl="//unpkg.com/three-globe/example/img/earth-topology.png"
-            atmosphereColor="rgba(0, 210, 200, 0.15)"
-            atmosphereAltitude={0.18}
             backgroundColor="rgba(0,0,0,0)"
+            // -- Dynamic atmosphere --
+            atmosphereColor={atmosphereColor}
+            atmosphereAltitude={0.18}
+            // -- Heatmap layer --
+            heatmapsData={heatmapData}
+            heatmapPointLat="lat"
+            heatmapPointLng="lng"
+            heatmapPointWeight="weight"
+            heatmapBandwidth={0.8}
+            heatmapColorSaturation={heatmapSaturation}
+            heatmapsTransitionDuration={1200}
+            enablePointerInteraction={false}
+            // -- Rings layer --
+            ringsData={ringsData}
+            ringLat="lat"
+            ringLng="lng"
+            ringColor="color"
+            ringMaxRadius="maxRadius"
+            ringPropagationSpeed="propagationSpeed"
+            ringRepeatPeriod="repeatPeriod"
           />
         )}
       </Suspense>
