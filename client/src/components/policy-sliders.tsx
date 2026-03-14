@@ -6,6 +6,7 @@ export interface PolicyValues {
   deforestationReduction: number
   methaneReduction: number
   evAdoption: number
+  targetYear: number
 }
 
 export const POLICY_DEFAULTS: PolicyValues = {
@@ -14,6 +15,7 @@ export const POLICY_DEFAULTS: PolicyValues = {
   deforestationReduction: 25,
   methaneReduction: 20,
   evAdoption: 15,
+  targetYear: 2050,
 }
 
 export const SLIDER_CONFIG = [

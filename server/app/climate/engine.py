@@ -27,12 +27,17 @@ def _clamp(value: float, lo: float, hi: float) -> float:
 
 
 def simulate(policy: PolicyInput) -> SimulationResult:
-    # Stage 1: compute per-lever emission reduction impacts
-    renewable_impact = (policy.renewable_adoption / 100) * W_RENEWABLE
-    carbon_tax_impact = min(1.0, math.sqrt(policy.carbon_tax / 300)) * W_CARBON_TAX
-    deforestation_impact = (policy.deforestation_reduction / 100) * W_DEFORESTATION
-    methane_impact = (policy.methane_reduction / 100) * W_METHANE
-    ev_impact = (policy.ev_adoption / 100) * W_EV
+    # Year-based scaling: policies take time to reach full effect
+    # 2030 = 25% effect, 2050 = 100%, 2100 = 100% (capped)
+    years_from_now = _clamp(policy.target_year - 2025, 5, 75)
+    year_factor = _clamp(years_from_now / 25, 0.2, 1.0)
+
+    # Stage 1: compute per-lever emission reduction impacts (scaled by year)
+    renewable_impact = (policy.renewable_adoption / 100) * W_RENEWABLE * year_factor
+    carbon_tax_impact = min(1.0, math.sqrt(policy.carbon_tax / 300)) * W_CARBON_TAX * year_factor
+    deforestation_impact = (policy.deforestation_reduction / 100) * W_DEFORESTATION * year_factor
+    methane_impact = (policy.methane_reduction / 100) * W_METHANE * year_factor
+    ev_impact = (policy.ev_adoption / 100) * W_EV * year_factor
 
     total_reduction = (
         renewable_impact
@@ -49,7 +54,7 @@ def simulate(policy: PolicyInput) -> SimulationResult:
     temp_rise = (
         TEMP_MIN
         + (emissions_factor - (1.0 - MAX_REDUCTION)) * TEMP_SENSITIVITY
-        - (policy.methane_reduction / 100) * METHANE_TEMP_BONUS
+        - (policy.methane_reduction / 100) * METHANE_TEMP_BONUS * year_factor
     )
     temp_rise = round(_clamp(temp_rise, 0.5, 3.5), 2)
 

@@ -7,6 +7,7 @@ export interface PolicyInput {
   deforestation_reduction: number
   methane_reduction: number
   ev_adoption: number
+  target_year?: number
 }
 
 export interface SimulationResult {

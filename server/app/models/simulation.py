@@ -7,6 +7,7 @@ class PolicyInput(BaseModel):
     deforestation_reduction: float = Field(default=25, ge=0, le=100, description="Deforestation reduction %")
     methane_reduction: float = Field(default=20, ge=0, le=100, description="Methane reduction %")
     ev_adoption: float = Field(default=15, ge=0, le=100, description="EV adoption %")
+    target_year: int = Field(default=2050, ge=2030, le=2100, description="Projection target year")
 
 
 class SimulationResult(BaseModel):

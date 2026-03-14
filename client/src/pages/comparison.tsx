@@ -35,6 +35,7 @@ function toApiInput(values: PolicyValues): PolicyInput {
     deforestation_reduction: values.deforestationReduction,
     methane_reduction: values.methaneReduction,
     ev_adoption: values.evAdoption,
+    target_year: values.targetYear,
   }
 }
 
@@ -49,6 +50,7 @@ export function ComparisonPage({ onNavigate }: ComparisonPageProps) {
     ...POLICY_DEFAULTS,
     carbonTax: 150,
     renewableAdoption: 60,
+    targetYear: dashboardPolicy.targetYear,
   })
 
   const comparison = useComparisonSimulation()

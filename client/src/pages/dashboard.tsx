@@ -38,6 +38,7 @@ function toApiInput(values: PolicyValues): PolicyInput {
     deforestation_reduction: values.deforestationReduction,
     methane_reduction: values.methaneReduction,
     ev_adoption: values.evAdoption,
+    target_year: values.targetYear,
   }
 }
 
