@@ -64,7 +64,7 @@ export function EarthScene({ result }: EarthSceneProps) {
   const atmosphereColor = useMemo(() => getAtmosphereColor(risk), [risk])
 
   return (
-    <div className="relative w-full h-full overflow-hidden">
+    <div ref={containerRef} className="relative w-full h-full overflow-hidden">
       {/* Outer glow ring behind globe */}
       <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
         <div className="size-[min(60vw,60vh)] rounded-full bg-[--color-mission-glow]/5 blur-3xl" />
@@ -99,16 +99,7 @@ export function EarthScene({ result }: EarthSceneProps) {
             ringPropagationSpeed="propagationSpeed"
             ringRepeatPeriod="repeatPeriod"
           />
-
-          {/* Earth and visualization layers */}
-          <group>
-            <EarthMesh />
-            <HeatLayer intensity={heatIntensity} />
-            <EmissionParticles co2Emissions={co2} />
-            <DeforestationOverlay deforestationReduction={deforestReduction} />
-            <Atmosphere />
-          </group>
-        </Canvas>
+        )}
       </Suspense>
     </div>
   )
