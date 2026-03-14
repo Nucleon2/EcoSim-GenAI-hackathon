@@ -56,9 +56,10 @@ def simulate(policy: PolicyInput) -> SimulationResult:
     sea_level_rise = round(1.5 + temp_rise * 2.0, 2)
 
     # Risk score (composite, 0-100)
-    norm_temp = _clamp((temp_rise - 1.0) / 2.0, 0, 1)
-    norm_emissions = _clamp((co2_emissions - 10) / 30, 0, 1)
-    norm_sea = _clamp((sea_level_rise - 2) / 6, 0, 1)
+    # Normalization ranges tuned so 0-policy baseline yields ~93 risk
+    norm_temp = _clamp((temp_rise - 0.7) / 1.9, 0, 1)       # 0.7–2.6 range
+    norm_emissions = _clamp((co2_emissions - 8) / 30, 0, 1)   # 8–38 range
+    norm_sea = _clamp((sea_level_rise - 2.5) / 4.2, 0, 1)    # 2.5–6.7 range
     risk_score = round((norm_temp * 0.4 + norm_emissions * 0.3 + norm_sea * 0.3) * 100, 1)
 
     return SimulationResult(
