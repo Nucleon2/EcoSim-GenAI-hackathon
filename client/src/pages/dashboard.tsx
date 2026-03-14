@@ -11,6 +11,7 @@ import { TemperatureProjectionChart } from "@/components/temperature-projection-
 import { EmissionsBreakdown } from "@/components/emissions-breakdown"
 import { ExportButton } from "@/components/export-button"
 import { ShareButton } from "@/components/share-button"
+import { TakeActionButton } from "@/components/take-action-button"
 import { OnboardingOverlay, useOnboarding } from "@/components/onboarding-overlay"
 import { useSimulation } from "@/hooks/use-simulation"
 import { useExplanation } from "@/hooks/use-explanation"
@@ -93,6 +94,7 @@ export function DashboardPage({ onNavigate }: DashboardPageProps) {
         </div>
         <ShareButton policy={dashboardPolicy} />
         <ExportButton result={displayResult} />
+        <TakeActionButton policy={lastPolicyRef.current} result={displayResult} />
         <button
           onClick={() => onNavigate("comparison")}
           className="glass-panel glow-ring flex items-center gap-2 px-4 text-mission-muted hover:text-mission-glow hover:border-mission-glow/30 transition-colors"
