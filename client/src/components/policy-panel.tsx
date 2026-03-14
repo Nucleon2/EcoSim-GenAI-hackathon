@@ -20,7 +20,7 @@ const DEFAULTS: PolicyValues = {
 }
 
 const SLIDER_CONFIG = [
-  { key: "carbonTax" as const, label: "Carbon Tax Rate", min: 0, max: 300, unit: "tonne" },
+  { key: "carbonTax" as const, label: "Carbon Tax Rate", min: 0, max: 300, unit: "$/tonne" },
   { key: "renewableAdoption" as const, label: "Renewable Adoption", min: 0, max: 100, unit: "%" },
   { key: "deforestationReduction" as const, label: "Deforestation Reduction", min: 0, max: 100, unit: "%" },
   { key: "methaneReduction" as const, label: "Methane Reduction", min: 0, max: 100, unit: "%" },
