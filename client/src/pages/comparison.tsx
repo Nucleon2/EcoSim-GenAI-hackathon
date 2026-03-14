@@ -8,6 +8,7 @@ import { ComparisonAiPanel } from "@/components/comparison-ai-panel"
 import { POLICY_DEFAULTS, type PolicyValues } from "@/components/policy-sliders"
 import { useComparisonSimulation } from "@/hooks/use-comparison-simulation"
 import { useComparisonExplanation } from "@/hooks/use-comparison-explanation"
+import { useSimulationContext } from "@/context/simulation-context"
 import type { PolicyInput } from "@/services/api"
 
 const pageVariants = {
@@ -42,7 +43,8 @@ interface ComparisonPageProps {
 }
 
 export function ComparisonPage({ onNavigate }: ComparisonPageProps) {
-  const [scenarioA, setScenarioA] = useState<PolicyValues>(POLICY_DEFAULTS)
+  const { dashboardPolicy } = useSimulationContext()
+  const [scenarioA, setScenarioA] = useState<PolicyValues>(dashboardPolicy)
   const [scenarioB, setScenarioB] = useState<PolicyValues>({
     ...POLICY_DEFAULTS,
     carbonTax: 150,
