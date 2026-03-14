@@ -17,6 +17,46 @@ SYSTEM_PROMPT = (
 )
 
 
+GOAL_SYSTEM_PROMPT = (
+    "You are a climate policy analyst. A user selected a climate goal and "
+    "the system found an optimal policy mix to achieve it. In exactly 2-3 "
+    "short sentences, explain why this combination of policies meets the "
+    "target. Mention the most impactful levers. Be concise — under 50 words "
+    "total. No bullet points or lists."
+)
+
+
+async def generate_goal_explanation(
+    goal_description: str, policy: PolicyInput, result: SimulationResult
+) -> str:
+    user_prompt = (
+        f"Climate goal: {goal_description}\n\n"
+        f"Recommended policy mix:\n"
+        f"- Carbon tax: ${policy.carbon_tax}/tonne\n"
+        f"- Renewable adoption: {policy.renewable_adoption}%\n"
+        f"- Deforestation reduction: {policy.deforestation_reduction}%\n"
+        f"- Methane reduction: {policy.methane_reduction}%\n"
+        f"- EV adoption: {policy.ev_adoption}%\n\n"
+        f"Projected results:\n"
+        f"- CO2 emissions: {result.co2_emissions:.1f} GtCO2/year\n"
+        f"- Temperature rise: {result.temperature_rise:.2f}°C\n"
+        f"- Sea level rise: {result.sea_level_rise:.1f} mm/year\n"
+        f"- Risk score: {result.risk_score:.0f}/100\n"
+    )
+
+    response = await client.chat.completions.create(
+        model="deepseek-chat",
+        messages=[
+            {"role": "system", "content": GOAL_SYSTEM_PROMPT},
+            {"role": "user", "content": user_prompt},
+        ],
+        temperature=0.7,
+        max_tokens=200,
+    )
+
+    return response.choices[0].message.content or "Unable to generate explanation."
+
+
 async def generate_explanation(
     policy: PolicyInput, result: SimulationResult
 ) -> str:
