@@ -20,7 +20,7 @@ const DEFAULTS: PolicyValues = {
 }
 
 const SLIDER_CONFIG = [
-  { key: "carbonTax" as const, label: "Carbon Tax Rate", min: 0, max: 300, unit: "$/tonne" },
+  { key: "carbonTax" as const, label: "Carbon Tax Rate", min: 0, max: 300, unit: "tonne" },
   { key: "renewableAdoption" as const, label: "Renewable Adoption", min: 0, max: 100, unit: "%" },
   { key: "deforestationReduction" as const, label: "Deforestation Reduction", min: 0, max: 100, unit: "%" },
   { key: "methaneReduction" as const, label: "Methane Reduction", min: 0, max: 100, unit: "%" },
@@ -53,7 +53,7 @@ function PolicySlider({ label, unit, value, min, max, onChange }: PolicySliderPr
       >
         <Slider.Control className="policy-slider-track">
           <Slider.Track className="h-1.5 w-full rounded-full bg-[oklch(0.25_0.03_240)]">
-            <Slider.Indicator className="rounded-full bg-gradient-to-r from-[--color-mission-glow] to-[--color-mission-accent]" />
+            <Slider.Indicator className="rounded-full bg-linear-to-r from-[--color-mission-glow] to-[--color-mission-accent]" />
             <Slider.Thumb className="policy-slider-thumb size-4 rounded-full bg-[--color-mission-bg] border-2 border-[--color-mission-glow] shadow-[0_0_8px_var(--color-mission-glow)]" />
           </Slider.Track>
         </Slider.Control>

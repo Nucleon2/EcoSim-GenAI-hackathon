@@ -146,7 +146,7 @@
     background-color: oklch(0.13 0.018 240 / 60%);
     backdrop-filter: blur(16px);
     border: 1px solid oklch(0.25 0.04 200 / 50%);
-    border-radius: var(--radius-xl);
+    border-radius: 0;
   }
   .glow-ring {
     box-shadow:

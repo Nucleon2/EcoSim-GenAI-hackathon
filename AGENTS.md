@@ -239,6 +239,10 @@ Do NOT hardcode API URLs.
 
 Use environment variables.
 
+Do NOT use rounded corners on panels or section containers.
+
+All glass-panel sections and layout containers use square corners (border-radius: 0). This is an intentional design choice.
+
 ---
 
 # Commands
