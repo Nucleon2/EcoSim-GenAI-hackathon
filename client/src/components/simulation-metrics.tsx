@@ -1,5 +1,5 @@
 import type { SimulationResult } from "@/services/api"
-import { Thermometer, Factory, Waves, ShieldAlert, Leaf, Zap, TreePine, Flame, Car } from "lucide-react"
+import { Thermometer, Factory, Waves, ShieldAlert } from "lucide-react"
 import type { LucideIcon } from "lucide-react"
 
 interface MetricCardProps {
@@ -41,35 +41,11 @@ function MetricCard({ icon: Icon, label, value, unit, accentColor, glowColor }: 
   )
 }
 
-function BreakdownCard({ label, value, icon: Icon, accentColor }: { label: string; value: string; icon: LucideIcon; accentColor: string }) {
-  return (
-    <div className="flex items-center gap-2.5 px-3 py-2 bg-[--color-mission-surface]/30 border border-[--color-mission-border]">
-      <Icon className="size-3.5 shrink-0" style={{ color: accentColor }} />
-      <div className="flex flex-col gap-0.5 min-w-0">
-        <span className="text-[10px] uppercase tracking-wider text-[--color-mission-muted] leading-none truncate">
-          {label}
-        </span>
-        <span className="font-mono text-sm font-semibold text-[--color-mission-stat] leading-tight tabular-nums">
-          {value}
-        </span>
-      </div>
-    </div>
-  )
-}
-
 function riskColor(score: number): string {
   if (score <= 30) return "oklch(0.72 0.19 145)"
   if (score <= 60) return "oklch(0.80 0.18 85)"
   return "oklch(0.70 0.22 25)"
 }
-
-const BREAKDOWN_CONFIG = [
-  { key: "renewable_adoption", label: "Renewables", icon: Zap, color: "oklch(0.75 0.17 85)" },
-  { key: "carbon_tax", label: "Carbon Tax", icon: Leaf, color: "oklch(0.70 0.19 155)" },
-  { key: "deforestation_reduction", label: "Deforestation", icon: TreePine, color: "oklch(0.68 0.17 145)" },
-  { key: "methane_reduction", label: "Methane", icon: Flame, color: "oklch(0.75 0.18 60)" },
-  { key: "ev_adoption", label: "EV Adoption", icon: Car, color: "oklch(0.70 0.16 250)" },
-] as const
 
 interface SimulationMetricsProps {
   result?: SimulationResult
@@ -80,62 +56,41 @@ export function SimulationMetrics({ result }: SimulationMetricsProps) {
   const emissions = result?.co2_emissions ?? 36.8
   const seaLevel = result?.sea_level_rise ?? 3.7
   const risk = result?.risk_score ?? 68
-  const breakdown = result?.emissions_breakdown
 
   return (
-    <div className="flex flex-col gap-2">
-      {/* Primary metrics */}
-      <div className="grid grid-cols-4 gap-2">
-        <MetricCard
-          icon={Thermometer}
-          label="Temperature Rise"
-          value={`+${temp.toFixed(1)}°C`}
-          unit="vs pre-industrial"
-          accentColor="oklch(0.75 0.20 40)"
-          glowColor="oklch(0.75 0.20 40 / 8%)"
-        />
-        <MetricCard
-          icon={Factory}
-          label="CO₂ Emissions"
-          value={`${emissions.toFixed(1)} Gt`}
-          unit="CO₂ per year"
-          accentColor="oklch(0.65 0.18 195)"
-          glowColor="oklch(0.65 0.18 195 / 8%)"
-        />
-        <MetricCard
-          icon={Waves}
-          label="Sea Level Rise"
-          value={`+${seaLevel.toFixed(1)} mm`}
-          unit="per year"
-          accentColor="oklch(0.65 0.16 250)"
-          glowColor="oklch(0.65 0.16 250 / 8%)"
-        />
-        <MetricCard
-          icon={ShieldAlert}
-          label="Risk Score"
-          value={risk.toFixed(0)}
-          unit="out of 100"
-          accentColor={riskColor(risk)}
-          glowColor={`${riskColor(risk).replace(")", " / 8%)")}`}
-        />
-      </div>
-
-      {/* Emissions breakdown */}
-      <div className="grid grid-cols-5 gap-2">
-        {BREAKDOWN_CONFIG.map(({ key, label, icon, color }) => (
-          <BreakdownCard
-            key={key}
-            label={label}
-            value={
-              breakdown
-                ? `−${(breakdown[key] * 100).toFixed(1)}%`
-                : "—"
-            }
-            icon={icon}
-            accentColor={color}
-          />
-        ))}
-      </div>
+    <div className="grid grid-cols-4 gap-2">
+      <MetricCard
+        icon={Thermometer}
+        label="Temperature Rise"
+        value={`+${temp.toFixed(1)}°C`}
+        unit="vs pre-industrial"
+        accentColor="oklch(0.75 0.20 40)"
+        glowColor="oklch(0.75 0.20 40 / 8%)"
+      />
+      <MetricCard
+        icon={Factory}
+        label="CO₂ Emissions"
+        value={`${emissions.toFixed(1)} Gt`}
+        unit="CO₂ per year"
+        accentColor="oklch(0.65 0.18 195)"
+        glowColor="oklch(0.65 0.18 195 / 8%)"
+      />
+      <MetricCard
+        icon={Waves}
+        label="Sea Level Rise"
+        value={`+${seaLevel.toFixed(1)} mm`}
+        unit="per year"
+        accentColor="oklch(0.65 0.16 250)"
+        glowColor="oklch(0.65 0.16 250 / 8%)"
+      />
+      <MetricCard
+        icon={ShieldAlert}
+        label="Risk Score"
+        value={risk.toFixed(0)}
+        unit="out of 100"
+        accentColor={riskColor(risk)}
+        glowColor={`${riskColor(risk).replace(")", " / 8%)")}`}
+      />
     </div>
   )
 }
