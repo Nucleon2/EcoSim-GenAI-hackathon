@@ -3,6 +3,8 @@ import type { SimulationResult } from "@/services/api"
 import {
   buildHeatmapData,
   buildRingsData,
+  buildRiskRingsData,
+  buildRiskLabelsData,
   getAtmosphereColor,
   getHeatmapSaturation,
 } from "./globe-data"
@@ -58,8 +60,15 @@ export function EarthScene({ result, compact }: EarthSceneProps) {
   const heatmapData = useMemo(() => buildHeatmapData(result), [result])
   const heatmapSaturation = useMemo(() => getHeatmapSaturation(temp), [temp])
 
-  // ---- Rings layer data ----
-  const ringsData = useMemo(() => buildRingsData(co2), [co2])
+  // ---- Rings layer data (Emissions + Risks) ----
+  const ringsData = useMemo(() => {
+    const emissionRings = buildRingsData(co2)
+    const riskRings = buildRiskRingsData(result)
+    return [...emissionRings, ...riskRings]
+  }, [co2, result])
+
+  // ---- Labels layer data ----
+  const labelsData = useMemo(() => buildRiskLabelsData(result), [result])
 
   // ---- Dynamic atmosphere ----
   const atmosphereColor = useMemo(() => getAtmosphereColor(risk), [risk])
@@ -101,6 +110,15 @@ export function EarthScene({ result, compact }: EarthSceneProps) {
             ringMaxRadius="maxRadius"
             ringPropagationSpeed="propagationSpeed"
             ringRepeatPeriod="repeatPeriod"
+            // -- Labels layer --
+            labelsData={labelsData}
+            labelLat="lat"
+            labelLng="lng"
+            labelText="text"
+            labelColor="color"
+            labelSize="size"
+            labelIncludeDot={false}
+            labelResolution={2}
           />
         )}
       </Suspense>

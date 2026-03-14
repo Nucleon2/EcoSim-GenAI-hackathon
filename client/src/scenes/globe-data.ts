@@ -35,6 +35,21 @@ export interface RingDatum {
   color: (t: number) => string
 }
 
+export interface RiskZone {
+  name: string
+  lat: number
+  lng: number
+  type: "wildfire" | "flood" | "drought" | "heatwave"
+}
+
+export interface LabelDatum {
+  lat: number
+  lng: number
+  text: string
+  color: string
+  size: number
+}
+
 // ---------------------------------------------------------------------------
 // Emission hotspot cities (rings layer)
 // ---------------------------------------------------------------------------
@@ -50,6 +65,27 @@ export const HOTSPOT_CITIES: { name: string; lat: number; lng: number }[] = [
   { name: "Sao Paulo", lat: -23.6, lng: -46.6 },
   { name: "Ruhr", lat: 51.5, lng: 7.2 },
   { name: "Jakarta", lat: -6.2, lng: 106.8 },
+]
+
+// ---------------------------------------------------------------------------
+// Disaster Risk Zones (scaled by temperature and sea level rise)
+// ---------------------------------------------------------------------------
+
+export const RISK_ZONES: RiskZone[] = [
+  // Wildfires
+  { name: "California", lat: 38.0, lng: -120.0, type: "wildfire" },
+  { name: "Southern Europe", lat: 41.0, lng: 15.0, type: "wildfire" },
+  { name: "Australia", lat: -33.0, lng: 147.0, type: "wildfire" },
+  // Floods
+  { name: "Bangladesh", lat: 23.7, lng: 90.4, type: "flood" },
+  { name: "Florida", lat: 27.8, lng: -81.7, type: "flood" },
+  { name: "Jakarta", lat: -6.2, lng: 106.8, type: "flood" },
+  // Drought
+  { name: "Horn of Africa", lat: 5.0, lng: 45.0, type: "drought" },
+  { name: "Southwest US", lat: 34.0, lng: -110.0, type: "drought" },
+  // Heat Waves
+  { name: "India", lat: 21.0, lng: 79.0, type: "heatwave" },
+  { name: "Middle East", lat: 23.0, lng: 45.0, type: "heatwave" }
 ]
 
 // ---------------------------------------------------------------------------
@@ -252,4 +288,75 @@ export function getAtmosphereColor(riskScore: number): string {
   const b = Math.round(lerp(200, 30, t))
   const a = lerp(0.15, 0.22, t)
   return `rgba(${r},${g},${b},${a.toFixed(2)})`
+}
+
+/**
+ * Build risk mapped rings scaled by severity of climate events.
+ */
+export function buildRiskRingsData(result: SimulationResult | undefined): RingDatum[] {
+  const tempRise = result?.temperature_rise ?? BASELINE_TEMP
+  // Sea level max is roughly 8.5
+  const seaLevelRise = result?.sea_level_rise ?? 1.5 
+
+  // tRisk is 0 (good) to 1 (bad) based on temp
+  const tTemp = normalize(tempRise, TEMP_MIN, TEMP_MAX)
+  const tSeaLevel = normalize(seaLevelRise, 1.5, 8.5)
+
+  return RISK_ZONES.map((zone) => {
+    let t = tTemp
+    let baseColor = ""
+    if (zone.type === "wildfire") {
+      baseColor = "255, 60, 30" // Red-orange
+      t = clamp(tTemp * 1.2, 0, 1) // Wildfire scales aggressively with temp
+    } else if (zone.type === "flood") {
+      baseColor = "30, 144, 255" // Dodger Blue
+      t = clamp(tSeaLevel * 1.5, 0, 1) // Flood scales with sea level
+    } else if (zone.type === "drought") {
+      baseColor = "210, 180, 140" // Tan/Brown
+      t = tTemp
+    } else if (zone.type === "heatwave") {
+      baseColor = "255, 140, 0" // Dark Orange
+      t = clamp(tTemp * 1.1, 0, 1)
+    }
+
+    return {
+      lat: zone.lat,
+      lng: zone.lng,
+      maxRadius: lerp(0.5, 6, t),
+      propagationSpeed: lerp(0.2, 2, t),
+      repeatPeriod: lerp(4000, 800, t),
+      color: (ringT: number) => {
+        const opacity = clamp((1 - ringT) * t, 0, 0.9)
+        return `rgba(${baseColor}, ${opacity.toFixed(2)})`
+      },
+    }
+  })
+}
+
+/**
+ * Build labels for the disaster zones showing the severity or icon.
+ */
+export function buildRiskLabelsData(result: SimulationResult | undefined): LabelDatum[] {
+  const tempRise = result?.temperature_rise ?? BASELINE_TEMP
+  const seaLevelRise = result?.sea_level_rise ?? 1.5
+  const tTemp = normalize(tempRise, TEMP_MIN, TEMP_MAX)
+  const tSeaLevel = normalize(seaLevelRise, 1.5, 8.5)
+
+  return RISK_ZONES.map((zone) => {
+    let t = tTemp
+    let icon = ""
+    if (zone.type === "wildfire") { icon = "🔥"; t = clamp(tTemp * 1.2, 0, 1) }
+    if (zone.type === "flood") { icon = "🌊"; t = clamp(tSeaLevel * 1.5, 0, 1) }
+    if (zone.type === "drought") { icon = "🏜️"; t = tTemp }
+    if (zone.type === "heatwave") { icon = "🌡️"; t = clamp(tTemp * 1.1, 0, 1) }
+
+    return {
+      lat: zone.lat,
+      lng: zone.lng,
+      // Only show text prominently if risk is high
+      text: t > 0.4 ? `${icon} ${zone.type.toUpperCase()}` : icon,
+      color: `rgba(255,255,255,${lerp(0.3, 1.0, t)})`,
+      size: lerp(0.5, 1.5, t)
+    }
+  })
 }
