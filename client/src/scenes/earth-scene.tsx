@@ -55,7 +55,7 @@ export function EarthScene({ result, compact }: EarthSceneProps) {
   const risk = result?.risk_score ?? BASELINE_RISK
 
   // ---- Heatmap layer data ----
-  const heatmapData = useMemo(() => buildHeatmapData(temp), [temp])
+  const heatmapData = useMemo(() => buildHeatmapData(result), [result])
   const heatmapSaturation = useMemo(() => getHeatmapSaturation(temp), [temp])
 
   // ---- Rings layer data ----
