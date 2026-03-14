@@ -10,6 +10,7 @@ import { RiskTrendChart } from "@/components/risk-trend-chart"
 import { TemperatureProjectionChart } from "@/components/temperature-projection-chart"
 import { EmissionsBreakdown } from "@/components/emissions-breakdown"
 import { ExportButton } from "@/components/export-button"
+import { OnboardingOverlay, useOnboarding } from "@/components/onboarding-overlay"
 import { useSimulation } from "@/hooks/use-simulation"
 import { useExplanation } from "@/hooks/use-explanation"
 import { useSimulationContext } from "@/context/simulation-context"
@@ -52,6 +53,7 @@ export function DashboardPage({ onNavigate }: DashboardPageProps) {
   const explanation = useExplanation()
   const lastPolicyRef = useRef<PolicyInput | null>(null)
   const { dashboardPolicy, setDashboardPolicy, dashboardResult, setDashboardResult } = useSimulationContext()
+  const { showOnboarding, dismissOnboarding } = useOnboarding()
 
   // Use persisted result when returning from another page
   const displayResult = simulation.data ?? dashboardResult
@@ -75,6 +77,8 @@ export function DashboardPage({ onNavigate }: DashboardPageProps) {
   }, [simulation.data])
 
   return (
+    <>
+    {showOnboarding && <OnboardingOverlay onDismiss={dismissOnboarding} />}
     <motion.div
       className="dashboard-layout bg-[--color-mission-bg] p-2 gap-2"
       variants={pageVariants}
@@ -133,5 +137,6 @@ export function DashboardPage({ onNavigate }: DashboardPageProps) {
         </div>
       </motion.div>
     </motion.div>
+    </>
   )
 }
