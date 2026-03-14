@@ -4,9 +4,11 @@ import {
   buildHeatmapData,
   buildRingsData,
   buildRiskRingsData,
+  buildRiskHtmlElementsData,
   getAtmosphereColor,
   getHeatmapSaturation,
 } from "./globe-data"
+import type { HTMLLabelDatum } from "./globe-data"
 
 const Globe = lazy(() => import("react-globe.gl"))
 
@@ -66,6 +68,9 @@ export function EarthScene({ result, compact }: EarthSceneProps) {
     return [...emissionRings, ...riskRings]
   }, [co2, result])
 
+  // ---- HTML Labels layer data ----
+  const htmlLabelsData = useMemo(() => buildRiskHtmlElementsData(result), [result])
+
   // ---- Dynamic atmosphere ----
   const atmosphereColor = useMemo(() => getAtmosphereColor(risk), [risk])
 
@@ -107,6 +112,20 @@ export function EarthScene({ result, compact }: EarthSceneProps) {
             ringPropagationSpeed="propagationSpeed"
             ringRepeatPeriod="repeatPeriod"
             ringAltitude={0.02} // Ensure rings are above the heatmap
+            // -- Labels layer (HTML Elements without emojis) --
+            htmlElementsData={htmlLabelsData}
+            htmlElement={(d: object) => {
+              const el = document.createElement("div")
+              const datum = d as HTMLLabelDatum
+              el.innerHTML = `
+                <div class="flex flex-col items-center justify-center transition-all duration-300 ${datum.visibilityClass}" style="pointer-events: none; width: 120px; transform: translate(-50%, -50%);">
+                  <span class="text-xs font-bold text-white uppercase tracking-wider bg-black/40 px-2 py-0.5 rounded backdrop-blur-sm border border-white/10 shadow-lg">
+                    ${datum.label}
+                  </span>
+                </div>
+              `
+              return el
+            }}
           />
         )}
       </Suspense>
