@@ -87,9 +87,9 @@ export function EarthScene({ result, compact }: EarthSceneProps) {
             height={dims.height}
             // -- Performance optimizations --
             rendererConfig={{ antialias: false, powerPreference: "high-performance" }}
-            globeImageUrl="//unpkg.com/three-globe/example/img/earth-night.jpg"
-            bumpImageUrl="//unpkg.com/three-globe/example/img/earth-topology.png"
-            backgroundImageUrl={compact ? undefined : "//cdn.jsdelivr.net/npm/three-globe/example/img/night-sky.png"}
+            globeImageUrl="https://raw.githubusercontent.com/vasturiano/three-globe/master/example/img/earth-night.jpg"
+            bumpImageUrl="https://raw.githubusercontent.com/vasturiano/three-globe/master/example/img/earth-topology.png"
+            backgroundImageUrl={compact ? undefined : "https://raw.githubusercontent.com/vasturiano/three-globe/master/example/img/night-sky.png"}
             // -- Dynamic atmosphere --
             atmosphereColor={atmosphereColor}
             atmosphereAltitude={compact ? 0.12 : 0.18}
@@ -117,8 +117,7 @@ export function EarthScene({ result, compact }: EarthSceneProps) {
             labelText="text"
             labelColor="color"
             labelSize="size"
-            labelIncludeDot={false}
-            labelResolution={2}
+            labelAltitude={0.015}
           />
         )}
       </Suspense>

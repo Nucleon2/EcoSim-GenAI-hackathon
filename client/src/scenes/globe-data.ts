@@ -355,7 +355,7 @@ export function buildRiskLabelsData(result: SimulationResult | undefined): Label
       lng: zone.lng,
       // Only show text prominently if risk is high
       text: t > 0.4 ? `${icon} ${zone.type.toUpperCase()}` : icon,
-      color: `rgba(255,255,255,${lerp(0.3, 1.0, t)})`,
+      color: `rgba(255, 255, 255, ${clamp(lerp(0.3, 1.0, t), 0, 1).toFixed(2)})`,
       size: lerp(0.5, 1.5, t)
     }
   })
