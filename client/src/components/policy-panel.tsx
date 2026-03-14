@@ -25,6 +25,8 @@ const PRESETS: { label: string; values: PolicyValues }[] = [
 interface PolicyPanelProps {
   onSimulate?: (values: PolicyValues) => void
   isPending?: boolean
+  initialPolicy?: PolicyValues
+  onPolicyChange?: (values: PolicyValues) => void
 }
 
 export type { PolicyValues }
@@ -44,19 +46,24 @@ function policyChanged(a: PolicyValues, b: PolicyValues | null): boolean {
   return (Object.keys(a) as (keyof PolicyValues)[]).some((k) => a[k] !== b[k])
 }
 
-export function PolicyPanel({ onSimulate, isPending }: PolicyPanelProps) {
+export function PolicyPanel({ onSimulate, isPending, initialPolicy, onPolicyChange }: PolicyPanelProps) {
   const [mode, setMode] = useState<Mode>("manual")
-  const [policy, setPolicy] = useState<PolicyValues>(POLICY_DEFAULTS)
+  const [policy, setPolicy] = useState<PolicyValues>(initialPolicy ?? POLICY_DEFAULTS)
   const lastSimulated = useRef<PolicyValues | null>(null)
 
   const hasChanges = policyChanged(policy, lastSimulated.current)
 
+  const updatePolicy = (next: PolicyValues) => {
+    setPolicy(next)
+    onPolicyChange?.(next)
+  }
+
   const update = (key: keyof PolicyValues) => (v: number) =>
-    setPolicy((prev) => ({ ...prev, [key]: v }))
+    updatePolicy({ ...policy, [key]: v })
 
   const handleApplyGoal = (recommended: PolicyInput) => {
     const values = fromApiPolicy(recommended)
-    setPolicy(values)
+    updatePolicy(values)
     lastSimulated.current = { ...values }
     setMode("manual")
     onSimulate?.(values)
@@ -90,7 +97,7 @@ export function PolicyPanel({ onSimulate, isPending }: PolicyPanelProps) {
             {PRESETS.map((preset) => (
               <button
                 key={preset.label}
-                onClick={() => setPolicy(preset.values)}
+                onClick={() => updatePolicy(preset.values)}
                 className="text-[9px] uppercase tracking-wider px-2 py-1 border border-[--color-mission-border] text-[--color-mission-muted] hover:text-[--color-mission-glow] hover:border-[--color-mission-glow]/30 transition-colors"
               >
                 {preset.label}
