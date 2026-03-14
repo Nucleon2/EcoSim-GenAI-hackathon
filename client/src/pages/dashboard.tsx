@@ -1,8 +1,8 @@
 import { motion } from "framer-motion"
 import { TopBar } from "@/components/top-bar"
+import { SimulationMetrics } from "@/components/simulation-metrics"
 import { PolicyPanel, type PolicyValues } from "@/components/policy-panel"
 import { EarthScene } from "@/scenes/earth-scene"
-import { DataVizPlaceholder } from "@/components/data-viz-placeholder"
 import { AiExplanationPanel } from "@/components/ai-explanation-panel"
 import { useSimulation } from "@/hooks/use-simulation"
 import type { PolicyInput } from "@/services/api"
@@ -45,8 +45,13 @@ export function DashboardPage() {
     <motion.div
       className="h-screen overflow-hidden bg-[--color-mission-bg] p-2 gap-2 grid"
       style={{
-        gridTemplateAreas: `"topbar topbar" "policy center" "policy bottom"`,
-        gridTemplateRows: "auto 1fr auto",
+        gridTemplateAreas: `
+          "topbar topbar"
+          "metrics metrics"
+          "policy center"
+          "policy bottom"
+        `,
+        gridTemplateRows: "auto auto 1fr auto",
         gridTemplateColumns: "320px 1fr",
       }}
       variants={pageVariants}
@@ -55,7 +60,12 @@ export function DashboardPage() {
     >
       {/* Top bar */}
       <motion.div style={{ gridArea: "topbar" }} variants={panelVariants}>
-        <TopBar result={simulation.data} />
+        <TopBar />
+      </motion.div>
+
+      {/* Simulation metrics */}
+      <motion.div style={{ gridArea: "metrics" }} variants={panelVariants}>
+        <SimulationMetrics result={simulation.data} />
       </motion.div>
 
       {/* Left policy panel */}
