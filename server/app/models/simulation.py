@@ -49,3 +49,16 @@ class OptimizeResponse(BaseModel):
     recommended_policies: PolicyInput
     projected_results: SimulationResult
     explanation: str
+
+
+class PolicyLetterRequest(BaseModel):
+    policy: PolicyInput
+    result: SimulationResult
+    letter_type: str = Field(description="Type of document: 'representative' or 'memo'")
+    user_name: str = Field(default="", description="Sender's name")
+    user_location: str = Field(default="", description="Sender's city/state/country")
+
+
+class PolicyLetterResponse(BaseModel):
+    letter: str = Field(description="The full drafted letter or memo text")
+    subject: str = Field(description="Suggested email subject line")

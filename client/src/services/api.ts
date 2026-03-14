@@ -110,3 +110,32 @@ export async function explainPolicy(
 
   return response.json()
 }
+
+export interface PolicyLetterRequest {
+  policy: PolicyInput
+  result: SimulationResult
+  letter_type: "representative" | "memo"
+  user_name: string
+  user_location: string
+}
+
+export interface PolicyLetterResponse {
+  letter: string
+  subject: string
+}
+
+export async function draftPolicyLetter(
+  request: PolicyLetterRequest
+): Promise<PolicyLetterResponse> {
+  const response = await fetch(`${API_BASE_URL}/draft-letter`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(request),
+  })
+
+  if (!response.ok) {
+    throw new Error(`Letter drafting failed: ${response.status}`)
+  }
+
+  return response.json()
+}

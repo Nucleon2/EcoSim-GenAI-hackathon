@@ -1,1 +1,3 @@
-settings.local.json.playwright-mcp/
+settings.local.json
+.playwright-mcp/
+screenshots/
