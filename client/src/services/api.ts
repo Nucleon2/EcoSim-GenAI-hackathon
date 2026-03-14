@@ -17,6 +17,15 @@ export interface SimulationResult {
   emissions_breakdown: Record<string, number>
 }
 
+export interface ExplanationRequest {
+  policy: PolicyInput
+  result: SimulationResult
+}
+
+export interface ExplanationResponse {
+  explanation: string
+}
+
 export async function simulatePolicy(
   input: PolicyInput
 ): Promise<SimulationResult> {
@@ -28,6 +37,22 @@ export async function simulatePolicy(
 
   if (!response.ok) {
     throw new Error(`Simulation failed: ${response.status}`)
+  }
+
+  return response.json()
+}
+
+export async function explainPolicy(
+  request: ExplanationRequest
+): Promise<ExplanationResponse> {
+  const response = await fetch(`${API_BASE_URL}/explain`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(request),
+  })
+
+  if (!response.ok) {
+    throw new Error(`Explanation failed: ${response.status}`)
   }
 
   return response.json()
