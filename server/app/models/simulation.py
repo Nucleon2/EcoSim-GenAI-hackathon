@@ -27,7 +27,10 @@ class ExplanationResponse(BaseModel):
 
 
 class OptimizeRequest(BaseModel):
-    goal: str = Field(description="Goal ID, e.g. limit_warming_1_5")
+    temperature_rise: float | None = Field(default=None, description="Target max temperature rise in °C")
+    co2_emissions: float | None = Field(default=None, description="Target max CO2 emissions in GtCO2/year")
+    sea_level_rise: float | None = Field(default=None, description="Target max sea level rise in mm/year")
+    risk_score: float | None = Field(default=None, description="Target max risk score 0-100")
 
 
 class OptimizeResponse(BaseModel):

@@ -43,7 +43,10 @@ export async function simulatePolicy(
 }
 
 export interface OptimizeRequest {
-  goal: string
+  temperature_rise?: number
+  co2_emissions?: number
+  sea_level_rise?: number
+  risk_score?: number
 }
 
 export interface OptimizeResponse {

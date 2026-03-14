@@ -1,32 +1,20 @@
 from app.climate.engine import simulate
 from app.models.simulation import PolicyInput, SimulationResult
 
+TARGET_METRICS = {"temperature_rise", "co2_emissions", "sea_level_rise", "risk_score"}
 
-GOALS = {
-    "limit_warming_1_5": {
-        "description": "Keep warming below 1.5°C",
-        "metric": "temperature_rise",
-        "threshold": 1.5,
-        "compare": "le",
-    },
-    "limit_warming_2": {
-        "description": "Keep warming below 2.0°C",
-        "metric": "temperature_rise",
-        "threshold": 2.0,
-        "compare": "le",
-    },
-    "reduce_emissions_50": {
-        "description": "Cut emissions by 50%",
-        "metric": "co2_emissions",
-        "threshold": 18.4,
-        "compare": "le",
-    },
-    "minimize_risk": {
-        "description": "Minimize climate risk",
-        "metric": "risk_score",
-        "threshold": 25.0,
-        "compare": "le",
-    },
+METRIC_UNITS = {
+    "temperature_rise": "°C",
+    "co2_emissions": "GtCO2/year",
+    "sea_level_rise": "mm/year",
+    "risk_score": "/100",
+}
+
+METRIC_LABELS = {
+    "temperature_rise": "temperature rise",
+    "co2_emissions": "CO2 emissions",
+    "sea_level_rise": "sea level rise",
+    "risk_score": "risk score",
 }
 
 
@@ -40,24 +28,30 @@ def _policy_from_scale(s: float) -> PolicyInput:
     )
 
 
-def _meets_target(result: SimulationResult, goal_config: dict) -> bool:
-    value = getattr(result, goal_config["metric"])
-    return value <= goal_config["threshold"]
+def _meets_all_targets(result: SimulationResult, targets: dict[str, float]) -> bool:
+    return all(
+        getattr(result, metric) <= threshold
+        for metric, threshold in targets.items()
+    )
 
 
-def optimize(goal: str) -> tuple[PolicyInput, SimulationResult]:
-    if goal not in GOALS:
-        raise ValueError(f"Unknown goal: {goal}. Valid goals: {list(GOALS.keys())}")
+def build_goal_description(targets: dict[str, float]) -> str:
+    parts = []
+    for metric, threshold in targets.items():
+        label = METRIC_LABELS[metric]
+        unit = METRIC_UNITS[metric]
+        parts.append(f"{label} below {threshold}{unit}")
+    return "Keep " + " and ".join(parts)
 
-    goal_config = GOALS[goal]
 
+def optimize(targets: dict[str, float]) -> tuple[PolicyInput, SimulationResult]:
     # Check if the target is achievable at max policies
     max_policy = _policy_from_scale(1.0)
     max_result = simulate(max_policy)
-    if not _meets_target(max_result, goal_config):
+    if not _meets_all_targets(max_result, targets):
         return max_policy, max_result
 
-    # Binary search for minimum s that meets the target
+    # Binary search for minimum s that meets all targets
     lo, hi = 0.0, 1.0
     best_policy = max_policy
     best_result = max_result
@@ -67,7 +61,7 @@ def optimize(goal: str) -> tuple[PolicyInput, SimulationResult]:
         policy = _policy_from_scale(mid)
         result = simulate(policy)
 
-        if _meets_target(result, goal_config):
+        if _meets_all_targets(result, targets):
             best_policy = policy
             best_result = result
             hi = mid

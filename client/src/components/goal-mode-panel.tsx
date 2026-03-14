@@ -1,51 +1,90 @@
 import { useState } from "react"
-import { Target } from "lucide-react"
+import { Target, AlertTriangle } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { useOptimize } from "@/hooks/use-optimize"
-import type { PolicyInput } from "@/services/api"
+import type { PolicyInput, OptimizeRequest } from "@/services/api"
 
-const GOALS = [
-  { id: "limit_warming_1_5", label: "Keep warming below 1.5°C" },
-  { id: "limit_warming_2", label: "Keep warming below 2.0°C" },
-  { id: "reduce_emissions_50", label: "Cut emissions by 50%" },
-  { id: "minimize_risk", label: "Minimize climate risk" },
+const TARGET_CONFIG = [
+  { key: "temperature_rise" as const, label: "Temperature Rise", unit: "°C", placeholder: "1.5", step: 0.1, resultKey: "temperature_rise" as const },
+  { key: "co2_emissions" as const, label: "CO₂ Emissions", unit: "GtCO₂/yr", placeholder: "18.0", step: 0.5, resultKey: "co2_emissions" as const },
+  { key: "sea_level_rise" as const, label: "Sea Level Rise", unit: "mm/yr", placeholder: "4.0", step: 0.1, resultKey: "sea_level_rise" as const },
+  { key: "risk_score" as const, label: "Risk Score", unit: "/100", placeholder: "25", step: 1, resultKey: "risk_score" as const },
 ] as const
+
+type TargetKey = (typeof TARGET_CONFIG)[number]["key"]
 
 interface GoalModePanelProps {
   onApply: (policies: PolicyInput) => void
 }
 
 export function GoalModePanel({ onApply }: GoalModePanelProps) {
-  const [selectedGoal, setSelectedGoal] = useState(GOALS[0].id)
+  const [enabled, setEnabled] = useState<Record<TargetKey, boolean>>({
+    temperature_rise: false,
+    co2_emissions: false,
+    sea_level_rise: false,
+    risk_score: false,
+  })
+  const [values, setValues] = useState<Record<TargetKey, string>>({
+    temperature_rise: "",
+    co2_emissions: "",
+    sea_level_rise: "",
+    risk_score: "",
+  })
   const optimize = useOptimize()
 
+  const hasAnyTarget = Object.values(enabled).some(Boolean)
+
   const handleGenerate = () => {
-    optimize.mutate({ goal: selectedGoal })
+    const request: OptimizeRequest = {}
+    for (const t of TARGET_CONFIG) {
+      if (enabled[t.key] && values[t.key]) {
+        request[t.key] = parseFloat(values[t.key])
+      }
+    }
+    optimize.mutate(request)
   }
 
   const result = optimize.data
 
   return (
     <div className="flex flex-col gap-4 flex-1">
-      <div className="flex flex-col gap-2">
-        <span className="text-xs text-[--color-mission-muted]">Climate Goal</span>
-        <select
-          value={selectedGoal}
-          onChange={(e) => setSelectedGoal(e.target.value)}
-          className="w-full bg-white/5 border border-white/10 text-sm text-[--color-mission-text] p-2 focus:outline-none focus:border-[--color-mission-glow]/50"
-        >
-          {GOALS.map((g) => (
-            <option key={g.id} value={g.id} className="bg-[--color-mission-bg]">
-              {g.label}
-            </option>
-          ))}
-        </select>
+      <div className="flex flex-col gap-3">
+        <span className="text-xs text-[--color-mission-muted]">Set Climate Targets</span>
+        {TARGET_CONFIG.map((t) => (
+          <div key={t.key} className="flex items-center gap-2">
+            <input
+              type="checkbox"
+              checked={enabled[t.key]}
+              onChange={(e) =>
+                setEnabled((prev) => ({ ...prev, [t.key]: e.target.checked }))
+              }
+              className="accent-[--color-mission-glow] size-3.5 shrink-0"
+            />
+            <span className="text-xs text-[--color-mission-muted] w-[100px] shrink-0">{t.label}</span>
+            {enabled[t.key] && (
+              <div className="flex items-center gap-1 flex-1">
+                <span className="text-[10px] text-[--color-mission-muted]">&lt;</span>
+                <input
+                  type="number"
+                  step={t.step}
+                  placeholder={t.placeholder}
+                  value={values[t.key]}
+                  onChange={(e) =>
+                    setValues((prev) => ({ ...prev, [t.key]: e.target.value }))
+                  }
+                  className="w-full bg-white/5 border border-white/10 text-xs text-[--color-mission-text] font-mono px-2 py-1 focus:outline-none focus:border-[--color-mission-glow]/50 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                />
+                <span className="text-[10px] text-[--color-mission-muted] shrink-0">{t.unit}</span>
+              </div>
+            )}
+          </div>
+        ))}
       </div>
 
       <Button
         variant="outline"
         className="w-full border-[--color-mission-glow]/40 text-[--color-mission-glow] hover:bg-[--color-mission-glow]/10"
-        disabled={optimize.isPending}
+        disabled={optimize.isPending || !hasAnyTarget}
         onClick={handleGenerate}
       >
         {optimize.isPending ? (
@@ -60,6 +99,19 @@ export function GoalModePanel({ onApply }: GoalModePanelProps) {
 
       {result && (
         <div className="flex flex-col gap-3 flex-1">
+          {/* Warn if any target not met */}
+          {TARGET_CONFIG.some(
+            (t) =>
+              enabled[t.key] &&
+              values[t.key] &&
+              result.projected_results[t.resultKey] > parseFloat(values[t.key])
+          ) && (
+            <div className="flex items-start gap-2 text-amber-400 text-[10px]">
+              <AlertTriangle className="size-3.5 shrink-0 mt-0.5" />
+              <span>Some targets exceed what maximum policies can achieve. Showing best-effort results.</span>
+            </div>
+          )}
+
           <div className="flex flex-col gap-2">
             <span className="text-xs uppercase tracking-widest text-[--color-mission-muted]">
               Recommended Policies
