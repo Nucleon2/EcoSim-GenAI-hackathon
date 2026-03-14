@@ -295,12 +295,12 @@ export function getAtmosphereColor(riskScore: number): string {
  */
 export function buildRiskRingsData(result: SimulationResult | undefined): RingDatum[] {
   const tempRise = result?.temperature_rise ?? BASELINE_TEMP
-  // Sea level max is roughly 8.5
-  const seaLevelRise = result?.sea_level_rise ?? 1.5 
+  // Sea level range is roughly 2.5–8.5 based on engine.py (1.5 + temp_rise * 2.0, temp_rise ∈ [0.5, 3.5])
+  const seaLevelRise = result?.sea_level_rise ?? 2.5
 
   // tRisk is 0 (good) to 1 (bad) based on temp
   const tTemp = normalize(tempRise, TEMP_MIN, TEMP_MAX)
-  const tSeaLevel = normalize(seaLevelRise, 1.5, 8.5)
+  const tSeaLevel = normalize(seaLevelRise, 2.5, 8.5)
 
   return RISK_ZONES.map((zone) => {
     let t = tTemp
