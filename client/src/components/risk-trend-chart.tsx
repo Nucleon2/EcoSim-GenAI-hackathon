@@ -100,8 +100,8 @@ export function RiskTrendChart({ riskScore }: RiskTrendChartProps) {
         </h3>
       </div>
 
-      <div className="min-h-0 flex-1">
-        <ResponsiveContainer width="100%" height="100%">
+      <div className="min-h-0 flex-1" style={{ minHeight: 100, minWidth: 0 }}>
+        <ResponsiveContainer width="100%" height="100%" minWidth={1} minHeight={1}>
           <AreaChart
             data={data}
             margin={{ top: 4, right: 16, left: 0, bottom: 4 }}
