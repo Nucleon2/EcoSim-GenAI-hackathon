@@ -1,9 +1,11 @@
 import { motion } from "framer-motion"
 import { TopBar } from "@/components/top-bar"
-import { PolicyPanel } from "@/components/policy-panel"
+import { SimulationMetrics } from "@/components/simulation-metrics"
+import { PolicyPanel, type PolicyValues } from "@/components/policy-panel"
 import { EarthScene } from "@/scenes/earth-scene"
-import { DataVizPlaceholder } from "@/components/data-viz-placeholder"
 import { AiExplanationPanel } from "@/components/ai-explanation-panel"
+import { useSimulation } from "@/hooks/use-simulation"
+import type { PolicyInput } from "@/services/api"
 
 const pageVariants = {
   hidden: {},
@@ -22,13 +24,34 @@ const panelVariants = {
   },
 }
 
+function toApiInput(values: PolicyValues): PolicyInput {
+  return {
+    carbon_tax: values.carbonTax,
+    renewable_adoption: values.renewableAdoption,
+    deforestation_reduction: values.deforestationReduction,
+    methane_reduction: values.methaneReduction,
+    ev_adoption: values.evAdoption,
+  }
+}
+
 export function DashboardPage() {
+  const simulation = useSimulation()
+
+  const handleSimulate = (values: PolicyValues) => {
+    simulation.mutate(toApiInput(values))
+  }
+
   return (
     <motion.div
       className="h-screen overflow-hidden bg-[--color-mission-bg] p-2 gap-2 grid"
       style={{
-        gridTemplateAreas: `"topbar topbar" "policy center" "policy bottom"`,
-        gridTemplateRows: "auto 1fr auto",
+        gridTemplateAreas: `
+          "topbar topbar"
+          "metrics metrics"
+          "policy center"
+          "policy bottom"
+        `,
+        gridTemplateRows: "auto auto 1fr auto",
         gridTemplateColumns: "320px 1fr",
       }}
       variants={pageVariants}
@@ -40,9 +63,14 @@ export function DashboardPage() {
         <TopBar />
       </motion.div>
 
+      {/* Simulation metrics */}
+      <motion.div style={{ gridArea: "metrics" }} variants={panelVariants}>
+        <SimulationMetrics result={simulation.data} />
+      </motion.div>
+
       {/* Left policy panel */}
       <motion.div style={{ gridArea: "policy" }} variants={panelVariants} className="min-h-0">
-        <PolicyPanel />
+        <PolicyPanel onSimulate={handleSimulate} isPending={simulation.isPending} />
       </motion.div>
 
       {/* Center globe */}

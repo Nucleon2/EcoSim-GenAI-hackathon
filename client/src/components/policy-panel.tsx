@@ -55,7 +55,14 @@ function PolicySlider({ label, unit, value, min, max, onChange }: PolicySliderPr
   )
 }
 
-export function PolicyPanel() {
+interface PolicyPanelProps {
+  onSimulate?: (values: PolicyValues) => void
+  isPending?: boolean
+}
+
+export type { PolicyValues }
+
+export function PolicyPanel({ onSimulate, isPending }: PolicyPanelProps) {
   const [policy, setPolicy] = useState<PolicyValues>(DEFAULTS)
 
   const update = (key: keyof PolicyValues) => (v: number) =>
@@ -87,8 +94,10 @@ export function PolicyPanel() {
       <Button
         variant="outline"
         className="w-full border-[--color-mission-glow]/40 text-[--color-mission-glow] hover:bg-[--color-mission-glow]/10"
+        disabled={isPending}
+        onClick={() => onSimulate?.(policy)}
       >
-        Run Simulation
+        {isPending ? "Simulating..." : "Run Simulation"}
       </Button>
     </div>
   )
