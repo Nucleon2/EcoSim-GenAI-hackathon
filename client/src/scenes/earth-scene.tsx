@@ -2,10 +2,12 @@ import { Suspense, lazy, useEffect, useMemo, useRef, useState } from "react"
 import type { SimulationResult } from "@/services/api"
 import {
   buildHeatmapData,
-  buildRingsData,
+  buildRiskRingsData,
+  buildRiskHtmlElementsData,
   getAtmosphereColor,
   getHeatmapSaturation,
 } from "./globe-data"
+import type { HTMLLabelDatum } from "./globe-data"
 
 const Globe = lazy(() => import("react-globe.gl"))
 
@@ -13,7 +15,6 @@ const Globe = lazy(() => import("react-globe.gl"))
 // Baseline defaults shown before the first simulation runs
 // ---------------------------------------------------------------------------
 const BASELINE_TEMP = 2.0
-const BASELINE_CO2 = 36.8
 const BASELINE_RISK = 55
 
 function GlobeSpinner() {
@@ -51,15 +52,19 @@ export function EarthScene({ result, compact }: EarthSceneProps) {
 
   // ---- Derive values from simulation result (or use baselines) ----
   const temp = result?.temperature_rise ?? BASELINE_TEMP
-  const co2 = result?.co2_emissions ?? BASELINE_CO2
   const risk = result?.risk_score ?? BASELINE_RISK
 
   // ---- Heatmap layer data ----
   const heatmapData = useMemo(() => buildHeatmapData(result), [result])
   const heatmapSaturation = useMemo(() => getHeatmapSaturation(temp), [temp])
 
-  // ---- Rings layer data ----
-  const ringsData = useMemo(() => buildRingsData(co2), [co2])
+  // ---- Rings layer data (Risks only) ----
+  const ringsData = useMemo(() => {
+    return buildRiskRingsData(result)
+  }, [result])
+
+  // ---- HTML Labels layer data ----
+  const htmlLabelsData = useMemo(() => buildRiskHtmlElementsData(result), [result])
 
   // ---- Dynamic atmosphere ----
   const atmosphereColor = useMemo(() => getAtmosphereColor(risk), [risk])
@@ -78,9 +83,9 @@ export function EarthScene({ result, compact }: EarthSceneProps) {
             height={dims.height}
             // -- Performance optimizations --
             rendererConfig={{ antialias: false, powerPreference: "high-performance" }}
-            globeImageUrl="//unpkg.com/three-globe/example/img/earth-night.jpg"
-            bumpImageUrl="//unpkg.com/three-globe/example/img/earth-topology.png"
-            backgroundImageUrl={compact ? undefined : "//cdn.jsdelivr.net/npm/three-globe/example/img/night-sky.png"}
+            globeImageUrl="https://raw.githubusercontent.com/vasturiano/three-globe/master/example/img/earth-night.jpg"
+            bumpImageUrl="https://raw.githubusercontent.com/vasturiano/three-globe/master/example/img/earth-topology.png"
+            backgroundImageUrl={compact ? undefined : "https://raw.githubusercontent.com/vasturiano/three-globe/master/example/img/night-sky.png"}
             // -- Dynamic atmosphere --
             atmosphereColor={atmosphereColor}
             atmosphereAltitude={compact ? 0.12 : 0.18}
@@ -101,6 +106,21 @@ export function EarthScene({ result, compact }: EarthSceneProps) {
             ringMaxRadius="maxRadius"
             ringPropagationSpeed="propagationSpeed"
             ringRepeatPeriod="repeatPeriod"
+            ringAltitude={0.02} // Ensure rings are above the heatmap
+            // -- Labels layer (HTML Elements without emojis) --
+            htmlElementsData={htmlLabelsData}
+            htmlElement={(d: object) => {
+              const el = document.createElement("div")
+              const datum = d as HTMLLabelDatum
+              el.innerHTML = `
+                <div class="flex flex-col items-center justify-center transition-all duration-300 ${datum.visibilityClass}" style="pointer-events: none; width: 120px; transform: translate(-50%, -50%);">
+                  <span class="text-xs font-bold text-white uppercase tracking-wider bg-black/40 px-2 py-0.5 rounded backdrop-blur-sm border border-white/10 shadow-lg">
+                    ${datum.label}
+                  </span>
+                </div>
+              `
+              return el
+            }}
           />
         )}
       </Suspense>
