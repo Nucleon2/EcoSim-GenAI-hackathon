@@ -1,12 +1,20 @@
-import { Suspense } from "react"
-import { Canvas } from "@react-three/fiber"
-import { OrbitControls, Stars } from "@react-three/drei"
-import { EarthMesh } from "./earth-mesh"
-import { Atmosphere } from "./atmosphere"
-import { HeatLayer } from "./heat-layer"
-import { EmissionParticles } from "./emission-particles"
-import { DeforestationOverlay } from "./deforestation-overlay"
+import { Suspense, lazy, useEffect, useMemo, useRef, useState } from "react"
 import type { SimulationResult } from "@/services/api"
+import {
+  buildHeatmapData,
+  buildRingsData,
+  getAtmosphereColor,
+  getHeatmapSaturation,
+} from "./globe-data"
+
+const Globe = lazy(() => import("react-globe.gl"))
+
+// ---------------------------------------------------------------------------
+// Baseline defaults shown before the first simulation runs
+// ---------------------------------------------------------------------------
+const BASELINE_TEMP = 2.0
+const BASELINE_CO2 = 36.8
+const BASELINE_RISK = 55
 
 function GlobeSpinner() {
   return (
@@ -16,19 +24,44 @@ function GlobeSpinner() {
   )
 }
 
+// ---------------------------------------------------------------------------
+// Component
+// ---------------------------------------------------------------------------
+
 interface EarthSceneProps {
-  simulationResult?: SimulationResult
+  result?: SimulationResult
 }
 
-/** Normalize temperature_rise (0–5°C) → 0–1 */
-function tempToIntensity(temp: number): number {
-  return Math.min(Math.max(temp / 5, 0), 1)
-}
+export function EarthScene({ result }: EarthSceneProps) {
+  const containerRef = useRef<HTMLDivElement>(null)
+  const [dims, setDims] = useState({ width: 0, height: 0 })
 
-export function EarthScene({ simulationResult }: EarthSceneProps) {
-  const heatIntensity = tempToIntensity(simulationResult?.temperature_rise ?? 1.2)
-  const co2 = simulationResult?.co2_emissions ?? 36.8
-  const deforestReduction = 25 // default shown — driven by policy input not result
+  useEffect(() => {
+    if (!containerRef.current) return
+    const ro = new ResizeObserver(([entry]) => {
+      setDims({
+        width: entry.contentRect.width,
+        height: entry.contentRect.height,
+      })
+    })
+    ro.observe(containerRef.current)
+    return () => ro.disconnect()
+  }, [])
+
+  // ---- Derive values from simulation result (or use baselines) ----
+  const temp = result?.temperature_rise ?? BASELINE_TEMP
+  const co2 = result?.co2_emissions ?? BASELINE_CO2
+  const risk = result?.risk_score ?? BASELINE_RISK
+
+  // ---- Heatmap layer data ----
+  const heatmapData = useMemo(() => buildHeatmapData(temp), [temp])
+  const heatmapSaturation = useMemo(() => getHeatmapSaturation(temp), [temp])
+
+  // ---- Rings layer data ----
+  const ringsData = useMemo(() => buildRingsData(co2), [co2])
+
+  // ---- Dynamic atmosphere ----
+  const atmosphereColor = useMemo(() => getAtmosphereColor(risk), [risk])
 
   return (
     <div className="relative w-full h-full overflow-hidden">
@@ -38,37 +71,33 @@ export function EarthScene({ simulationResult }: EarthSceneProps) {
       </div>
 
       <Suspense fallback={<GlobeSpinner />}>
-        <Canvas
-          camera={{ position: [0, 0, 2.8], fov: 45 }}
-          gl={{ alpha: true, antialias: true }}
-          style={{ background: "transparent" }}
-        >
-          {/* Lighting */}
-          <ambientLight intensity={0.15} />
-          <directionalLight position={[5, 3, 5]} intensity={1.2} color="#fff5e6" />
-          <directionalLight position={[-3, -2, -4]} intensity={0.2} color="#4de8e0" />
-
-          {/* Starfield backdrop */}
-          <Stars
-            radius={80}
-            depth={60}
-            count={2500}
-            factor={3}
-            saturation={0.1}
-            fade
-            speed={0.5}
-          />
-
-          {/* Interactive orbit controls */}
-          <OrbitControls
-            enablePan={false}
-            enableZoom={true}
-            minDistance={1.8}
-            maxDistance={5}
-            autoRotate
-            autoRotateSpeed={0.3}
-            enableDamping
-            dampingFactor={0.08}
+        {dims.width > 0 && (
+          <Globe
+            width={dims.width}
+            height={dims.height}
+            globeImageUrl="//unpkg.com/three-globe/example/img/earth-night.jpg"
+            bumpImageUrl="//unpkg.com/three-globe/example/img/earth-topology.png"
+            backgroundImageUrl="//cdn.jsdelivr.net/npm/three-globe/example/img/night-sky.png"
+            // -- Dynamic atmosphere --
+            atmosphereColor={atmosphereColor}
+            atmosphereAltitude={0.18}
+            // -- Heatmap layer --
+            heatmapsData={heatmapData}
+            heatmapPointLat="lat"
+            heatmapPointLng="lng"
+            heatmapPointWeight="weight"
+            heatmapBandwidth={0.8}
+            heatmapColorSaturation={heatmapSaturation}
+            heatmapsTransitionDuration={1200}
+            enablePointerInteraction={false}
+            // -- Rings layer --
+            ringsData={ringsData}
+            ringLat="lat"
+            ringLng="lng"
+            ringColor="color"
+            ringMaxRadius="maxRadius"
+            ringPropagationSpeed="propagationSpeed"
+            ringRepeatPeriod="repeatPeriod"
           />
 
           {/* Earth and visualization layers */}
