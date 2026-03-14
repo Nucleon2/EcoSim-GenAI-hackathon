@@ -22,7 +22,8 @@
       "mcp__context7__resolve-library-id",
       "mcp__context7__query-docs",
       "Bash(cd C:/Users/ahmad/Documents/programing/EcoSim-GenAI-hackathon/client && pnpm add react-globe.gl)",
-      "Bash(cd C:/Users/ahmad/Documents/programing/EcoSim-GenAI-hackathon/client && pnpm exec tsc --noEmit 2>&1)"
+      "Bash(cd C:/Users/ahmad/Documents/programing/EcoSim-GenAI-hackathon/client && pnpm exec tsc --noEmit 2>&1)",
+      "Bash(cd C:/Users/ahmad/Documents/programing/EcoSim-GenAI-hackathon/client && pnpm dlx shadcn@latest add slider 2>&1)"
     ]
   }
 }

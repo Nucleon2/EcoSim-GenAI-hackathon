@@ -1,6 +1,6 @@
 import { useState } from "react"
 import { SlidersHorizontal } from "lucide-react"
-import { Slider } from "@base-ui/react/slider"
+import { Slider } from "@/components/ui/slider"
 import { Button } from "@/components/ui/button"
 
 interface PolicyValues {
@@ -45,19 +45,12 @@ function PolicySlider({ label, unit, value, min, max, onChange }: PolicySliderPr
           {value} {unit}
         </span>
       </div>
-      <Slider.Root
+      <Slider
         value={value}
-        onValueChange={onChange}
+        onValueChange={(v) => onChange(Array.isArray(v) ? (v as number[])[0] : (v as number))}
         min={min}
         max={max}
-      >
-        <Slider.Control className="policy-slider-track">
-          <Slider.Track className="h-1.5 w-full rounded-full bg-[oklch(0.25_0.03_240)]">
-            <Slider.Indicator className="rounded-full bg-linear-to-r from-[--color-mission-glow] to-[--color-mission-accent]" />
-            <Slider.Thumb className="policy-slider-thumb size-4 rounded-full bg-[--color-mission-bg] border-2 border-[--color-mission-glow] shadow-[0_0_8px_var(--color-mission-glow)]" />
-          </Slider.Track>
-        </Slider.Control>
-      </Slider.Root>
+      />
     </div>
   )
 }
