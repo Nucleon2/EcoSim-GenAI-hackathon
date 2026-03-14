@@ -18,13 +18,20 @@ METRIC_LABELS = {
 }
 
 
+def _clamp(v: float, lo: float, hi: float) -> float:
+    return max(lo, min(hi, v))
+
+
+# Each lever has a different priority curve so the optimizer produces
+# varied, realistic recommendations instead of uniform percentages.
+# Higher-impact levers (renewables, carbon tax) ramp up faster.
 def _policy_from_scale(s: float) -> PolicyInput:
     return PolicyInput(
-        carbon_tax=round(s * 300, 1),
-        renewable_adoption=round(s * 100, 1),
-        deforestation_reduction=round(s * 100, 1),
-        methane_reduction=round(s * 100, 1),
-        ev_adoption=round(s * 100, 1),
+        carbon_tax=round(_clamp(s * 1.3, 0, 1) * 300, 1),        # ramps fastest
+        renewable_adoption=round(_clamp(s * 1.2, 0, 1) * 100, 1), # high priority
+        deforestation_reduction=round(_clamp(s * 0.9, 0, 1) * 100, 1),
+        methane_reduction=round(_clamp(s * 0.85, 0, 1) * 100, 1),
+        ev_adoption=round(_clamp(s * 0.75, 0, 1) * 100, 1),      # ramps slowest
     )
 
 
