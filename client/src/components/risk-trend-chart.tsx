@@ -35,7 +35,10 @@ function generateRiskProjection(riskScore?: number): DataPoint[] {
     }
 
     // Policy risk trends toward the simulated score
-    const policy = +(BASELINE_RISK_2025 + t * (riskScore - BASELINE_RISK_2025)).toFixed(1)
+    const policy = +(
+      BASELINE_RISK_2025 +
+      t * (riskScore - BASELINE_RISK_2025)
+    ).toFixed(1)
     return { year, baseline, policy }
   })
 }
@@ -50,13 +53,27 @@ function CustomTooltip({ active, payload, label }: any) {
   if (active && payload?.length) {
     return (
       <div
-        className="px-3 py-2 text-xs font-mono border border-[--color-mission-border] space-y-1"
-        style={{ backgroundColor: "oklch(0.13 0.018 240 / 90%)", backdropFilter: "blur(8px)" }}
+        className="space-y-1 border border-[--color-mission-border] px-3 py-2 font-mono text-xs"
+        style={{
+          backgroundColor: "oklch(0.13 0.018 240 / 90%)",
+          backdropFilter: "blur(8px)",
+        }}
       >
         <div className="text-[--color-mission-muted]">{label}</div>
         {payload.map((entry: any) => (
-          <div key={entry.dataKey} style={{ color: entry.dataKey === "baseline" ? "oklch(0.70 0.22 25)" : "oklch(0.72 0.19 145)" }}>
-            {entry.dataKey === "baseline" ? "Baseline" : "With Policy"}: {entry.value}
+          <div
+            key={entry.dataKey}
+            style={{
+              color:
+                entry.color ??
+                entry.stroke ??
+                (entry.dataKey === "baseline"
+                  ? "oklch(0.70 0.22 25)"
+                  : "oklch(0.72 0.19 145)"),
+            }}
+          >
+            {entry.dataKey === "baseline" ? "Baseline" : "With Policy"}:{" "}
+            {entry.value}
           </div>
         ))}
       </div>
@@ -71,40 +88,72 @@ interface RiskTrendChartProps {
 
 export function RiskTrendChart({ riskScore }: RiskTrendChartProps) {
   const data = generateRiskProjection(riskScore)
-  const policyColor = riskScore !== undefined ? riskColor(riskScore) : "oklch(0.72 0.19 145)"
+  const policyColor =
+    riskScore !== undefined ? riskColor(riskScore) : "oklch(0.72 0.19 145)"
 
   return (
-    <div className="glass-panel glow-ring h-full flex flex-col gap-2 p-4">
+    <div className="glass-panel glow-ring flex h-full flex-col gap-2 p-4">
       <div className="flex items-center gap-2">
         <ShieldAlert className="size-3.5 text-[--color-mission-glow]" />
-        <h3 className="text-xs uppercase tracking-widest text-[--color-mission-muted]">
+        <h3 className="text-xs tracking-widest text-[--color-mission-muted] uppercase">
           Risk Trend
         </h3>
       </div>
 
-      <div className="flex-1 min-h-0">
+      <div className="min-h-0 flex-1">
         <ResponsiveContainer width="100%" height="100%">
-          <AreaChart data={data} margin={{ top: 4, right: 16, left: 0, bottom: 4 }}>
+          <AreaChart
+            data={data}
+            margin={{ top: 4, right: 16, left: 0, bottom: 4 }}
+          >
             <defs>
-              <linearGradient id="baselineRiskGradient" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor="oklch(0.70 0.22 25)" stopOpacity={0.2} />
-                <stop offset="95%" stopColor="oklch(0.70 0.22 25)" stopOpacity={0} />
+              <linearGradient
+                id="baselineRiskGradient"
+                x1="0"
+                y1="0"
+                x2="0"
+                y2="1"
+              >
+                <stop
+                  offset="5%"
+                  stopColor="oklch(0.70 0.22 25)"
+                  stopOpacity={0.2}
+                />
+                <stop
+                  offset="95%"
+                  stopColor="oklch(0.70 0.22 25)"
+                  stopOpacity={0}
+                />
               </linearGradient>
-              <linearGradient id="policyRiskGradient" x1="0" y1="0" x2="0" y2="1">
+              <linearGradient
+                id="policyRiskGradient"
+                x1="0"
+                y1="0"
+                x2="0"
+                y2="1"
+              >
                 <stop offset="5%" stopColor={policyColor} stopOpacity={0.3} />
                 <stop offset="95%" stopColor={policyColor} stopOpacity={0} />
               </linearGradient>
             </defs>
             <XAxis
               dataKey="year"
-              tick={{ fill: "oklch(0.45 0.05 220)", fontSize: 10, fontFamily: "monospace" }}
+              tick={{
+                fill: "oklch(0.45 0.05 220)",
+                fontSize: 10,
+                fontFamily: "monospace",
+              }}
               axisLine={false}
               tickLine={false}
               tickCount={5}
             />
             <YAxis
               domain={[0, 100]}
-              tick={{ fill: "oklch(0.45 0.05 220)", fontSize: 10, fontFamily: "monospace" }}
+              tick={{
+                fill: "oklch(0.45 0.05 220)",
+                fontSize: 10,
+                fontFamily: "monospace",
+              }}
               axisLine={false}
               tickLine={false}
               width={30}
