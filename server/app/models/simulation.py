@@ -26,6 +26,17 @@ class ExplanationResponse(BaseModel):
     explanation: str = Field(description="AI-generated explanation of the simulation results")
 
 
+class ComparisonExplanationRequest(BaseModel):
+    policy_a: PolicyInput
+    result_a: SimulationResult
+    policy_b: PolicyInput
+    result_b: SimulationResult
+
+
+class ComparisonExplanationResponse(BaseModel):
+    explanation: str
+
+
 class OptimizeRequest(BaseModel):
     temperature_rise: float | None = Field(default=None, description="Target max temperature rise in °C")
     co2_emissions: float | None = Field(default=None, description="Target max CO2 emissions in GtCO2/year")

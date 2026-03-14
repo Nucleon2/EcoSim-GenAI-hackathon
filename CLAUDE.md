@@ -2,9 +2,9 @@
 
 ## Project Overview
 
-Project Name: AI Climate Policy Copilot
+Project Name: EcoSim
 
-AI Climate Policy Copilot is an interactive web platform that allows users to simulate the impact of climate policies on the planet. Users can adjust variables such as renewable adoption, carbon tax, and deforestation reduction while the system visualizes environmental outcomes like temperature rise, emissions levels, and sea level change.
+EcoSim is an interactive web platform that allows users to simulate the impact of climate policies on the planet. Users can adjust variables such as renewable adoption, carbon tax, and deforestation reduction while the system visualizes environmental outcomes like temperature rise, emissions levels, and sea level change.
 
 The application combines climate datasets, simulation logic, AI explanations, and 3D visualization to create an interactive sustainability decision-support tool.
 
