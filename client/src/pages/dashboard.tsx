@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react"
-import { motion } from "framer-motion"
+import { motion, type Variants } from "framer-motion"
 import { TopBar } from "@/components/top-bar"
 import { SimulationMetrics } from "@/components/simulation-metrics"
 import { PolicyPanel, type PolicyValues } from "@/components/policy-panel"
@@ -11,20 +11,20 @@ import { useSimulation } from "@/hooks/use-simulation"
 import { useExplanation } from "@/hooks/use-explanation"
 import type { PolicyInput } from "@/services/api"
 
-const pageVariants = {
+const pageVariants: Variants = {
   hidden: {},
   visible: {
     transition: { staggerChildren: 0.12, delayChildren: 0.05 },
   },
 }
 
-const panelVariants = {
+const panelVariants: Variants = {
   hidden: { opacity: 0, y: 20, filter: "blur(4px)" },
   visible: {
     opacity: 1,
     y: 0,
     filter: "blur(0px)",
-    transition: { duration: 0.55, ease: [0.25, 0.46, 0.45, 0.94] },
+    transition: { duration: 0.55, ease: [0.25, 0.46, 0.45, 0.94] as const },
   },
 }
 
