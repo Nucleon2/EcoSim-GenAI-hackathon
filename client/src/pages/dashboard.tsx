@@ -96,7 +96,7 @@ export function DashboardPage() {
         variants={panelVariants}
         className="glass-panel glow-ring overflow-hidden min-h-0"
       >
-        <EarthScene />
+        <EarthScene simulationResult={simulation.data} />
       </motion.div>
 
       {/* Bottom panel row */}
