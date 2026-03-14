@@ -333,10 +333,18 @@ export function buildRiskRingsData(result: SimulationResult | undefined): RingDa
   })
 }
 
+export interface HTMLLabelDatum {
+  lat: number
+  lng: number
+  icon: string
+  label: string
+  visibilityClass: string
+}
+
 /**
- * Build labels for the disaster zones showing the severity or icon.
+ * Build HTML elements for the disaster zones showing the severity or icon.
  */
-export function buildRiskLabelsData(result: SimulationResult | undefined): LabelDatum[] {
+export function buildRiskHtmlElementsData(result: SimulationResult | undefined): HTMLLabelDatum[] {
   const tempRise = result?.temperature_rise ?? BASELINE_TEMP
   const seaLevelRise = result?.sea_level_rise ?? 1.5
   const tTemp = normalize(tempRise, TEMP_MIN, TEMP_MAX)
@@ -353,10 +361,9 @@ export function buildRiskLabelsData(result: SimulationResult | undefined): Label
     return {
       lat: zone.lat,
       lng: zone.lng,
-      // Only show text prominently if risk is high
-      text: t > 0.4 ? `${icon} ${zone.type.toUpperCase()}` : icon,
-      color: `rgba(255, 255, 255, ${clamp(lerp(0.3, 1.0, t), 0, 1).toFixed(2)})`,
-      size: lerp(0.5, 1.5, t)
+      icon,
+      label: zone.type.toUpperCase(),
+      visibilityClass: t > 0.4 ? "scale-100 opacity-100" : "scale-50 opacity-50 drop-shadow-lg",
     }
   })
 }
