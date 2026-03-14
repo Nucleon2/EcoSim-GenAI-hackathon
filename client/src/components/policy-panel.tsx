@@ -119,17 +119,24 @@ export function PolicyPanel({ onSimulate, isPending, initialPolicy, onPolicyChan
             ))}
           </div>
 
-          <Button
-            variant="outline"
-            className="w-full border-[--color-mission-glow]/40 text-[--color-mission-glow] hover:bg-[--color-mission-glow]/10 disabled:opacity-40 disabled:cursor-not-allowed"
-            disabled={isPending || !hasChanges}
-            onClick={() => {
-              lastSimulated.current = { ...policy }
-              onSimulate?.(policy)
-            }}
-          >
-            {isPending ? "Simulating..." : "Run Simulation"}
-          </Button>
+          <div className="flex flex-col items-center gap-1">
+            <Button
+              variant="outline"
+              className="w-full border-[--color-mission-glow]/40 text-[--color-mission-glow] hover:bg-[--color-mission-glow]/10 disabled:opacity-40 disabled:cursor-not-allowed"
+              disabled={isPending || !hasChanges}
+              onClick={() => {
+                lastSimulated.current = { ...policy }
+                onSimulate?.(policy)
+              }}
+            >
+              {isPending ? "Simulating..." : "Run Simulation"}
+            </Button>
+            {!hasChanges && !isPending && (
+              <span className="text-[9px] text-[--color-mission-muted] animate-pulse">
+                Adjust sliders or pick a preset to simulate
+              </span>
+            )}
+          </div>
         </>
       ) : (
         <GoalModePanel onApply={handleApplyGoal} />
