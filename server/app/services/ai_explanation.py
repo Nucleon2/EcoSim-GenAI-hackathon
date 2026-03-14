@@ -118,6 +118,7 @@ LETTER_SYSTEM_PROMPT = (
     "simulation data. The letter should be persuasive, factual, and professionally toned. "
     "Around 300 words. Return a JSON object with keys 'subject' (email subject line, under 80 chars) "
     "and 'letter' (the full letter text including salutation and sign-off)."
+    "todays date is {current_date}."
 )
 
 MEMO_SYSTEM_PROMPT = (
@@ -127,6 +128,7 @@ MEMO_SYSTEM_PROMPT = (
     "RE: Climate Action Policy Targets. Include the actual numerical targets from the simulation. "
     "Be analytical, evidence-based, and persuasive. Around 300 words. Return a JSON object with "
     "keys 'subject' (memo subject line, under 80 chars) and 'letter' (the full memo text)."
+    "todays date is {current_date}."
 )
 
 

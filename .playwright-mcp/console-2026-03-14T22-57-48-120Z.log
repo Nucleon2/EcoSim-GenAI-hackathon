@@ -1,0 +1,23 @@
+[     290ms] [WARNING] THREE.THREE.Clock: This module has been deprecated. Please use THREE.Timer instead. @ http://localhost:5173/node_modules/.vite/deps/chunk-CNHFXWMX.js?v=a2b18a4c:745
+[     296ms] [WARNING] THREE.THREE.Clock: This module has been deprecated. Please use THREE.Timer instead. @ http://localhost:5173/node_modules/.vite/deps/chunk-CNHFXWMX.js?v=a2b18a4c:745
+[     302ms] [WARNING] THREE.THREE.Clock: This module has been deprecated. Please use THREE.Timer instead. @ http://localhost:5173/node_modules/.vite/deps/chunk-CNHFXWMX.js?v=a2b18a4c:745
+[     312ms] [WARNING] THREE.THREE.Clock: This module has been deprecated. Please use THREE.Timer instead. @ http://localhost:5173/node_modules/.vite/deps/chunk-CNHFXWMX.js?v=a2b18a4c:745
+[     318ms] [WARNING] THREE.THREE.Clock: This module has been deprecated. Please use THREE.Timer instead. @ http://localhost:5173/node_modules/.vite/deps/chunk-CNHFXWMX.js?v=a2b18a4c:745
+[    4033ms] [WARNING] The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(1) or minHeight(1) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=a2b18a4c:8638
+[    4033ms] [WARNING] The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(1) or minHeight(1) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=a2b18a4c:8638
+[    4034ms] [WARNING] The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(1) or minHeight(1) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=a2b18a4c:8638
+[    4034ms] [WARNING] The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(1) or minHeight(1) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=a2b18a4c:8638
+[    4123ms] [WARNING] THREE.THREE.Clock: This module has been deprecated. Please use THREE.Timer instead. @ http://localhost:5173/node_modules/.vite/deps/chunk-CNHFXWMX.js?v=a2b18a4c:745
+[    4129ms] [WARNING] THREE.THREE.Clock: This module has been deprecated. Please use THREE.Timer instead. @ http://localhost:5173/node_modules/.vite/deps/chunk-CNHFXWMX.js?v=a2b18a4c:745

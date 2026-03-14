@@ -1,0 +1,30 @@
+[     797ms] [WARNING] THREE.THREE.Clock: This module has been deprecated. Please use THREE.Timer instead. @ http://localhost:5173/node_modules/.vite/deps/chunk-CNHFXWMX.js?v=a2b18a4c:745
+[     805ms] [WARNING] THREE.THREE.Clock: This module has been deprecated. Please use THREE.Timer instead. @ http://localhost:5173/node_modules/.vite/deps/chunk-CNHFXWMX.js?v=a2b18a4c:745
+[     811ms] [WARNING] THREE.THREE.Clock: This module has been deprecated. Please use THREE.Timer instead. @ http://localhost:5173/node_modules/.vite/deps/chunk-CNHFXWMX.js?v=a2b18a4c:745
+[    7066ms] [WARNING] The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(1) or minHeight(1) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=a2b18a4c:8638
+[    7067ms] [WARNING] The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(1) or minHeight(1) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=a2b18a4c:8638
+[    7067ms] [WARNING] The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(1) or minHeight(1) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=a2b18a4c:8638
+[    7068ms] [WARNING] The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(1) or minHeight(1) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=a2b18a4c:8638
+[    7196ms] [WARNING] THREE.THREE.Clock: This module has been deprecated. Please use THREE.Timer instead. @ http://localhost:5173/node_modules/.vite/deps/chunk-CNHFXWMX.js?v=a2b18a4c:745
+[    7202ms] [WARNING] THREE.THREE.Clock: This module has been deprecated. Please use THREE.Timer instead. @ http://localhost:5173/node_modules/.vite/deps/chunk-CNHFXWMX.js?v=a2b18a4c:745
+[   34779ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:8000/api/draft-letter:0
+[  369739ms] [WARNING] THREE.THREE.Clock: This module has been deprecated. Please use THREE.Timer instead. @ http://localhost:5173/node_modules/.vite/deps/chunk-CNHFXWMX.js?v=a2b18a4c:745
+[  369752ms] [WARNING] THREE.THREE.Clock: This module has been deprecated. Please use THREE.Timer instead. @ http://localhost:5173/node_modules/.vite/deps/chunk-CNHFXWMX.js?v=a2b18a4c:745
+[  369759ms] [WARNING] THREE.THREE.Clock: This module has been deprecated. Please use THREE.Timer instead. @ http://localhost:5173/node_modules/.vite/deps/chunk-CNHFXWMX.js?v=a2b18a4c:745
+[  406905ms] [WARNING] THREE.THREE.Clock: This module has been deprecated. Please use THREE.Timer instead. @ http://localhost:5173/node_modules/.vite/deps/chunk-CNHFXWMX.js?v=a2b18a4c:745
+[  406930ms] [WARNING] THREE.THREE.Clock: This module has been deprecated. Please use THREE.Timer instead. @ http://localhost:5173/node_modules/.vite/deps/chunk-CNHFXWMX.js?v=a2b18a4c:745
+[  406937ms] [WARNING] THREE.THREE.Clock: This module has been deprecated. Please use THREE.Timer instead. @ http://localhost:5173/node_modules/.vite/deps/chunk-CNHFXWMX.js?v=a2b18a4c:745
+[  406962ms] [WARNING] THREE.THREE.Clock: This module has been deprecated. Please use THREE.Timer instead. @ http://localhost:5173/node_modules/.vite/deps/chunk-CNHFXWMX.js?v=a2b18a4c:745
+[  406975ms] [WARNING] THREE.THREE.Clock: This module has been deprecated. Please use THREE.Timer instead. @ http://localhost:5173/node_modules/.vite/deps/chunk-CNHFXWMX.js?v=a2b18a4c:745
