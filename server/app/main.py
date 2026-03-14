@@ -1,7 +1,12 @@
+from dotenv import load_dotenv
+
+load_dotenv()
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.api.simulate import router as simulate_router
+from app.api.explain import router as explain_router
 
 app = FastAPI(title="AI Climate Policy Copilot")
 
@@ -14,6 +19,7 @@ app.add_middleware(
 )
 
 app.include_router(simulate_router, prefix="/api")
+app.include_router(explain_router, prefix="/api")
 
 
 @app.get("/")

@@ -1,3 +1,4 @@
+import { useEffect, useRef } from "react"
 import { motion } from "framer-motion"
 import { TopBar } from "@/components/top-bar"
 import { SimulationMetrics } from "@/components/simulation-metrics"
@@ -7,6 +8,7 @@ import { AiExplanationPanel } from "@/components/ai-explanation-panel"
 import { RiskTrendChart } from "@/components/risk-trend-chart"
 import { TemperatureProjectionChart } from "@/components/temperature-projection-chart"
 import { useSimulation } from "@/hooks/use-simulation"
+import { useExplanation } from "@/hooks/use-explanation"
 import type { PolicyInput } from "@/services/api"
 
 const pageVariants = {
@@ -38,10 +40,23 @@ function toApiInput(values: PolicyValues): PolicyInput {
 
 export function DashboardPage() {
   const simulation = useSimulation()
+  const explanation = useExplanation()
+  const lastPolicyRef = useRef<PolicyInput | null>(null)
 
   const handleSimulate = (values: PolicyValues) => {
-    simulation.mutate(toApiInput(values))
+    const input = toApiInput(values)
+    lastPolicyRef.current = input
+    simulation.mutate(input)
   }
+
+  useEffect(() => {
+    if (simulation.data && lastPolicyRef.current) {
+      explanation.mutate({
+        policy: lastPolicyRef.current,
+        result: simulation.data,
+      })
+    }
+  }, [simulation.data])
 
   return (
     <motion.div
@@ -89,7 +104,10 @@ export function DashboardPage() {
         <div className="grid grid-cols-3 gap-2 h-[200px]">
           <RiskTrendChart riskScore={simulation.data?.risk_score} />
           <TemperatureProjectionChart temperatureRise={simulation.data?.temperature_rise} />
-          <AiExplanationPanel />
+          <AiExplanationPanel
+            explanation={explanation.data?.explanation}
+            isPending={explanation.isPending}
+          />
         </div>
       </motion.div>
     </motion.div>

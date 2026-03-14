@@ -1,6 +1,11 @@
 import { Sparkles } from "lucide-react"
 
-export function AiExplanationPanel() {
+interface AiExplanationPanelProps {
+  explanation?: string
+  isPending?: boolean
+}
+
+export function AiExplanationPanel({ explanation, isPending }: AiExplanationPanelProps) {
   return (
     <div className="glass-panel glow-ring h-full flex flex-col gap-3 p-5">
       <div className="flex items-center gap-2">
@@ -10,16 +15,34 @@ export function AiExplanationPanel() {
         </h3>
       </div>
 
-      <div className="border-l-2 border-[--color-mission-glow]/50 pl-3 flex-1">
-        <p className="text-sm text-[--color-mission-muted] leading-relaxed font-mono">
-          Adjust the policy sliders to generate an AI-powered climate impact
-          analysis...
-        </p>
+      <div className="border-l-2 border-[--color-mission-glow]/50 pl-3 flex-1 overflow-y-auto">
+        {isPending ? (
+          <p className="text-[11px] text-[--color-mission-glow] leading-snug font-mono animate-pulse">
+            Analyzing policy impact...
+          </p>
+        ) : explanation ? (
+          <p className="text-[11px] text-[--color-mission-stat] leading-snug font-mono">
+            {explanation}
+          </p>
+        ) : (
+          <p className="text-[11px] text-[--color-mission-muted] leading-snug font-mono">
+            Adjust the policy sliders and run a simulation to generate an
+            AI-powered climate impact analysis...
+          </p>
+        )}
       </div>
 
       <span className="inline-flex items-center gap-1.5 text-xs text-[--color-mission-muted]">
-        <span className="size-1.5 rounded-full bg-[--color-mission-glow] animate-pulse" />
-        Ready
+        <span
+          className={`size-1.5 rounded-full ${
+            isPending
+              ? "bg-[--color-mission-glow] animate-pulse"
+              : explanation
+                ? "bg-[--color-mission-accent]"
+                : "bg-[--color-mission-muted]"
+          }`}
+        />
+        {isPending ? "Analyzing" : explanation ? "Complete" : "Ready"}
       </span>
     </div>
   )
