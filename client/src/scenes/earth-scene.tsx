@@ -77,7 +77,7 @@ export function EarthScene({ result }: EarthSceneProps) {
             height={dims.height}
             globeImageUrl="//unpkg.com/three-globe/example/img/earth-night.jpg"
             bumpImageUrl="//unpkg.com/three-globe/example/img/earth-topology.png"
-            backgroundColor="rgba(0,0,0,0)"
+            backgroundImageUrl="//cdn.jsdelivr.net/npm/three-globe/example/img/night-sky.png"
             // -- Dynamic atmosphere --
             atmosphereColor={atmosphereColor}
             atmosphereAltitude={0.18}
