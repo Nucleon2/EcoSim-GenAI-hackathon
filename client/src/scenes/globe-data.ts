@@ -2,10 +2,12 @@
  * Static geographic data and scaling utilities for the 3D globe overlays.
  *
  * Two visual layers react to simulation results:
- *   1. Temperature heatmap  -- driven by `temperature_rise`
+ *   1. Temperature heatmap  -- driven by `temperature_rise`, `emissions_breakdown`
  *   2. Emission hotspot rings -- driven by `co2_emissions`
  *   + atmosphere color shift  -- driven by `risk_score`
  */
+
+import type { SimulationResult } from "@/services/api"
 
 // ---------------------------------------------------------------------------
 // Types
@@ -15,6 +17,13 @@ export interface HeatmapPoint {
   lat: number
   lng: number
   weight: number
+}
+
+export interface HeatmapBasePoint {
+  lat: number
+  lng: number
+  baseWeight: number
+  region: "industrial" | "deforestation" | "arctic"
 }
 
 export interface RingDatum {
@@ -48,70 +57,70 @@ export const HOTSPOT_CITIES: { name: string; lat: number; lng: number }[] = [
 // known high-temperature-anomaly / industrial regions.
 // ---------------------------------------------------------------------------
 
-export const HEATMAP_BASE_POINTS: { lat: number; lng: number; baseWeight: number }[] = [
+export const HEATMAP_BASE_POINTS: HeatmapBasePoint[] = [
   // East Asia (heavy industrial) -- highest emitters
-  { lat: 35, lng: 110, baseWeight: 1.0 },
-  { lat: 30, lng: 120, baseWeight: 0.85 },
-  { lat: 40, lng: 116, baseWeight: 0.9 },
-  { lat: 25, lng: 113, baseWeight: 0.5 },
-  { lat: 38, lng: 125, baseWeight: 0.35 },
+  { lat: 35, lng: 110, baseWeight: 1.0,  region: "industrial" },
+  { lat: 30, lng: 120, baseWeight: 0.85, region: "industrial" },
+  { lat: 40, lng: 116, baseWeight: 0.9,  region: "industrial" },
+  { lat: 25, lng: 113, baseWeight: 0.5,  region: "industrial" },
+  { lat: 38, lng: 125, baseWeight: 0.35, region: "industrial" },
   // South Asia
-  { lat: 28, lng: 77, baseWeight: 0.7 },
-  { lat: 19, lng: 73, baseWeight: 0.45 },
-  { lat: 23, lng: 88, baseWeight: 0.35 },
-  { lat: 13, lng: 80, baseWeight: 0.2 },
+  { lat: 28, lng: 77,  baseWeight: 0.7,  region: "industrial" },
+  { lat: 19, lng: 73,  baseWeight: 0.45, region: "industrial" },
+  { lat: 23, lng: 88,  baseWeight: 0.35, region: "industrial" },
+  { lat: 13, lng: 80,  baseWeight: 0.2,  region: "industrial" },
   // Middle East
-  { lat: 25, lng: 55, baseWeight: 0.5 },
-  { lat: 24, lng: 47, baseWeight: 0.4 },
-  { lat: 33, lng: 44, baseWeight: 0.2 },
+  { lat: 25, lng: 55,  baseWeight: 0.5,  region: "industrial" },
+  { lat: 24, lng: 47,  baseWeight: 0.4,  region: "industrial" },
+  { lat: 33, lng: 44,  baseWeight: 0.2,  region: "industrial" },
   // Europe
-  { lat: 51, lng: 7, baseWeight: 0.3 },
-  { lat: 52, lng: 13, baseWeight: 0.25 },
-  { lat: 48, lng: 2, baseWeight: 0.2 },
-  { lat: 51, lng: 0, baseWeight: 0.2 },
-  { lat: 45, lng: 9, baseWeight: 0.15 },
-  { lat: 40, lng: -4, baseWeight: 0.1 },
-  { lat: 60, lng: 30, baseWeight: 0.1 },
+  { lat: 51, lng: 7,   baseWeight: 0.3,  region: "industrial" },
+  { lat: 52, lng: 13,  baseWeight: 0.25, region: "industrial" },
+  { lat: 48, lng: 2,   baseWeight: 0.2,  region: "industrial" },
+  { lat: 51, lng: 0,   baseWeight: 0.2,  region: "industrial" },
+  { lat: 45, lng: 9,   baseWeight: 0.15, region: "industrial" },
+  { lat: 40, lng: -4,  baseWeight: 0.1,  region: "industrial" },
+  { lat: 60, lng: 30,  baseWeight: 0.1,  region: "industrial" },
   // North America
-  { lat: 30, lng: -95, baseWeight: 0.65 },
-  { lat: 34, lng: -118, baseWeight: 0.4 },
-  { lat: 42, lng: -83, baseWeight: 0.25 },
-  { lat: 40, lng: -74, baseWeight: 0.2 },
-  { lat: 33, lng: -97, baseWeight: 0.2 },
-  { lat: 51, lng: -114, baseWeight: 0.15 },
-  { lat: 45, lng: -93, baseWeight: 0.1 },
+  { lat: 30, lng: -95, baseWeight: 0.65, region: "industrial" },
+  { lat: 34, lng: -118,baseWeight: 0.4,  region: "industrial" },
+  { lat: 42, lng: -83, baseWeight: 0.25, region: "industrial" },
+  { lat: 40, lng: -74, baseWeight: 0.2,  region: "industrial" },
+  { lat: 33, lng: -97, baseWeight: 0.2,  region: "industrial" },
+  { lat: 51, lng: -114,baseWeight: 0.15, region: "industrial" },
+  { lat: 45, lng: -93, baseWeight: 0.1,  region: "industrial" },
   // Russia / Central Asia
-  { lat: 56, lng: 38, baseWeight: 0.3 },
-  { lat: 55, lng: 73, baseWeight: 0.2 },
-  { lat: 54, lng: 83, baseWeight: 0.15 },
+  { lat: 56, lng: 38,  baseWeight: 0.3,  region: "industrial" },
+  { lat: 55, lng: 73,  baseWeight: 0.2,  region: "industrial" },
+  { lat: 54, lng: 83,  baseWeight: 0.15, region: "industrial" },
   // Southeast Asia
-  { lat: -6, lng: 107, baseWeight: 0.3 },
-  { lat: 14, lng: 101, baseWeight: 0.15 },
-  { lat: 1, lng: 104, baseWeight: 0.1 },
+  { lat: -6, lng: 107, baseWeight: 0.3,  region: "industrial" },
+  { lat: 14, lng: 101, baseWeight: 0.15, region: "industrial" },
+  { lat: 1,  lng: 104, baseWeight: 0.1,  region: "industrial" },
   // Africa
-  { lat: 6, lng: 3, baseWeight: 0.2 },
-  { lat: -26, lng: 28, baseWeight: 0.15 },
-  { lat: 30, lng: 31, baseWeight: 0.2 },
-  { lat: -1, lng: 37, baseWeight: 0.08 },
-  { lat: 34, lng: -7, baseWeight: 0.06 },
-  // South America
-  { lat: -23, lng: -47, baseWeight: 0.25 },
-  { lat: -34, lng: -58, baseWeight: 0.1 },
-  { lat: 4, lng: -74, baseWeight: 0.08 },
-  { lat: -12, lng: -77, baseWeight: 0.06 },
+  { lat: 6,  lng: 3,   baseWeight: 0.2,  region: "industrial" },
+  { lat: -26,lng: 28,  baseWeight: 0.15, region: "industrial" },
+  { lat: 30, lng: 31,  baseWeight: 0.2,  region: "industrial" },
+  { lat: -1, lng: 37,  baseWeight: 0.08, region: "industrial" },
+  { lat: 34, lng: -7,  baseWeight: 0.06, region: "industrial" },
+  // South America (urban/industrial)
+  { lat: -23,lng: -47, baseWeight: 0.25, region: "industrial" },
+  { lat: -34,lng: -58, baseWeight: 0.1,  region: "industrial" },
+  { lat: 4,  lng: -74, baseWeight: 0.08, region: "industrial" },
+  { lat: -12,lng: -77, baseWeight: 0.06, region: "industrial" },
   // Tropical / deforestation zones (Amazon, Congo, Indonesia)
-  { lat: -3, lng: -60, baseWeight: 0.2 },
-  { lat: -5, lng: -50, baseWeight: 0.15 },
-  { lat: 0, lng: 22, baseWeight: 0.1 },
-  { lat: -2, lng: 112, baseWeight: 0.2 },
+  { lat: -3, lng: -60, baseWeight: 0.2,  region: "deforestation" },
+  { lat: -5, lng: -50, baseWeight: 0.15, region: "deforestation" },
+  { lat: 0,  lng: 22,  baseWeight: 0.1,  region: "deforestation" },
+  { lat: -2, lng: 112, baseWeight: 0.2,  region: "deforestation" },
   // Australia
-  { lat: -34, lng: 151, baseWeight: 0.08 },
-  { lat: -28, lng: 153, baseWeight: 0.06 },
+  { lat: -34,lng: 151, baseWeight: 0.08, region: "industrial" },
+  { lat: -28,lng: 153, baseWeight: 0.06, region: "industrial" },
   // Arctic region (amplified warming)
-  { lat: 70, lng: 25, baseWeight: 0.15 },
-  { lat: 72, lng: 130, baseWeight: 0.1 },
-  { lat: 68, lng: -50, baseWeight: 0.08 },
-  { lat: 65, lng: -18, baseWeight: 0.06 },
+  { lat: 70, lng: 25,  baseWeight: 0.15, region: "arctic" },
+  { lat: 72, lng: 130, baseWeight: 0.1,  region: "arctic" },
+  { lat: 68, lng: -50, baseWeight: 0.08, region: "arctic" },
+  { lat: 65, lng: -18, baseWeight: 0.06, region: "arctic" },
 ]
 
 // ---------------------------------------------------------------------------
@@ -120,8 +129,9 @@ export const HEATMAP_BASE_POINTS: { lat: number; lng: number; baseWeight: number
 
 const BASELINE_CO2 = 36.8 // GtCO2/yr (2023 baseline)
 const MIN_CO2 = 10.3 // approximate floor with max policies
-const TEMP_MIN = 0.5 // clamped floor from engine
-const TEMP_MAX = 3.5 // clamped ceiling from engine
+const BASELINE_TEMP = 2.0 // shown before any simulation runs
+const TEMP_MIN = 1.0 // actual backend minimum (full policies applied)
+const TEMP_MAX = 2.5 // actual backend maximum (no policies applied)
 
 // ---------------------------------------------------------------------------
 // Color interpolation helpers
@@ -147,30 +157,57 @@ function normalize(v: number, min: number, max: number): number {
 // ---------------------------------------------------------------------------
 
 /**
- * Build the heatmap points array, scaling each point's weight by temperature.
- * Returns a single-element array wrapping the points (heatmapsData expects
- * an array of heatmap datasets).
+ * Build the heatmap points array from a simulation result.
+ * - Global scale spans 0.0 (best policy) → 1.0 (no policy) using the actual backend range.
+ * - Industrial regions additionally dim with renewable adoption.
+ * - Deforestation regions additionally dim with deforestation reduction.
+ * - Arctic regions amplify at 1.4× the global temperature factor.
  */
-export function buildHeatmapData(temperatureRise: number): HeatmapPoint[][] {
-  const t = normalize(temperatureRise, TEMP_MIN, TEMP_MAX)
-  // Scale factor: 0.15 at minimum temp, 1.0 at maximum
-  const scale = lerp(0.15, 1.0, t)
+export function buildHeatmapData(result: SimulationResult | undefined): HeatmapPoint[][] {
+  const temperatureRise = result?.temperature_rise ?? BASELINE_TEMP
+  const breakdown = result?.emissions_breakdown
 
-  const points: HeatmapPoint[] = HEATMAP_BASE_POINTS.map((p) => ({
-    lat: p.lat,
-    lng: p.lng,
-    weight: p.baseWeight * scale,
-  }))
+  const t = normalize(temperatureRise, TEMP_MIN, TEMP_MAX)
+  const globalScale = lerp(0.0, 1.0, t)
+
+  // Per-policy reduction fractions in [0, 1]
+  // renewable_adoption max sector weight = 0.25 (from engine.py)
+  const renewableReduction = breakdown
+    ? clamp(breakdown["renewable_adoption"] / 0.25, 0, 1)
+    : 0
+  // deforestation_reduction max sector weight = 0.10 (from engine.py)
+  const deforestationReduction = breakdown
+    ? clamp(breakdown["deforestation_reduction"] / 0.10, 0, 1)
+    : 0
+
+  const points: HeatmapPoint[] = HEATMAP_BASE_POINTS.map((p) => {
+    let weight: number
+
+    if (p.region === "industrial") {
+      // Industrial hotspots dim with renewable adoption
+      weight = p.baseWeight * globalScale * (1 - renewableReduction * 0.8)
+    } else if (p.region === "deforestation") {
+      // Tropical/deforestation hotspots dim with deforestation policy
+      weight = p.baseWeight * globalScale * (1 - deforestationReduction * 0.9)
+    } else {
+      // Arctic: amplified warming (~1.4× faster than global average)
+      const arcticT = clamp(t * 1.4, 0, 1)
+      weight = p.baseWeight * lerp(0.0, 1.2, arcticT)
+    }
+
+    return { lat: p.lat, lng: p.lng, weight: clamp(weight, 0, 2.0) }
+  })
 
   return [points]
 }
 
 /**
  * Get heatmap saturation. Higher temperature = more saturated colors.
+ * Range expanded from 0.2 (near-greyscale) to 3.0 (hyper-vivid) for dramatic visual contrast.
  */
 export function getHeatmapSaturation(temperatureRise: number): number {
   const t = normalize(temperatureRise, TEMP_MIN, TEMP_MAX)
-  return lerp(0.6, 1.4, t)
+  return lerp(0.2, 3.0, t)
 }
 
 /**
