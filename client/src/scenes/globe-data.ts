@@ -1,10 +1,11 @@
 /**
  * Static geographic data and scaling utilities for the 3D globe overlays.
  *
- * Two visual layers react to simulation results:
- *   1. Temperature heatmap  -- driven by `temperature_rise`, `emissions_breakdown`
- *   2. Emission hotspot rings -- driven by `co2_emissions`
- *   + atmosphere color shift  -- driven by `risk_score`
+ * Three visual layers react to simulation results:
+ *   1. Temperature heatmap        -- driven by `temperature_rise`, `emissions_breakdown`
+ *   2. Emission hotspot rings     -- driven by `co2_emissions`
+ *   3. Risk‑zone rings and labels -- driven by `temperature_rise`, `sea_level_rise`
+ *   + atmosphere color shift      -- driven by `risk_score`
  */
 
 import type { SimulationResult } from "@/services/api"
