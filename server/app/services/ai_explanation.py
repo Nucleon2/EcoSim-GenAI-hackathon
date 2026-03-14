@@ -57,6 +57,59 @@ async def generate_goal_explanation(
     return response.choices[0].message.content or "Unable to generate explanation."
 
 
+COMPARISON_SYSTEM_PROMPT = (
+    "You are a climate policy analyst. Compare two climate policy scenarios "
+    "and their outcomes. In 3-4 sentences: state which scenario achieves better "
+    "outcomes and why, identify the key policy differences driving the results, "
+    "and note any remaining concerns shared by both. "
+    "Under 80 words total. No bullet points or lists."
+)
+
+
+async def generate_comparison_explanation(
+    policy_a: PolicyInput,
+    result_a: SimulationResult,
+    policy_b: PolicyInput,
+    result_b: SimulationResult,
+) -> str:
+    user_prompt = (
+        f"Scenario A policies:\n"
+        f"- Carbon tax: ${policy_a.carbon_tax}/tonne\n"
+        f"- Renewable adoption: {policy_a.renewable_adoption}%\n"
+        f"- Deforestation reduction: {policy_a.deforestation_reduction}%\n"
+        f"- Methane reduction: {policy_a.methane_reduction}%\n"
+        f"- EV adoption: {policy_a.ev_adoption}%\n\n"
+        f"Scenario A results:\n"
+        f"- CO2 emissions: {result_a.co2_emissions:.1f} GtCO2/year\n"
+        f"- Temperature rise: {result_a.temperature_rise:.2f}°C\n"
+        f"- Sea level rise: {result_a.sea_level_rise:.1f} mm/year\n"
+        f"- Risk score: {result_a.risk_score:.0f}/100\n\n"
+        f"Scenario B policies:\n"
+        f"- Carbon tax: ${policy_b.carbon_tax}/tonne\n"
+        f"- Renewable adoption: {policy_b.renewable_adoption}%\n"
+        f"- Deforestation reduction: {policy_b.deforestation_reduction}%\n"
+        f"- Methane reduction: {policy_b.methane_reduction}%\n"
+        f"- EV adoption: {policy_b.ev_adoption}%\n\n"
+        f"Scenario B results:\n"
+        f"- CO2 emissions: {result_b.co2_emissions:.1f} GtCO2/year\n"
+        f"- Temperature rise: {result_b.temperature_rise:.2f}°C\n"
+        f"- Sea level rise: {result_b.sea_level_rise:.1f} mm/year\n"
+        f"- Risk score: {result_b.risk_score:.0f}/100\n"
+    )
+
+    response = await client.chat.completions.create(
+        model="deepseek-chat",
+        messages=[
+            {"role": "system", "content": COMPARISON_SYSTEM_PROMPT},
+            {"role": "user", "content": user_prompt},
+        ],
+        temperature=0.7,
+        max_tokens=200,
+    )
+
+    return response.choices[0].message.content or "Unable to generate comparison."
+
+
 async def generate_explanation(
     policy: PolicyInput, result: SimulationResult
 ) -> str:

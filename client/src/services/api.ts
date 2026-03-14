@@ -71,6 +71,29 @@ export async function optimizePolicy(
   return response.json()
 }
 
+export interface ComparisonExplanationRequest {
+  policy_a: PolicyInput
+  result_a: SimulationResult
+  policy_b: PolicyInput
+  result_b: SimulationResult
+}
+
+export async function explainComparison(
+  request: ComparisonExplanationRequest
+): Promise<ExplanationResponse> {
+  const response = await fetch(`${API_BASE_URL}/explain-comparison`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(request),
+  })
+
+  if (!response.ok) {
+    throw new Error(`Comparison explanation failed: ${response.status}`)
+  }
+
+  return response.json()
+}
+
 export async function explainPolicy(
   request: ExplanationRequest
 ): Promise<ExplanationResponse> {

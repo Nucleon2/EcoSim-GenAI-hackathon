@@ -30,9 +30,10 @@ function GlobeSpinner() {
 
 interface EarthSceneProps {
   result?: SimulationResult
+  compact?: boolean
 }
 
-export function EarthScene({ result }: EarthSceneProps) {
+export function EarthScene({ result, compact }: EarthSceneProps) {
   const containerRef = useRef<HTMLDivElement>(null)
   const [dims, setDims] = useState({ width: 0, height: 0 })
 
@@ -77,10 +78,10 @@ export function EarthScene({ result }: EarthSceneProps) {
             height={dims.height}
             globeImageUrl="//unpkg.com/three-globe/example/img/earth-night.jpg"
             bumpImageUrl="//unpkg.com/three-globe/example/img/earth-topology.png"
-            backgroundImageUrl="//cdn.jsdelivr.net/npm/three-globe/example/img/night-sky.png"
+            backgroundImageUrl={compact ? undefined : "//cdn.jsdelivr.net/npm/three-globe/example/img/night-sky.png"}
             // -- Dynamic atmosphere --
             atmosphereColor={atmosphereColor}
-            atmosphereAltitude={0.18}
+            atmosphereAltitude={compact ? 0.12 : 0.18}
             // -- Heatmap layer --
             heatmapsData={heatmapData}
             heatmapPointLat="lat"
@@ -88,7 +89,7 @@ export function EarthScene({ result }: EarthSceneProps) {
             heatmapPointWeight="weight"
             heatmapBandwidth={0.8}
             heatmapColorSaturation={heatmapSaturation}
-            heatmapsTransitionDuration={1200}
+            heatmapsTransitionDuration={compact ? 800 : 1200}
             enablePointerInteraction={false}
             // -- Rings layer --
             ringsData={ringsData}

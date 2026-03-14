@@ -1,5 +1,6 @@
 import { useEffect, useRef } from "react"
 import { motion } from "framer-motion"
+import { GitCompareArrows } from "lucide-react"
 import { TopBar } from "@/components/top-bar"
 import { SimulationMetrics } from "@/components/simulation-metrics"
 import { PolicyPanel, type PolicyValues } from "@/components/policy-panel"
@@ -38,7 +39,11 @@ function toApiInput(values: PolicyValues): PolicyInput {
   }
 }
 
-export function DashboardPage() {
+interface DashboardPageProps {
+  onNavigate: (page: "dashboard" | "comparison") => void
+}
+
+export function DashboardPage({ onNavigate }: DashboardPageProps) {
   const simulation = useSimulation()
   const explanation = useExplanation()
   const lastPolicyRef = useRef<PolicyInput | null>(null)
@@ -76,8 +81,17 @@ export function DashboardPage() {
       animate="visible"
     >
       {/* Top bar */}
-      <motion.div style={{ gridArea: "topbar" }} variants={panelVariants}>
-        <TopBar />
+      <motion.div style={{ gridArea: "topbar" }} variants={panelVariants} className="flex gap-2 items-stretch">
+        <div className="flex-1">
+          <TopBar />
+        </div>
+        <button
+          onClick={() => onNavigate("comparison")}
+          className="glass-panel glow-ring flex items-center gap-2 px-4 text-[--color-mission-muted] hover:text-[--color-mission-glow] hover:border-[--color-mission-glow]/30 transition-colors"
+        >
+          <GitCompareArrows className="size-3.5" />
+          <span className="text-xs uppercase tracking-wider">Compare</span>
+        </button>
       </motion.div>
 
       {/* Simulation metrics */}
