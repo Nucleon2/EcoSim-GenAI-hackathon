@@ -15,7 +15,7 @@ export function AiExplanationPanel({ explanation, isPending }: AiExplanationPane
         </h3>
       </div>
 
-      <div className="border-l-2 border-mission-glow/50 pl-3 flex-1 overflow-y-auto">
+      <div className="border-l-2 border-mission-glow/50 pl-3 flex-1 overflow-y-auto scrollbar-mission">
         {isPending ? (
           <p className="text-[11px] text-mission-glow leading-snug font-mono animate-pulse">
             Analyzing policy impact...
