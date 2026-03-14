@@ -33,16 +33,14 @@ export function PolicyLetterModal({ policy, result, onClose }: PolicyLetterModal
   }, [])
 
   const handleGenerate = () => {
-    draft.mutate(
-      {
-        policy,
-        result,
-        letter_type: letterType,
-        user_name: userName,
-        user_location: userLocation,
-      },
-      { onSuccess: () => setStep("result") }
-    )
+    setStep("result")
+    draft.mutate({
+      policy,
+      result,
+      letter_type: letterType,
+      user_name: userName,
+      user_location: userLocation,
+    })
   }
 
   const handleCopy = async () => {
@@ -74,7 +72,7 @@ export function PolicyLetterModal({ policy, result, onClose }: PolicyLetterModal
           <div className="flex items-center gap-3">
             {step === "result" && (
               <button
-                onClick={() => setStep("form")}
+                onClick={() => { setStep("form"); draft.reset() }}
                 className="text-mission-muted hover:text-mission-glow transition-colors"
                 aria-label="Back"
               >
@@ -209,10 +207,13 @@ export function PolicyLetterModal({ policy, result, onClose }: PolicyLetterModal
                   </div>
                 </>
               ) : draft.isError ? (
-                <div className="flex flex-col items-center justify-center py-12 gap-2">
+                <div className="flex flex-col items-center justify-center py-12 gap-3">
                   <p className="text-[12px] text-red-400 font-mono">Failed to generate letter.</p>
+                  <p className="text-[11px] text-mission-muted font-mono text-center max-w-xs">
+                    {draft.error instanceof Error ? draft.error.message : "Check that the backend server is running."}
+                  </p>
                   <button
-                    onClick={() => setStep("form")}
+                    onClick={() => { setStep("form"); draft.reset() }}
                     className="text-[11px] text-mission-muted hover:text-mission-glow underline"
                   >
                     Try again
