@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useRef, useState } from "react"
 import { SlidersHorizontal, Target } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { GoalModePanel } from "@/components/goal-mode-panel"
@@ -24,9 +24,17 @@ function fromApiPolicy(api: PolicyInput): PolicyValues {
   }
 }
 
+function policyChanged(a: PolicyValues, b: PolicyValues | null): boolean {
+  if (!b) return true
+  return (Object.keys(a) as (keyof PolicyValues)[]).some((k) => a[k] !== b[k])
+}
+
 export function PolicyPanel({ onSimulate, isPending }: PolicyPanelProps) {
   const [mode, setMode] = useState<Mode>("manual")
   const [policy, setPolicy] = useState<PolicyValues>(POLICY_DEFAULTS)
+  const lastSimulated = useRef<PolicyValues | null>(null)
+
+  const hasChanges = policyChanged(policy, lastSimulated.current)
 
   const update = (key: keyof PolicyValues) => (v: number) =>
     setPolicy((prev) => ({ ...prev, [key]: v }))
@@ -34,6 +42,7 @@ export function PolicyPanel({ onSimulate, isPending }: PolicyPanelProps) {
   const handleApplyGoal = (recommended: PolicyInput) => {
     const values = fromApiPolicy(recommended)
     setPolicy(values)
+    lastSimulated.current = { ...values }
     setMode("manual")
     onSimulate?.(values)
   }
@@ -77,9 +86,12 @@ export function PolicyPanel({ onSimulate, isPending }: PolicyPanelProps) {
 
           <Button
             variant="outline"
-            className="w-full border-[--color-mission-glow]/40 text-[--color-mission-glow] hover:bg-[--color-mission-glow]/10"
-            disabled={isPending}
-            onClick={() => onSimulate?.(policy)}
+            className="w-full border-[--color-mission-glow]/40 text-[--color-mission-glow] hover:bg-[--color-mission-glow]/10 disabled:opacity-40 disabled:cursor-not-allowed"
+            disabled={isPending || !hasChanges}
+            onClick={() => {
+              lastSimulated.current = { ...policy }
+              onSimulate?.(policy)
+            }}
           >
             {isPending ? "Simulating..." : "Run Simulation"}
           </Button>
