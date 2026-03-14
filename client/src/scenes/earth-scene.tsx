@@ -1,4 +1,4 @@
-import { Suspense, lazy, useEffect, useMemo, useRef, useState } from "react"
+import { Suspense, lazy, useCallback, useEffect, useMemo, useRef, useState } from "react"
 import type { SimulationResult } from "@/services/api"
 import {
   buildHeatmapData,
@@ -8,8 +8,18 @@ import {
   getHeatmapSaturation,
 } from "./globe-data"
 import type { HTMLLabelDatum } from "./globe-data"
+import type { GlobeMethods } from "react-globe.gl"
+import * as THREE from "three"
+import { createAtmosphereMesh, updateAtmosphereTime } from "./nasa-atmosphere"
+import { createCo2Plumes, normaliseCo2, type Co2PlumesSystem } from "./co2-plumes"
 
-const Globe = lazy(() => import("react-globe.gl"))
+const Globe = lazy(() => import("react-globe.gl")) as React.LazyExoticComponent<
+  React.ForwardRefExoticComponent<
+    import("react-globe.gl").GlobeProps & {
+      ref?: React.MutableRefObject<GlobeMethods | undefined>
+    }
+  >
+>
 
 // ---------------------------------------------------------------------------
 // Baseline defaults shown before the first simulation runs
@@ -37,6 +47,67 @@ interface EarthSceneProps {
 export function EarthScene({ result, compact }: EarthSceneProps) {
   const containerRef = useRef<HTMLDivElement>(null)
   const [dims, setDims] = useState({ width: 0, height: 0 })
+
+  // --- Three.js scene injection refs ---
+  const globeRef          = useRef<GlobeMethods | undefined>(undefined)
+  const atmosphereMeshRef = useRef<THREE.Mesh | null>(null)
+  const co2PlumesRef      = useRef<Co2PlumesSystem | null>(null)
+  const emissionsRef      = useRef<number>(36.8)
+  const rafIdRef          = useRef<number | null>(null)
+
+  // Keep emissions ref in sync with latest result (avoids stale closure in RAF)
+  useEffect(() => {
+    emissionsRef.current = result?.co2_emissions ?? 36.8
+  }, [result])
+
+  const handleGlobeReady = useCallback(() => {
+    if (!globeRef.current) return
+
+    const globeRadius = globeRef.current.getGlobeRadius()
+
+    // NASA atmosphere glow
+    const atmMesh = createAtmosphereMesh(globeRadius * 1.06)
+    atmosphereMeshRef.current = atmMesh
+    globeRef.current.scene().add(atmMesh)
+
+    // CO₂ emission plumes
+    const plumes = createCo2Plumes(globeRadius, (lat, lng, alt) =>
+      globeRef.current!.getCoords(lat, lng, alt)
+    )
+    co2PlumesRef.current = plumes
+    globeRef.current.scene().add(plumes.points)
+
+    // Single RAF loop drives both systems
+    const startTime = performance.now()
+    function animate() {
+      const t = (performance.now() - startTime) / 1000
+      if (atmosphereMeshRef.current) updateAtmosphereTime(atmosphereMeshRef.current, t)
+      if (co2PlumesRef.current) {
+        co2PlumesRef.current.updateTime(t)
+        co2PlumesRef.current.updateEmissions(normaliseCo2(emissionsRef.current))
+      }
+      rafIdRef.current = requestAnimationFrame(animate)
+    }
+    rafIdRef.current = requestAnimationFrame(animate)
+  }, [])
+
+  useEffect(() => {
+    return () => {
+      if (rafIdRef.current !== null) cancelAnimationFrame(rafIdRef.current)
+      const atm = atmosphereMeshRef.current
+      if (atm) {
+        globeRef.current?.scene().remove(atm)
+        ;(atm.material as THREE.ShaderMaterial).dispose()
+        atm.geometry.dispose()
+      }
+      const plumes = co2PlumesRef.current
+      if (plumes) {
+        globeRef.current?.scene().remove(plumes.points)
+        ;(plumes.points.material as THREE.ShaderMaterial).dispose()
+        plumes.points.geometry.dispose()
+      }
+    }
+  }, [])
 
   useEffect(() => {
     if (!containerRef.current) return
@@ -79,6 +150,8 @@ export function EarthScene({ result, compact }: EarthSceneProps) {
       <Suspense fallback={<GlobeSpinner />}>
         {dims.width > 0 && (
           <Globe
+            ref={globeRef}
+            onGlobeReady={handleGlobeReady}
             width={dims.width}
             height={dims.height}
             // -- Performance optimizations --
