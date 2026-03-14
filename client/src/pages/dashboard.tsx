@@ -8,6 +8,7 @@ import { EarthScene } from "@/scenes/earth-scene"
 import { AiExplanationPanel } from "@/components/ai-explanation-panel"
 import { RiskTrendChart } from "@/components/risk-trend-chart"
 import { TemperatureProjectionChart } from "@/components/temperature-projection-chart"
+import { EmissionsBreakdown } from "@/components/emissions-breakdown"
 import { useSimulation } from "@/hooks/use-simulation"
 import { useExplanation } from "@/hooks/use-explanation"
 import type { PolicyInput } from "@/services/api"
@@ -105,9 +106,10 @@ export function DashboardPage({ onNavigate }: DashboardPageProps) {
 
       {/* Bottom panel row */}
       <motion.div style={{ gridArea: "bottom" }} variants={panelVariants}>
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 sm:h-[200px] [&>*]:min-h-[180px] sm:[&>*]:min-h-0">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2 sm:h-[200px] [&>*]:min-h-[180px] sm:[&>*]:min-h-0">
           <RiskTrendChart riskScore={simulation.data?.risk_score} />
           <TemperatureProjectionChart temperatureRise={simulation.data?.temperature_rise} />
+          <EmissionsBreakdown result={simulation.data} />
           <AiExplanationPanel
             explanation={explanation.data?.explanation}
             isPending={explanation.isPending}
