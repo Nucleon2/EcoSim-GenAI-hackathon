@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react"
+import { useEffect, useState } from "react"
 import { motion, type Variants } from "framer-motion"
 import { TopBar } from "@/components/top-bar"
 import { SimulationMetrics } from "@/components/simulation-metrics"
@@ -10,6 +10,14 @@ import { TemperatureProjectionChart } from "@/components/temperature-projection-
 import { useSimulation } from "@/hooks/use-simulation"
 import { useExplanation } from "@/hooks/use-explanation"
 import type { PolicyInput } from "@/services/api"
+
+const DEFAULT_SCENE_POLICY: PolicyInput = {
+  carbon_tax: 50,
+  renewable_adoption: 30,
+  deforestation_reduction: 25,
+  methane_reduction: 20,
+  ev_adoption: 15,
+}
 
 const pageVariants: Variants = {
   hidden: {},
@@ -41,36 +49,26 @@ function toApiInput(values: PolicyValues): PolicyInput {
 export function DashboardPage() {
   const simulation = useSimulation()
   const explanation = useExplanation()
-  const lastPolicyRef = useRef<PolicyInput | null>(null)
+  const [scenePolicy, setScenePolicy] = useState<PolicyInput>(DEFAULT_SCENE_POLICY)
 
   const handleSimulate = (values: PolicyValues) => {
     const input = toApiInput(values)
-    lastPolicyRef.current = input
+    setScenePolicy(input)
     simulation.mutate(input)
   }
 
   useEffect(() => {
-    if (simulation.data && lastPolicyRef.current) {
+    if (simulation.data) {
       explanation.mutate({
-        policy: lastPolicyRef.current,
+        policy: scenePolicy,
         result: simulation.data,
       })
     }
-  }, [simulation.data])
+  }, [explanation, scenePolicy, simulation.data])
 
   return (
     <motion.div
-      className="h-screen overflow-hidden bg-[--color-mission-bg] p-2 gap-2 grid"
-      style={{
-        gridTemplateAreas: `
-          "topbar topbar"
-          "metrics metrics"
-          "policy center"
-          "policy bottom"
-        `,
-        gridTemplateRows: "auto auto 1fr auto",
-        gridTemplateColumns: "320px 1fr",
-      }}
+      className="dashboard-grid h-screen overflow-auto bg-[--color-mission-bg] p-2 gap-2"
       variants={pageVariants}
       initial="hidden"
       animate="visible"
@@ -94,14 +92,14 @@ export function DashboardPage() {
       <motion.div
         style={{ gridArea: "center" }}
         variants={panelVariants}
-        className="glass-panel glow-ring overflow-hidden min-h-0"
+        className="glass-panel glow-ring overflow-hidden min-h-[360px] lg:min-h-0"
       >
-        <EarthScene />
+        <EarthScene policy={scenePolicy} result={simulation.data} />
       </motion.div>
 
       {/* Bottom panel row */}
       <motion.div style={{ gridArea: "bottom" }} variants={panelVariants}>
-        <div className="grid grid-cols-3 gap-2 h-[200px]">
+        <div className="grid min-h-[200px] grid-cols-1 gap-2 md:h-[200px] md:grid-cols-3">
           <RiskTrendChart riskScore={simulation.data?.risk_score} />
           <TemperatureProjectionChart temperatureRise={simulation.data?.temperature_rise} />
           <AiExplanationPanel

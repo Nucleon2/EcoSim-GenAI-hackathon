@@ -124,6 +124,30 @@
 }
 
 @layer components {
+  .dashboard-grid {
+    display: grid;
+    grid-template-areas:
+      "topbar"
+      "metrics"
+      "center"
+      "policy"
+      "bottom";
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto auto minmax(360px, 1fr) auto auto;
+  }
+
+  @media (min-width: 1024px) {
+    .dashboard-grid {
+      grid-template-areas:
+        "topbar topbar"
+        "metrics metrics"
+        "policy center"
+        "policy bottom";
+      grid-template-columns: 320px minmax(0, 1fr);
+      grid-template-rows: auto auto minmax(0, 1fr) auto;
+    }
+  }
+
   .policy-slider-track {
     position: relative;
     display: flex;

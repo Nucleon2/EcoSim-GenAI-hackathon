@@ -12,7 +12,6 @@ export function EarthShell() {
   const [map, bumpMap] = useTexture([EARTH_TEXTURE, BUMP_TEXTURE])
 
   const material = useMemo(() => {
-    map.colorSpace = THREE.SRGBColorSpace
     return {
       color: new THREE.Color("#8fd7ff"),
       emissive: new THREE.Color("#0c5d72"),
@@ -21,7 +20,7 @@ export function EarthShell() {
       metalness: 0.08,
       bumpScale: 0.03,
     }
-  }, [map])
+  }, [])
 
   useFrame((state, delta) => {
     if (earthRef.current) {
