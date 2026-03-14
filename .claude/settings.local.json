@@ -1,0 +1,25 @@
+{
+  "attribution": {
+    "commit": "",
+    "pr": ""
+  },
+  "permissions": {
+    "allow": [
+      "mcp__context7__resolve-library-id",
+      "mcp__sequential-thinking__sequentialthinking",
+      "Bash(cd C:/Users/ahmad/Documents/programing/EcoSim-GenAI-hackathon/server && pip install -r requirements.txt 2>&1 | tail -5)",
+      "Bash(kill %1 2>/dev/null; taskkill //F //IM python.exe 2>/dev/null; echo \"done\")",
+      "mcp__context7__query-docs",
+      "Bash(git add:*)",
+      "Bash(cd client:*)",
+      "Bash(npx tsc:*)",
+      "Bash(ls:*)",
+      "Bash(cd:*)",
+      "Bash(git *)",
+      "Bash(npm *)",
+      "Bash(ls)",
+      "Bash(mkdir)",
+      "Bash(cd server:*)"
+    ]
+  }
+}
