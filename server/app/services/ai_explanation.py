@@ -1,8 +1,9 @@
+import json
 import os
 
 from openai import AsyncOpenAI
 
-from app.models.simulation import PolicyInput, SimulationResult
+from app.models.simulation import PolicyInput, PolicyLetterResponse, SimulationResult
 
 client = AsyncOpenAI(
     api_key=os.getenv("DEEPSEEK_API_KEY", ""),
@@ -108,6 +109,74 @@ async def generate_comparison_explanation(
     )
 
     return response.choices[0].message.content or "Unable to generate comparison."
+
+
+LETTER_SYSTEM_PROMPT = (
+    "You are a professional climate policy advocate. Draft a compelling formal letter to a "
+    "government representative advocating for specific climate policy targets. Use the placeholder "
+    "[Representative Name] for the recipient. Include the actual numerical targets from the "
+    "simulation data. The letter should be persuasive, factual, and professionally toned. "
+    "Around 300 words. Return a JSON object with keys 'subject' (email subject line, under 80 chars) "
+    "and 'letter' (the full letter text including salutation and sign-off)."
+)
+
+MEMO_SYSTEM_PROMPT = (
+    "You are a climate policy analyst. Draft a professional policy memorandum advocating for "
+    "specific climate policy targets based on simulation data. Use standard memo format with "
+    "header fields: TO: Policymakers and Decision Makers, FROM: the user's name, "
+    "RE: Climate Action Policy Targets. Include the actual numerical targets from the simulation. "
+    "Be analytical, evidence-based, and persuasive. Around 300 words. Return a JSON object with "
+    "keys 'subject' (memo subject line, under 80 chars) and 'letter' (the full memo text)."
+)
+
+
+async def generate_policy_letter(
+    policy: PolicyInput,
+    result: SimulationResult,
+    letter_type: str,
+    user_name: str,
+    user_location: str,
+) -> PolicyLetterResponse:
+    system_prompt = MEMO_SYSTEM_PROMPT if letter_type == "memo" else LETTER_SYSTEM_PROMPT
+    from_line = f"From: {user_name}" if user_name else "From: A Concerned Citizen"
+    location_line = f"Location: {user_location}" if user_location else ""
+
+    user_prompt = (
+        f"Writer information:\n"
+        f"{from_line}\n"
+        f"{location_line}\n\n"
+        f"Simulation policy inputs:\n"
+        f"- Carbon tax: ${policy.carbon_tax}/tonne\n"
+        f"- Renewable adoption: {policy.renewable_adoption}%\n"
+        f"- Deforestation reduction: {policy.deforestation_reduction}%\n"
+        f"- Methane reduction: {policy.methane_reduction}%\n"
+        f"- EV adoption: {policy.ev_adoption}%\n"
+        f"- Target year: {policy.target_year}\n\n"
+        f"Projected outcomes under these policies:\n"
+        f"- CO2 emissions: {result.co2_emissions:.1f} GtCO2/year (down from 36.8 baseline)\n"
+        f"- Temperature rise: {result.temperature_rise:.2f}°C above pre-industrial levels\n"
+        f"- Sea level rise: {result.sea_level_rise:.1f} mm/year\n"
+        f"- Climate risk score: {result.risk_score:.0f}/100\n\n"
+        f"Draft the {'policy memo' if letter_type == 'memo' else 'representative letter'} now."
+    )
+
+    response = await client.chat.completions.create(
+        model="deepseek-chat",
+        messages=[
+            {"role": "system", "content": system_prompt},
+            {"role": "user", "content": user_prompt},
+        ],
+        temperature=0.7,
+        max_tokens=800,
+        response_format={"type": "json_object"},
+    )
+
+    content = response.choices[0].message.content or "{}"
+    parsed = json.loads(content)
+    return PolicyLetterResponse(
+        letter=parsed.get("letter", "Unable to generate letter."),
+        subject=parsed.get("subject", "Climate Policy Action"),
+    )
 
 
 async def generate_explanation(
