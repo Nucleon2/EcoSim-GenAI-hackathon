@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { Target, AlertTriangle } from "lucide-react"
+import { Target, AlertTriangle, Thermometer, Factory, Waves, ShieldAlert } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { useOptimize } from "@/hooks/use-optimize"
 import type { PolicyInput, OptimizeRequest } from "@/services/api"
@@ -112,6 +112,43 @@ export function GoalModePanel({ onApply }: GoalModePanelProps) {
             </div>
           )}
 
+          {/* Projected Outcomes */}
+          <div className="flex flex-col gap-2">
+            <span className="text-xs uppercase tracking-widest text-[--color-mission-muted]">
+              Projected Outcomes
+            </span>
+            <div className="grid grid-cols-2 gap-1.5">
+              <OutcomeCard
+                icon={Thermometer}
+                label="Temperature"
+                value={`+${result.projected_results.temperature_rise.toFixed(1)}°C`}
+                target={enabled.temperature_rise && values.temperature_rise ? parseFloat(values.temperature_rise) : undefined}
+                actual={result.projected_results.temperature_rise}
+              />
+              <OutcomeCard
+                icon={Factory}
+                label="CO₂ Emissions"
+                value={`${result.projected_results.co2_emissions.toFixed(1)} Gt`}
+                target={enabled.co2_emissions && values.co2_emissions ? parseFloat(values.co2_emissions) : undefined}
+                actual={result.projected_results.co2_emissions}
+              />
+              <OutcomeCard
+                icon={Waves}
+                label="Sea Level"
+                value={`+${result.projected_results.sea_level_rise.toFixed(1)} mm`}
+                target={enabled.sea_level_rise && values.sea_level_rise ? parseFloat(values.sea_level_rise) : undefined}
+                actual={result.projected_results.sea_level_rise}
+              />
+              <OutcomeCard
+                icon={ShieldAlert}
+                label="Risk Score"
+                value={result.projected_results.risk_score.toFixed(0)}
+                target={enabled.risk_score && values.risk_score ? parseFloat(values.risk_score) : undefined}
+                actual={result.projected_results.risk_score}
+              />
+            </div>
+          </div>
+
           <div className="flex flex-col gap-2">
             <span className="text-xs uppercase tracking-widest text-[--color-mission-muted]">
               Recommended Policies
@@ -143,6 +180,41 @@ export function GoalModePanel({ onApply }: GoalModePanelProps) {
           </Button>
         </div>
       )}
+    </div>
+  )
+}
+
+function OutcomeCard({
+  icon: Icon,
+  label,
+  value,
+  target,
+  actual,
+}: {
+  icon: React.ComponentType<{ className?: string }>
+  label: string
+  value: string
+  target?: number
+  actual: number
+}) {
+  const met = target == null || actual <= target
+  return (
+    <div
+      className="flex items-center gap-2 px-2.5 py-2 bg-[--color-mission-surface]/50 border border-[--color-mission-border]"
+      style={{ borderLeftWidth: 2, borderLeftColor: met ? "oklch(0.72 0.19 145)" : "oklch(0.80 0.18 85)" }}
+    >
+      <Icon className="size-3.5 shrink-0 text-[--color-mission-muted]" />
+      <div className="flex flex-col min-w-0">
+        <span className="text-[9px] uppercase tracking-wider text-[--color-mission-muted] leading-none">{label}</span>
+        <span className="font-mono text-sm font-bold tabular-nums" style={{ color: met ? "oklch(0.72 0.19 145)" : "oklch(0.80 0.18 85)" }}>
+          {value}
+        </span>
+        {target != null && (
+          <span className="text-[9px] text-[--color-mission-muted]">
+            target: &lt;{target}
+          </span>
+        )}
+      </div>
     </div>
   )
 }

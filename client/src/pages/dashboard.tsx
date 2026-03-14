@@ -8,8 +8,13 @@ import { EarthScene } from "@/scenes/earth-scene"
 import { AiExplanationPanel } from "@/components/ai-explanation-panel"
 import { RiskTrendChart } from "@/components/risk-trend-chart"
 import { TemperatureProjectionChart } from "@/components/temperature-projection-chart"
+import { EmissionsBreakdown } from "@/components/emissions-breakdown"
+import { ExportButton } from "@/components/export-button"
+import { ShareButton } from "@/components/share-button"
+import { OnboardingOverlay, useOnboarding } from "@/components/onboarding-overlay"
 import { useSimulation } from "@/hooks/use-simulation"
 import { useExplanation } from "@/hooks/use-explanation"
+import { useSimulationContext } from "@/context/simulation-context"
 import type { PolicyInput } from "@/services/api"
 
 const pageVariants = {
@@ -36,6 +41,7 @@ function toApiInput(values: PolicyValues): PolicyInput {
     deforestation_reduction: values.deforestationReduction,
     methane_reduction: values.methaneReduction,
     ev_adoption: values.evAdoption,
+    target_year: values.targetYear,
   }
 }
 
@@ -47,6 +53,11 @@ export function DashboardPage({ onNavigate }: DashboardPageProps) {
   const simulation = useSimulation()
   const explanation = useExplanation()
   const lastPolicyRef = useRef<PolicyInput | null>(null)
+  const { dashboardPolicy, setDashboardPolicy, dashboardResult, setDashboardResult } = useSimulationContext()
+  const { showOnboarding, dismissOnboarding } = useOnboarding()
+
+  // Use persisted result when returning from another page
+  const displayResult = simulation.data ?? dashboardResult
 
   const handleSimulate = (values: PolicyValues) => {
     const input = toApiInput(values)
@@ -55,27 +66,22 @@ export function DashboardPage({ onNavigate }: DashboardPageProps) {
   }
 
   useEffect(() => {
-    if (simulation.data && lastPolicyRef.current) {
-      explanation.mutate({
-        policy: lastPolicyRef.current,
-        result: simulation.data,
-      })
+    if (simulation.data) {
+      setDashboardResult(simulation.data)
+      if (lastPolicyRef.current) {
+        explanation.mutate({
+          policy: lastPolicyRef.current,
+          result: simulation.data,
+        })
+      }
     }
   }, [simulation.data])
 
   return (
+    <>
+    {showOnboarding && <OnboardingOverlay onDismiss={dismissOnboarding} />}
     <motion.div
-      className="h-screen overflow-hidden bg-[--color-mission-bg] p-2 gap-2 grid"
-      style={{
-        gridTemplateAreas: `
-          "topbar topbar"
-          "metrics metrics"
-          "policy center"
-          "policy bottom"
-        `,
-        gridTemplateRows: "auto auto 1fr auto",
-        gridTemplateColumns: "320px 1fr",
-      }}
+      className="dashboard-layout bg-[--color-mission-bg] p-2 gap-2"
       variants={pageVariants}
       initial="hidden"
       animate="visible"
@@ -85,6 +91,8 @@ export function DashboardPage({ onNavigate }: DashboardPageProps) {
         <div className="flex-1">
           <TopBar />
         </div>
+        <ShareButton policy={dashboardPolicy} />
+        <ExportButton result={displayResult} />
         <button
           onClick={() => onNavigate("comparison")}
           className="glass-panel glow-ring flex items-center gap-2 px-4 text-[--color-mission-muted] hover:text-[--color-mission-glow] hover:border-[--color-mission-glow]/30 transition-colors"
@@ -96,28 +104,34 @@ export function DashboardPage({ onNavigate }: DashboardPageProps) {
 
       {/* Simulation metrics */}
       <motion.div style={{ gridArea: "metrics" }} variants={panelVariants}>
-        <SimulationMetrics result={simulation.data} />
+        <SimulationMetrics result={displayResult} />
       </motion.div>
 
       {/* Left policy panel */}
       <motion.div style={{ gridArea: "policy" }} variants={panelVariants} className="min-h-0">
-        <PolicyPanel onSimulate={handleSimulate} isPending={simulation.isPending} />
+        <PolicyPanel
+          onSimulate={handleSimulate}
+          isPending={simulation.isPending}
+          initialPolicy={dashboardPolicy}
+          onPolicyChange={setDashboardPolicy}
+        />
       </motion.div>
 
       {/* Center globe */}
       <motion.div
         style={{ gridArea: "center" }}
         variants={panelVariants}
-        className="glass-panel glow-ring overflow-hidden min-h-0"
+        className="glass-panel glow-ring overflow-hidden min-h-[300px] md:min-h-0"
       >
-        <EarthScene result={simulation.data} />
+        <EarthScene result={displayResult} />
       </motion.div>
 
       {/* Bottom panel row */}
       <motion.div style={{ gridArea: "bottom" }} variants={panelVariants}>
-        <div className="grid grid-cols-3 gap-2 h-[200px]">
-          <RiskTrendChart riskScore={simulation.data?.risk_score} />
-          <TemperatureProjectionChart temperatureRise={simulation.data?.temperature_rise} />
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2 sm:h-[200px] [&>*]:min-h-[180px] sm:[&>*]:min-h-0">
+          <RiskTrendChart riskScore={displayResult?.risk_score} />
+          <TemperatureProjectionChart temperatureRise={displayResult?.temperature_rise} />
+          <EmissionsBreakdown result={displayResult} />
           <AiExplanationPanel
             explanation={explanation.data?.explanation}
             isPending={explanation.isPending}
@@ -125,5 +139,6 @@ export function DashboardPage({ onNavigate }: DashboardPageProps) {
         </div>
       </motion.div>
     </motion.div>
+    </>
   )
 }

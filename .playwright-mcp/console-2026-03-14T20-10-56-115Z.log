@@ -1,0 +1,86 @@
+[     488ms] [WARNING] The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=a2b18a4c:8638
+[     488ms] [WARNING] The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=a2b18a4c:8638
+[     489ms] [WARNING] The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=a2b18a4c:8638
+[     489ms] [WARNING] The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=a2b18a4c:8638
+[     736ms] [WARNING] THREE.THREE.Clock: This module has been deprecated. Please use THREE.Timer instead. @ http://localhost:5173/node_modules/.vite/deps/chunk-CNHFXWMX.js?v=a2b18a4c:745
+[     743ms] [WARNING] THREE.THREE.Clock: This module has been deprecated. Please use THREE.Timer instead. @ http://localhost:5173/node_modules/.vite/deps/chunk-CNHFXWMX.js?v=a2b18a4c:745
+[     749ms] [WARNING] THREE.THREE.Clock: This module has been deprecated. Please use THREE.Timer instead. @ http://localhost:5173/node_modules/.vite/deps/chunk-CNHFXWMX.js?v=a2b18a4c:745
+[     762ms] [WARNING] THREE.THREE.Clock: This module has been deprecated. Please use THREE.Timer instead. @ http://localhost:5173/node_modules/.vite/deps/chunk-CNHFXWMX.js?v=a2b18a4c:745
+[     770ms] [WARNING] THREE.THREE.Clock: This module has been deprecated. Please use THREE.Timer instead. @ http://localhost:5173/node_modules/.vite/deps/chunk-CNHFXWMX.js?v=a2b18a4c:745
+[     773ms] [WARNING] THREE.Color: Alpha component of rgba(140,139,106,0.19) will be ignored. @ http://localhost:5173/node_modules/.vite/deps/chunk-CNHFXWMX.js?v=a2b18a4c:745
+[    1264ms] [WARNING] THREE.Color: Alpha component of rgba(140,139,106,0.19) will be ignored. @ http://localhost:5173/node_modules/.vite/deps/chunk-CNHFXWMX.js?v=a2b18a4c:745
+[    1799ms] [WARNING] THREE.THREE.Clock: This module has been deprecated. Please use THREE.Timer instead. @ http://localhost:5173/node_modules/.vite/deps/chunk-CNHFXWMX.js?v=a2b18a4c:745
+[    1804ms] [WARNING] THREE.THREE.Clock: This module has been deprecated. Please use THREE.Timer instead. @ http://localhost:5173/node_modules/.vite/deps/chunk-CNHFXWMX.js?v=a2b18a4c:745
+[    1822ms] [WARNING] THREE.Color: Alpha component of rgba(140,139,106,0.19) will be ignored. @ http://localhost:5173/node_modules/.vite/deps/chunk-CNHFXWMX.js?v=a2b18a4c:745
+[    3590ms] [WARNING] THREE.THREE.Clock: This module has been deprecated. Please use THREE.Timer instead. @ http://localhost:5173/node_modules/.vite/deps/chunk-CNHFXWMX.js?v=a2b18a4c:745
+[    3596ms] [WARNING] THREE.THREE.Clock: This module has been deprecated. Please use THREE.Timer instead. @ http://localhost:5173/node_modules/.vite/deps/chunk-CNHFXWMX.js?v=a2b18a4c:745
+[    4324ms] [WARNING] THREE.Color: Alpha component of rgba(140,139,106,0.19) will be ignored. @ http://localhost:5173/node_modules/.vite/deps/chunk-CNHFXWMX.js?v=a2b18a4c:745
+[   38537ms] [WARNING] THREE.Color: Alpha component of rgba(149,134,101,0.19) will be ignored. @ http://localhost:5173/node_modules/.vite/deps/chunk-CNHFXWMX.js?v=a2b18a4c:745
+[   71851ms] [WARNING] THREE.Color: Alpha component of rgba(140,139,106,0.19) will be ignored. @ http://localhost:5173/node_modules/.vite/deps/chunk-CNHFXWMX.js?v=a2b18a4c:745
+[   72465ms] [WARNING] THREE.Color: Alpha component of rgba(16,202,189,0.15) will be ignored. @ http://localhost:5173/node_modules/.vite/deps/chunk-CNHFXWMX.js?v=a2b18a4c:745
+[  103441ms] [WARNING] THREE.Color: Alpha component of rgba(140,139,106,0.19) will be ignored. @ http://localhost:5173/node_modules/.vite/deps/chunk-CNHFXWMX.js?v=a2b18a4c:745
+[  104452ms] [WARNING] THREE.Color: Alpha component of rgba(202,107,65,0.21) will be ignored. @ http://localhost:5173/node_modules/.vite/deps/chunk-CNHFXWMX.js?v=a2b18a4c:745
+[  195808ms] [WARNING] THREE.Color: Alpha component of rgba(140,139,106,0.19) will be ignored. @ http://localhost:5173/node_modules/.vite/deps/chunk-CNHFXWMX.js?v=a2b18a4c:745
+[  196455ms] [WARNING] THREE.Color: Alpha component of rgba(77,171,149,0.17) will be ignored. @ http://localhost:5173/node_modules/.vite/deps/chunk-CNHFXWMX.js?v=a2b18a4c:745
+[  261380ms] [WARNING] THREE.THREE.Clock: This module has been deprecated. Please use THREE.Timer instead. @ http://localhost:5173/node_modules/.vite/deps/chunk-CNHFXWMX.js?v=a2b18a4c:745
+[  261387ms] [WARNING] THREE.THREE.Clock: This module has been deprecated. Please use THREE.Timer instead. @ http://localhost:5173/node_modules/.vite/deps/chunk-CNHFXWMX.js?v=a2b18a4c:745
+[  261391ms] [WARNING] THREE.THREE.Clock: This module has been deprecated. Please use THREE.Timer instead. @ http://localhost:5173/node_modules/.vite/deps/chunk-CNHFXWMX.js?v=a2b18a4c:745
+[  261395ms] [WARNING] THREE.THREE.Clock: This module has been deprecated. Please use THREE.Timer instead. @ http://localhost:5173/node_modules/.vite/deps/chunk-CNHFXWMX.js?v=a2b18a4c:745
+[  261424ms] [WARNING] THREE.Color: Alpha component of rgba(140,139,106,0.19) will be ignored. @ http://localhost:5173/node_modules/.vite/deps/chunk-CNHFXWMX.js?v=a2b18a4c:745
+[  261900ms] [WARNING] THREE.Color: Alpha component of rgba(140,139,106,0.19) will be ignored. @ http://localhost:5173/node_modules/.vite/deps/chunk-CNHFXWMX.js?v=a2b18a4c:745
+[  289295ms] [WARNING] THREE.THREE.Clock: This module has been deprecated. Please use THREE.Timer instead. @ http://localhost:5173/node_modules/.vite/deps/chunk-CNHFXWMX.js?v=a2b18a4c:745
+[  289300ms] [WARNING] THREE.THREE.Clock: This module has been deprecated. Please use THREE.Timer instead. @ http://localhost:5173/node_modules/.vite/deps/chunk-CNHFXWMX.js?v=a2b18a4c:745
+[  289306ms] [WARNING] THREE.THREE.Clock: This module has been deprecated. Please use THREE.Timer instead. @ http://localhost:5173/node_modules/.vite/deps/chunk-CNHFXWMX.js?v=a2b18a4c:745
+[  289310ms] [WARNING] THREE.THREE.Clock: This module has been deprecated. Please use THREE.Timer instead. @ http://localhost:5173/node_modules/.vite/deps/chunk-CNHFXWMX.js?v=a2b18a4c:745
+[  289351ms] [WARNING] THREE.Color: Alpha component of rgba(149,134,101,0.19) will be ignored. @ http://localhost:5173/node_modules/.vite/deps/chunk-CNHFXWMX.js?v=a2b18a4c:745
+[  289831ms] [WARNING] THREE.Color: Alpha component of rgba(120,149,120,0.18) will be ignored. @ http://localhost:5173/node_modules/.vite/deps/chunk-CNHFXWMX.js?v=a2b18a4c:745
+[  326685ms] [WARNING] THREE.THREE.Clock: This module has been deprecated. Please use THREE.Timer instead. @ http://localhost:5173/node_modules/.vite/deps/chunk-CNHFXWMX.js?v=a2b18a4c:745
+[  326691ms] [WARNING] THREE.THREE.Clock: This module has been deprecated. Please use THREE.Timer instead. @ http://localhost:5173/node_modules/.vite/deps/chunk-CNHFXWMX.js?v=a2b18a4c:745
+[  326697ms] [WARNING] THREE.THREE.Clock: This module has been deprecated. Please use THREE.Timer instead. @ http://localhost:5173/node_modules/.vite/deps/chunk-CNHFXWMX.js?v=a2b18a4c:745
+[  326701ms] [WARNING] THREE.THREE.Clock: This module has been deprecated. Please use THREE.Timer instead. @ http://localhost:5173/node_modules/.vite/deps/chunk-CNHFXWMX.js?v=a2b18a4c:745
+[  326742ms] [WARNING] THREE.Color: Alpha component of rgba(202,107,65,0.21) will be ignored. @ http://localhost:5173/node_modules/.vite/deps/chunk-CNHFXWMX.js?v=a2b18a4c:745
+[  327180ms] [WARNING] THREE.Color: Alpha component of rgba(16,202,189,0.15) will be ignored. @ http://localhost:5173/node_modules/.vite/deps/chunk-CNHFXWMX.js?v=a2b18a4c:745
+[  359411ms] [WARNING] The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=a2b18a4c:8638
+[  359411ms] [WARNING] The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=a2b18a4c:8638
+[  359411ms] [WARNING] The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=a2b18a4c:8638
+[  359411ms] [WARNING] The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=a2b18a4c:8638
+[  359472ms] [WARNING] THREE.THREE.Clock: This module has been deprecated. Please use THREE.Timer instead. @ http://localhost:5173/node_modules/.vite/deps/chunk-CNHFXWMX.js?v=a2b18a4c:745
+[  359477ms] [WARNING] THREE.THREE.Clock: This module has been deprecated. Please use THREE.Timer instead. @ http://localhost:5173/node_modules/.vite/deps/chunk-CNHFXWMX.js?v=a2b18a4c:745
+[  359489ms] [WARNING] THREE.Color: Alpha component of rgba(140,139,106,0.19) will be ignored. @ http://localhost:5173/node_modules/.vite/deps/chunk-CNHFXWMX.js?v=a2b18a4c:745
+[  465888ms] [WARNING] THREE.Color: Alpha component of rgba(149,134,101,0.19) will be ignored. @ http://localhost:5173/node_modules/.vite/deps/chunk-CNHFXWMX.js?v=a2b18a4c:745
+[  492995ms] [WARNING] THREE.THREE.Clock: This module has been deprecated. Please use THREE.Timer instead. @ http://localhost:5173/node_modules/.vite/deps/chunk-CNHFXWMX.js?v=a2b18a4c:745
+[  493001ms] [WARNING] THREE.THREE.Clock: This module has been deprecated. Please use THREE.Timer instead. @ http://localhost:5173/node_modules/.vite/deps/chunk-CNHFXWMX.js?v=a2b18a4c:745
+[  493006ms] [WARNING] THREE.THREE.Clock: This module has been deprecated. Please use THREE.Timer instead. @ http://localhost:5173/node_modules/.vite/deps/chunk-CNHFXWMX.js?v=a2b18a4c:745
+[  493011ms] [WARNING] THREE.THREE.Clock: This module has been deprecated. Please use THREE.Timer instead. @ http://localhost:5173/node_modules/.vite/deps/chunk-CNHFXWMX.js?v=a2b18a4c:745
+[  493037ms] [WARNING] THREE.Color: Alpha component of rgba(140,139,106,0.19) will be ignored. @ http://localhost:5173/node_modules/.vite/deps/chunk-CNHFXWMX.js?v=a2b18a4c:745
+[  493528ms] [WARNING] THREE.Color: Alpha component of rgba(140,139,106,0.19) will be ignored. @ http://localhost:5173/node_modules/.vite/deps/chunk-CNHFXWMX.js?v=a2b18a4c:745
+[  501582ms] [WARNING] THREE.THREE.Clock: This module has been deprecated. Please use THREE.Timer instead. @ http://localhost:5173/node_modules/.vite/deps/chunk-CNHFXWMX.js?v=a2b18a4c:745
+[  501586ms] [WARNING] THREE.THREE.Clock: This module has been deprecated. Please use THREE.Timer instead. @ http://localhost:5173/node_modules/.vite/deps/chunk-CNHFXWMX.js?v=a2b18a4c:745
+[  501592ms] [WARNING] THREE.THREE.Clock: This module has been deprecated. Please use THREE.Timer instead. @ http://localhost:5173/node_modules/.vite/deps/chunk-CNHFXWMX.js?v=a2b18a4c:745
+[  501597ms] [WARNING] THREE.THREE.Clock: This module has been deprecated. Please use THREE.Timer instead. @ http://localhost:5173/node_modules/.vite/deps/chunk-CNHFXWMX.js?v=a2b18a4c:745
+[  501633ms] [WARNING] THREE.Color: Alpha component of rgba(149,134,101,0.19) will be ignored. @ http://localhost:5173/node_modules/.vite/deps/chunk-CNHFXWMX.js?v=a2b18a4c:745
+[  502126ms] [WARNING] THREE.Color: Alpha component of rgba(120,149,120,0.18) will be ignored. @ http://localhost:5173/node_modules/.vite/deps/chunk-CNHFXWMX.js?v=a2b18a4c:745

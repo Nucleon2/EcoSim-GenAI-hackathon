@@ -8,6 +8,7 @@ import { ComparisonAiPanel } from "@/components/comparison-ai-panel"
 import { POLICY_DEFAULTS, type PolicyValues } from "@/components/policy-sliders"
 import { useComparisonSimulation } from "@/hooks/use-comparison-simulation"
 import { useComparisonExplanation } from "@/hooks/use-comparison-explanation"
+import { useSimulationContext } from "@/context/simulation-context"
 import type { PolicyInput } from "@/services/api"
 
 const pageVariants = {
@@ -34,6 +35,7 @@ function toApiInput(values: PolicyValues): PolicyInput {
     deforestation_reduction: values.deforestationReduction,
     methane_reduction: values.methaneReduction,
     ev_adoption: values.evAdoption,
+    target_year: values.targetYear,
   }
 }
 
@@ -42,11 +44,13 @@ interface ComparisonPageProps {
 }
 
 export function ComparisonPage({ onNavigate }: ComparisonPageProps) {
-  const [scenarioA, setScenarioA] = useState<PolicyValues>(POLICY_DEFAULTS)
+  const { dashboardPolicy } = useSimulationContext()
+  const [scenarioA, setScenarioA] = useState<PolicyValues>(dashboardPolicy)
   const [scenarioB, setScenarioB] = useState<PolicyValues>({
     ...POLICY_DEFAULTS,
     carbonTax: 150,
     renewableAdoption: 60,
+    targetYear: dashboardPolicy.targetYear,
   })
 
   const comparison = useComparisonSimulation()
@@ -107,7 +111,7 @@ export function ComparisonPage({ onNavigate }: ComparisonPageProps) {
       </motion.div>
 
       {/* Two-column comparison */}
-      <motion.div variants={panelVariants} className="grid grid-cols-2 gap-2 flex-1 min-h-0">
+      <motion.div variants={panelVariants} className="grid grid-cols-1 md:grid-cols-2 gap-2">
         <ScenarioColumn
           label="Scenario A"
           accent="oklch(0.65 0.18 195)"
