@@ -1,4 +1,4 @@
-import { useRef, useState } from "react"
+import { useRef, useState, useEffect, useCallback } from "react"
 import { SlidersHorizontal, Target, Calendar } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { GoalModePanel } from "@/components/goal-mode-panel"
@@ -63,6 +63,24 @@ export function PolicyPanel({ onSimulate, isPending, initialPolicy, onPolicyChan
 
   const update = (key: keyof PolicyValues) => (v: number) =>
     updatePolicy({ ...policy, [key]: v })
+
+  // Keyboard shortcut: Enter to run simulation
+  const handleKeySimulate = useCallback(() => {
+    if (mode === "manual" && hasChanges && !isPending) {
+      lastSimulated.current = { ...policy }
+      onSimulate?.(policy)
+    }
+  }, [mode, hasChanges, isPending, policy, onSimulate])
+
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => {
+      if (e.key === "Enter" && !e.metaKey && !e.ctrlKey) {
+        handleKeySimulate()
+      }
+    }
+    window.addEventListener("keydown", handler)
+    return () => window.removeEventListener("keydown", handler)
+  }, [handleKeySimulate])
 
   const handleApplyGoal = (recommended: PolicyInput) => {
     const values = fromApiPolicy(recommended)
@@ -157,7 +175,12 @@ export function PolicyPanel({ onSimulate, isPending, initialPolicy, onPolicyChan
                 onSimulate?.(policy)
               }}
             >
-              {isPending ? "Simulating..." : "Run Simulation"}
+              {isPending ? "Simulating..." : (
+                <span className="flex items-center gap-2">
+                  Run Simulation
+                  <kbd className="hidden md:inline text-[9px] opacity-50 border border-current/30 px-1 py-0.5 leading-none">Enter</kbd>
+                </span>
+              )}
             </Button>
             {!hasChanges && !isPending && (
               <span className="text-[9px] text-[--color-mission-muted] animate-pulse">
