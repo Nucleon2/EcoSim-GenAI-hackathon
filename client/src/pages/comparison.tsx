@@ -107,7 +107,7 @@ export function ComparisonPage({ onNavigate }: ComparisonPageProps) {
       </motion.div>
 
       {/* Two-column comparison */}
-      <motion.div variants={panelVariants} className="grid grid-cols-2 gap-2 flex-1 min-h-0">
+      <motion.div variants={panelVariants} className="grid grid-cols-2 gap-2">
         <ScenarioColumn
           label="Scenario A"
           accent="oklch(0.65 0.18 195)"

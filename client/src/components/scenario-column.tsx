@@ -63,7 +63,7 @@ export function ScenarioColumn({
       </div>
 
       {/* Globe */}
-      <div className="glass-panel glow-ring overflow-hidden flex-1 min-h-[280px]">
+      <div className="glass-panel glow-ring overflow-hidden h-[280px]">
         {isPending ? (
           <div className="flex items-center justify-center w-full h-full">
             <div className="size-12 border-2 border-[--color-mission-glow]/30 border-t-[--color-mission-glow] animate-spin" />
