@@ -18,7 +18,11 @@
       "Bash(find ~/.claude -name *.json)",
       "Bash(cd C:/Users/ahmad/Documents/programing/EcoSim-GenAI-hackathon/client && pnpm add @tanstack/react-query recharts framer-motion)",
       "Bash(cd C:/Users/ahmad/Documents/programing/EcoSim-GenAI-hackathon/server && python -m venv venv)",
-      "Bash(cd C:/Users/ahmad/Documents/programing/EcoSim-GenAI-hackathon/server && ./venv/Scripts/pip install fastapi \"uvicorn[standard]\" pydantic numpy)"
+      "Bash(cd C:/Users/ahmad/Documents/programing/EcoSim-GenAI-hackathon/server && ./venv/Scripts/pip install fastapi \"uvicorn[standard]\" pydantic numpy)",
+      "mcp__context7__resolve-library-id",
+      "mcp__context7__query-docs",
+      "Bash(cd C:/Users/ahmad/Documents/programing/EcoSim-GenAI-hackathon/client && pnpm add react-globe.gl)",
+      "Bash(cd C:/Users/ahmad/Documents/programing/EcoSim-GenAI-hackathon/client && pnpm exec tsc --noEmit 2>&1)"
     ]
   }
 }
