@@ -118,7 +118,7 @@ export function DeforestationOverlay({
 
   return (
     <mesh ref={meshRef} scale={1.008}>
-      <sphereGeometry args={[1, 64, 64]} />
+      <sphereGeometry args={[1, 32, 32]} />
       <shaderMaterial
         vertexShader={vertexShader}
         fragmentShader={fragmentShader}

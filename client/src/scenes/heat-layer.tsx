@@ -46,7 +46,8 @@ const fragmentShader = /* glsl */ `
   float fbm(vec2 p) {
     float value = 0.0;
     float amplitude = 0.5;
-    for (int i = 0; i < 4; i++) {
+    // Optimized: reduced iterations from 4 to 2 for better UI performance
+    for (int i = 0; i < 2; i++) {
       value += amplitude * noise(p);
       p *= 2.0;
       amplitude *= 0.5;
@@ -116,7 +117,7 @@ export function HeatLayer({ intensity = 0.5 }: HeatLayerProps) {
 
   return (
     <mesh ref={meshRef} scale={1.005}>
-      <sphereGeometry args={[1, 64, 64]} />
+      <sphereGeometry args={[1, 32, 32]} />
       <shaderMaterial
         vertexShader={vertexShader}
         fragmentShader={fragmentShader}
