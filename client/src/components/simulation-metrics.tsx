@@ -30,7 +30,7 @@ function MetricCard({ icon: Icon, label, value, unit, accentColor, glowColor }: 
         <span className="text-[10px] uppercase tracking-widest text-[--color-mission-muted] leading-none">
           {label}
         </span>
-        <span className="font-mono text-base font-bold text-[--color-mission-stat] leading-tight tabular-nums">
+        <span className="font-mono text-base font-bold leading-tight tabular-nums" style={{ color: accentColor }}>
           {value}
         </span>
         <span className="text-[10px] text-[--color-mission-muted] leading-none">
@@ -41,10 +41,16 @@ function MetricCard({ icon: Icon, label, value, unit, accentColor, glowColor }: 
   )
 }
 
-function riskColor(score: number): string {
-  if (score <= 30) return "oklch(0.72 0.19 145)"
-  if (score <= 60) return "oklch(0.80 0.18 85)"
-  return "oklch(0.70 0.22 25)"
+/** Severity color: green (good) -> amber (moderate) -> red (bad) */
+function severityColor(value: number, thresholds: [number, number]): string {
+  const [good, bad] = thresholds
+  if (value <= good) return "oklch(0.72 0.19 145)" // green
+  if (value <= bad)  return "oklch(0.80 0.18 85)"  // amber
+  return "oklch(0.70 0.22 25)"                      // red
+}
+
+function glowFrom(color: string): string {
+  return `${color.replace(")", " / 8%)")}`
 }
 
 interface SimulationMetricsProps {
@@ -57,6 +63,11 @@ export function SimulationMetrics({ result }: SimulationMetricsProps) {
   const seaLevel = result?.sea_level_rise ?? 3.7
   const risk = result?.risk_score ?? 68
 
+  const tempColor = severityColor(temp, [1.5, 2.0])
+  const emissionsColor = severityColor(emissions, [20, 30])
+  const seaColor = severityColor(seaLevel, [4.0, 5.5])
+  const riskColor = severityColor(risk, [30, 60])
+
   return (
     <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
       <MetricCard
@@ -64,32 +75,32 @@ export function SimulationMetrics({ result }: SimulationMetricsProps) {
         label="Temperature Rise"
         value={`+${temp.toFixed(1)}°C`}
         unit="vs pre-industrial"
-        accentColor="oklch(0.75 0.20 40)"
-        glowColor="oklch(0.75 0.20 40 / 8%)"
+        accentColor={tempColor}
+        glowColor={glowFrom(tempColor)}
       />
       <MetricCard
         icon={Factory}
         label="CO₂ Emissions"
         value={`${emissions.toFixed(1)} Gt`}
         unit="CO₂ per year"
-        accentColor="oklch(0.65 0.18 195)"
-        glowColor="oklch(0.65 0.18 195 / 8%)"
+        accentColor={emissionsColor}
+        glowColor={glowFrom(emissionsColor)}
       />
       <MetricCard
         icon={Waves}
         label="Sea Level Rise"
         value={`+${seaLevel.toFixed(1)} mm`}
         unit="per year"
-        accentColor="oklch(0.65 0.16 250)"
-        glowColor="oklch(0.65 0.16 250 / 8%)"
+        accentColor={seaColor}
+        glowColor={glowFrom(seaColor)}
       />
       <MetricCard
         icon={ShieldAlert}
         label="Risk Score"
         value={risk.toFixed(0)}
         unit="out of 100"
-        accentColor={riskColor(risk)}
-        glowColor={`${riskColor(risk).replace(")", " / 8%)")}`}
+        accentColor={riskColor}
+        glowColor={glowFrom(riskColor)}
       />
     </div>
   )
