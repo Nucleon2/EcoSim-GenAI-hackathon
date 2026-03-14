@@ -42,6 +42,32 @@ export async function simulatePolicy(
   return response.json()
 }
 
+export interface OptimizeRequest {
+  goal: string
+}
+
+export interface OptimizeResponse {
+  recommended_policies: PolicyInput
+  projected_results: SimulationResult
+  explanation: string
+}
+
+export async function optimizePolicy(
+  request: OptimizeRequest
+): Promise<OptimizeResponse> {
+  const response = await fetch(`${API_BASE_URL}/optimize-policy`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(request),
+  })
+
+  if (!response.ok) {
+    throw new Error(`Optimization failed: ${response.status}`)
+  }
+
+  return response.json()
+}
+
 export async function explainPolicy(
   request: ExplanationRequest
 ): Promise<ExplanationResponse> {
