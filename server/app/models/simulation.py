@@ -24,3 +24,13 @@ class ExplanationRequest(BaseModel):
 
 class ExplanationResponse(BaseModel):
     explanation: str = Field(description="AI-generated explanation of the simulation results")
+
+
+class OptimizeRequest(BaseModel):
+    goal: str = Field(description="Goal ID, e.g. limit_warming_1_5")
+
+
+class OptimizeResponse(BaseModel):
+    recommended_policies: PolicyInput
+    projected_results: SimulationResult
+    explanation: str
