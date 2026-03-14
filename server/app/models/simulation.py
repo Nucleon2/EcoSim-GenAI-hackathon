@@ -15,3 +15,12 @@ class SimulationResult(BaseModel):
     sea_level_rise: float = Field(description="Sea level rise in mm/year")
     risk_score: float = Field(description="Climate risk score 0-100")
     emissions_breakdown: dict[str, float] = Field(description="Per-lever emission reduction contributions")
+
+
+class ExplanationRequest(BaseModel):
+    policy: PolicyInput
+    result: SimulationResult
+
+
+class ExplanationResponse(BaseModel):
+    explanation: str = Field(description="AI-generated explanation of the simulation results")
