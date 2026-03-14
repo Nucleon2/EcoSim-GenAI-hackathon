@@ -9,6 +9,7 @@ import { AiExplanationPanel } from "@/components/ai-explanation-panel"
 import { RiskTrendChart } from "@/components/risk-trend-chart"
 import { TemperatureProjectionChart } from "@/components/temperature-projection-chart"
 import { EmissionsBreakdown } from "@/components/emissions-breakdown"
+import { ExportButton } from "@/components/export-button"
 import { useSimulation } from "@/hooks/use-simulation"
 import { useExplanation } from "@/hooks/use-explanation"
 import { useSimulationContext } from "@/context/simulation-context"
@@ -85,6 +86,7 @@ export function DashboardPage({ onNavigate }: DashboardPageProps) {
         <div className="flex-1">
           <TopBar />
         </div>
+        <ExportButton result={displayResult} />
         <button
           onClick={() => onNavigate("comparison")}
           className="glass-panel glow-ring flex items-center gap-2 px-4 text-[--color-mission-muted] hover:text-[--color-mission-glow] hover:border-[--color-mission-glow]/30 transition-colors"
