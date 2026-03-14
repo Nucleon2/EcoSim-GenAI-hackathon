@@ -2,7 +2,7 @@ import { Sparkles } from "lucide-react"
 
 export function AiExplanationPanel() {
   return (
-    <div className="glass-panel glow-ring h-40 shrink-0 flex flex-col gap-3 p-5">
+    <div className="glass-panel glow-ring h-full flex flex-col gap-3 p-5">
       <div className="flex items-center gap-2">
         <Sparkles className="size-3.5 text-[--color-mission-glow]" />
         <h3 className="text-xs uppercase tracking-widest text-[--color-mission-muted]">

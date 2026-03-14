@@ -4,6 +4,8 @@ import { SimulationMetrics } from "@/components/simulation-metrics"
 import { PolicyPanel, type PolicyValues } from "@/components/policy-panel"
 import { EarthScene } from "@/scenes/earth-scene"
 import { AiExplanationPanel } from "@/components/ai-explanation-panel"
+import { RiskTrendChart } from "@/components/risk-trend-chart"
+import { TemperatureProjectionChart } from "@/components/temperature-projection-chart"
 import { useSimulation } from "@/hooks/use-simulation"
 import type { PolicyInput } from "@/services/api"
 
@@ -82,9 +84,13 @@ export function DashboardPage() {
         <EarthScene />
       </motion.div>
 
-      {/* Bottom AI panel */}
+      {/* Bottom panel row */}
       <motion.div style={{ gridArea: "bottom" }} variants={panelVariants}>
-        <AiExplanationPanel />
+        <div className="grid grid-cols-3 gap-2 h-[200px]">
+          <RiskTrendChart riskScore={simulation.data?.risk_score} />
+          <TemperatureProjectionChart temperatureRise={simulation.data?.temperature_rise} />
+          <AiExplanationPanel />
+        </div>
       </motion.div>
     </motion.div>
   )
