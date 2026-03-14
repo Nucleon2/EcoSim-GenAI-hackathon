@@ -2,7 +2,6 @@ import { Suspense, lazy, useEffect, useMemo, useRef, useState } from "react"
 import type { SimulationResult } from "@/services/api"
 import {
   buildHeatmapData,
-  buildRingsData,
   buildRiskRingsData,
   buildRiskHtmlElementsData,
   getAtmosphereColor,
@@ -16,7 +15,6 @@ const Globe = lazy(() => import("react-globe.gl"))
 // Baseline defaults shown before the first simulation runs
 // ---------------------------------------------------------------------------
 const BASELINE_TEMP = 2.0
-const BASELINE_CO2 = 36.8
 const BASELINE_RISK = 55
 
 function GlobeSpinner() {
@@ -54,19 +52,16 @@ export function EarthScene({ result, compact }: EarthSceneProps) {
 
   // ---- Derive values from simulation result (or use baselines) ----
   const temp = result?.temperature_rise ?? BASELINE_TEMP
-  const co2 = result?.co2_emissions ?? BASELINE_CO2
   const risk = result?.risk_score ?? BASELINE_RISK
 
   // ---- Heatmap layer data ----
   const heatmapData = useMemo(() => buildHeatmapData(result), [result])
   const heatmapSaturation = useMemo(() => getHeatmapSaturation(temp), [temp])
 
-  // ---- Rings layer data (Emissions + Risks) ----
+  // ---- Rings layer data (Risks only) ----
   const ringsData = useMemo(() => {
-    const emissionRings = buildRingsData(co2)
-    const riskRings = buildRiskRingsData(result)
-    return [...emissionRings, ...riskRings]
-  }, [co2, result])
+    return buildRiskRingsData(result)
+  }, [result])
 
   // ---- HTML Labels layer data ----
   const htmlLabelsData = useMemo(() => buildRiskHtmlElementsData(result), [result])
