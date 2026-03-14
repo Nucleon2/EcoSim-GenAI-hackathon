@@ -1,29 +1,66 @@
+import { useState } from "react"
 import { SlidersHorizontal } from "lucide-react"
+import { Slider } from "@/components/ui/slider"
 import { Button } from "@/components/ui/button"
 
-const SLIDER_SHELLS = [
-  { label: "Renewable Energy Adoption", unit: "%" },
-  { label: "Carbon Tax Rate", unit: "$/tonne" },
-  { label: "Deforestation Reduction", unit: "%" },
+interface PolicyValues {
+  carbonTax: number
+  renewableAdoption: number
+  deforestationReduction: number
+  methaneReduction: number
+  evAdoption: number
+}
+
+const DEFAULTS: PolicyValues = {
+  carbonTax: 50,
+  renewableAdoption: 30,
+  deforestationReduction: 25,
+  methaneReduction: 20,
+  evAdoption: 15,
+}
+
+const SLIDER_CONFIG = [
+  { key: "carbonTax" as const, label: "Carbon Tax Rate", min: 0, max: 300, unit: "tonne" },
+  { key: "renewableAdoption" as const, label: "Renewable Adoption", min: 0, max: 100, unit: "%" },
+  { key: "deforestationReduction" as const, label: "Deforestation Reduction", min: 0, max: 100, unit: "%" },
+  { key: "methaneReduction" as const, label: "Methane Reduction", min: 0, max: 100, unit: "%" },
+  { key: "evAdoption" as const, label: "EV Adoption", min: 0, max: 100, unit: "%" },
 ]
 
-function PolicySliderShell({ label, unit }: { label: string; unit: string }) {
+interface PolicySliderProps {
+  label: string
+  unit: string
+  value: number
+  min: number
+  max: number
+  onChange: (v: number) => void
+}
+
+function PolicySlider({ label, unit, value, min, max, onChange }: PolicySliderProps) {
   return (
     <div className="flex flex-col gap-2">
       <div className="flex justify-between items-center">
         <span className="text-xs text-[--color-mission-muted]">{label}</span>
         <span className="font-mono text-xs text-[--color-mission-stat]">
-          -- {unit}
+          {value} {unit}
         </span>
       </div>
-      <div className="h-1.5 rounded-full bg-[--color-mission-surface] relative overflow-hidden">
-        <div className="absolute inset-y-0 left-0 w-1/2 rounded-full bg-[--color-mission-glow]/50" />
-      </div>
+      <Slider
+        value={value}
+        onValueChange={(v) => onChange(Array.isArray(v) ? (v as number[])[0] : (v as number))}
+        min={min}
+        max={max}
+      />
     </div>
   )
 }
 
 export function PolicyPanel() {
+  const [policy, setPolicy] = useState<PolicyValues>(DEFAULTS)
+
+  const update = (key: keyof PolicyValues) => (v: number) =>
+    setPolicy((prev) => ({ ...prev, [key]: v }))
+
   return (
     <div className="glass-panel glow-ring h-full flex flex-col gap-6 p-5 overflow-y-auto">
       <div className="flex items-center gap-2">
@@ -34,8 +71,16 @@ export function PolicyPanel() {
       </div>
 
       <div className="flex flex-col gap-6 flex-1">
-        {SLIDER_SHELLS.map((s) => (
-          <PolicySliderShell key={s.label} {...s} />
+        {SLIDER_CONFIG.map((s) => (
+          <PolicySlider
+            key={s.key}
+            label={s.label}
+            unit={s.unit}
+            value={policy[s.key]}
+            min={s.min}
+            max={s.max}
+            onChange={update(s.key)}
+          />
         ))}
       </div>
 

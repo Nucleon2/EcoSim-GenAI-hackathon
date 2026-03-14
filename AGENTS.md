@@ -239,6 +239,14 @@ Do NOT hardcode API URLs.
 
 Use environment variables.
 
+Do NOT use rounded corners on panels or section containers.
+
+All glass-panel sections and layout containers use square corners (border-radius: 0). This is an intentional design choice.
+
+Do NOT import shadcn/Base UI primitives directly from @base-ui/react in feature components.
+
+Always use the local shadcn wrappers from @/components/ui (e.g. @/components/ui/slider, @/components/ui/button). Add new components via `pnpm dlx shadcn@latest add <component>` which downloads them into src/components/ui.
+
 ---
 
 # Commands

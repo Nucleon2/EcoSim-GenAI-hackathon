@@ -124,11 +124,29 @@
 }
 
 @layer components {
+  .policy-slider-track {
+    position: relative;
+    display: flex;
+    align-items: center;
+    height: 1.5rem;
+    cursor: pointer;
+  }
+  .policy-slider-thumb {
+    outline: none;
+    transition: box-shadow 0.15s ease;
+  }
+  .policy-slider-thumb:focus-visible {
+    box-shadow: 0 0 0 3px oklch(0.65 0.18 195 / 40%);
+  }
+  .policy-slider-thumb:active {
+    box-shadow: 0 0 12px oklch(0.65 0.18 195 / 70%);
+    transform: scale(1.15);
+  }
   .glass-panel {
     background-color: oklch(0.13 0.018 240 / 60%);
     backdrop-filter: blur(16px);
     border: 1px solid oklch(0.25 0.04 200 / 50%);
-    border-radius: var(--radius-xl);
+    border-radius: 0;
   }
   .glow-ring {
     box-shadow:
