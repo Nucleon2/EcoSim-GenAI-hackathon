@@ -1,17 +1,35 @@
+import { useEffect, useRef } from "react"
+import { useSpring, useTransform, motion } from "framer-motion"
 import type { SimulationResult } from "@/services/api"
 import { Thermometer, Factory, Waves, ShieldAlert } from "lucide-react"
 import type { LucideIcon } from "lucide-react"
 
+function AnimatedNumber({ value, format }: { value: number; format: (v: number) => string }) {
+  const spring = useSpring(value, { stiffness: 80, damping: 20 })
+  const display = useTransform(spring, (v) => format(v))
+  const ref = useRef(value)
+
+  useEffect(() => {
+    if (ref.current !== value) {
+      spring.set(value)
+      ref.current = value
+    }
+  }, [value, spring])
+
+  return <motion.span>{display}</motion.span>
+}
+
 interface MetricCardProps {
   icon: LucideIcon
   label: string
-  value: string
+  numericValue: number
+  format: (v: number) => string
   unit: string
   accentColor: string
   glowColor: string
 }
 
-function MetricCard({ icon: Icon, label, value, unit, accentColor, glowColor }: MetricCardProps) {
+function MetricCard({ icon: Icon, label, numericValue, format, unit, accentColor, glowColor }: MetricCardProps) {
   return (
     <div
       className="relative flex items-start gap-3 px-4 py-3 bg-[--color-mission-surface]/50 border border-[--color-mission-border] overflow-hidden group"
@@ -31,7 +49,7 @@ function MetricCard({ icon: Icon, label, value, unit, accentColor, glowColor }: 
           {label}
         </span>
         <span className="font-mono text-base font-bold leading-tight tabular-nums" style={{ color: accentColor }}>
-          {value}
+          <AnimatedNumber value={numericValue} format={format} />
         </span>
         <span className="text-[10px] text-[--color-mission-muted] leading-none">
           {unit}
@@ -73,7 +91,8 @@ export function SimulationMetrics({ result }: SimulationMetricsProps) {
       <MetricCard
         icon={Thermometer}
         label="Temperature Rise"
-        value={`+${temp.toFixed(1)}°C`}
+        numericValue={temp}
+        format={(v) => `+${v.toFixed(1)}°C`}
         unit="vs pre-industrial"
         accentColor={tempColor}
         glowColor={glowFrom(tempColor)}
@@ -81,7 +100,8 @@ export function SimulationMetrics({ result }: SimulationMetricsProps) {
       <MetricCard
         icon={Factory}
         label="CO₂ Emissions"
-        value={`${emissions.toFixed(1)} Gt`}
+        numericValue={emissions}
+        format={(v) => `${v.toFixed(1)} Gt`}
         unit="CO₂ per year"
         accentColor={emissionsColor}
         glowColor={glowFrom(emissionsColor)}
@@ -89,7 +109,8 @@ export function SimulationMetrics({ result }: SimulationMetricsProps) {
       <MetricCard
         icon={Waves}
         label="Sea Level Rise"
-        value={`+${seaLevel.toFixed(1)} mm`}
+        numericValue={seaLevel}
+        format={(v) => `+${v.toFixed(1)} mm`}
         unit="per year"
         accentColor={seaColor}
         glowColor={glowFrom(seaColor)}
@@ -97,7 +118,8 @@ export function SimulationMetrics({ result }: SimulationMetricsProps) {
       <MetricCard
         icon={ShieldAlert}
         label="Risk Score"
-        value={risk.toFixed(0)}
+        numericValue={risk}
+        format={(v) => v.toFixed(0)}
         unit="out of 100"
         accentColor={riskColor}
         glowColor={glowFrom(riskColor)}
