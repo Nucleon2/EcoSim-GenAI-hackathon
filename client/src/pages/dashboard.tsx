@@ -10,6 +10,7 @@ import { RiskTrendChart } from "@/components/risk-trend-chart"
 import { TemperatureProjectionChart } from "@/components/temperature-projection-chart"
 import { EmissionsBreakdown } from "@/components/emissions-breakdown"
 import { ExportButton } from "@/components/export-button"
+import { ShareButton } from "@/components/share-button"
 import { OnboardingOverlay, useOnboarding } from "@/components/onboarding-overlay"
 import { useSimulation } from "@/hooks/use-simulation"
 import { useExplanation } from "@/hooks/use-explanation"
@@ -90,6 +91,7 @@ export function DashboardPage({ onNavigate }: DashboardPageProps) {
         <div className="flex-1">
           <TopBar />
         </div>
+        <ShareButton policy={dashboardPolicy} />
         <ExportButton result={displayResult} />
         <button
           onClick={() => onNavigate("comparison")}

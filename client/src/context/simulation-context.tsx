@@ -1,6 +1,7 @@
 import { createContext, useContext, useState, type ReactNode } from "react"
 import type { PolicyValues } from "@/components/policy-sliders"
 import { POLICY_DEFAULTS } from "@/components/policy-sliders"
+import { decodePolicy } from "@/components/share-button"
 import type { SimulationResult } from "@/services/api"
 
 interface SimulationState {
@@ -14,8 +15,13 @@ interface SimulationState {
 
 const SimulationContext = createContext<SimulationState | null>(null)
 
+function getInitialPolicy(): PolicyValues {
+  const fromHash = decodePolicy(window.location.hash)
+  return fromHash ?? POLICY_DEFAULTS
+}
+
 export function SimulationProvider({ children }: { children: ReactNode }) {
-  const [dashboardPolicy, setDashboardPolicy] = useState<PolicyValues>(POLICY_DEFAULTS)
+  const [dashboardPolicy, setDashboardPolicy] = useState<PolicyValues>(getInitialPolicy)
   const [dashboardResult, setDashboardResult] = useState<SimulationResult | undefined>()
 
   return (
