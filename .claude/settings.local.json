@@ -19,7 +19,11 @@
       "Bash(npm *)",
       "Bash(ls)",
       "Bash(mkdir)",
-      "Bash(cd server:*)"
+      "Bash(cd server:*)",
+      "mcp__playwright__browser_navigate",
+      "Bash(find:*)",
+      "mcp__playwright__browser_console_messages",
+      "mcp__playwright__browser_click"
     ]
   }
 }

@@ -90,7 +90,6 @@ export function RiskTrendChart({ riskScore }: RiskTrendChartProps) {
   const data = generateRiskProjection(riskScore)
   const policyColor =
     riskScore !== undefined ? riskColor(riskScore) : "oklch(0.72 0.19 145)"
-
   return (
     <div className="glass-panel glow-ring flex h-full flex-col gap-2 p-4">
       <div className="flex items-center gap-2">
@@ -100,8 +99,8 @@ export function RiskTrendChart({ riskScore }: RiskTrendChartProps) {
         </h3>
       </div>
 
-      <div className="min-h-0 flex-1" style={{ minHeight: 100, minWidth: 0 }}>
-        <ResponsiveContainer width="100%" height="100%" minWidth={1} minHeight={1}>
+      <div className="min-h-0 flex-1" style={{ minHeight: 100, minWidth: 1 }}>
+        <ResponsiveContainer width="100%" height="100%">
           <AreaChart
             data={data}
             margin={{ top: 4, right: 16, left: 0, bottom: 4 }}

@@ -60,7 +60,6 @@ interface TemperatureProjectionChartProps {
 
 export function TemperatureProjectionChart({ temperatureRise }: TemperatureProjectionChartProps) {
   const data = generateProjection(temperatureRise)
-
   return (
     <div className="glass-panel glow-ring h-full flex flex-col gap-2 p-4">
       <div className="flex items-center gap-2">
@@ -70,8 +69,8 @@ export function TemperatureProjectionChart({ temperatureRise }: TemperatureProje
         </h3>
       </div>
 
-      <div className="flex-1 min-h-0" style={{ minHeight: 100, minWidth: 0 }}>
-        <ResponsiveContainer width="100%" height="100%" minWidth={1} minHeight={1}>
+      <div className="flex-1 min-h-0" style={{ minHeight: 100, minWidth: 1 }}>
+        <ResponsiveContainer width="100%" height="100%">
           <AreaChart data={data} margin={{ top: 4, right: 16, left: 0, bottom: 4 }}>
             <defs>
               <linearGradient id="policyGradient" x1="0" y1="0" x2="0" y2="1">
