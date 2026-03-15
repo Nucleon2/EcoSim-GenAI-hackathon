@@ -1,5 +1,5 @@
 const API_BASE_URL =
-  import.meta.env.VITE_API_URL ?? "http://localhost:8001/api"
+  import.meta.env.VITE_API_URL ?? "https://ecosim-genai-hackathon.onrender.com/api"
 export interface PolicyInput {
   carbon_tax: number
   renewable_adoption: number
