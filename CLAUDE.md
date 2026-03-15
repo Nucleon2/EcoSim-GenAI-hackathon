@@ -50,13 +50,7 @@ Pydantic
 
 AI Layer
 
-LLM API (OpenAI / Gemini / Claude depending on availability)
-
-Data Sources
-
-NASA Climate Data  
-World Bank Climate Indicators  
-Global Carbon Project  
+LLM API (DeepSeek)
 
 Package Manager
 
@@ -327,3 +321,5 @@ A feature is complete when
 • It follows folder conventions  
 • It has no console errors  
 • It respects coding style rules  
+
+Dont use em dashes when writing any text
