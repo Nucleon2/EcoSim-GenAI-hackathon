@@ -63,7 +63,7 @@ AI Explanation Layer
 
 Create a `.env` file in the `client` directory:
 ```env
-VITE_API_URL=http://localhost:8000
+VITE_API_URL=http://localhost:8001/api
 ```
 
 Create a `.env` file in the `server` directory and add your necessary API keys:
