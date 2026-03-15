@@ -94,7 +94,7 @@ export function DashboardPage({ onNavigate }: DashboardPageProps) {
         </div>
         <ShareButton policy={dashboardPolicy} />
         <ExportButton result={displayResult} />
-        <TakeActionButton policy={lastPolicyRef.current} result={displayResult} />
+        <TakeActionButton policy={lastPolicyRef.current ?? (displayResult ? toApiInput(dashboardPolicy) : null)} result={displayResult ?? null} />
         <button
           onClick={() => onNavigate("comparison")}
           className="glass-panel glow-ring flex items-center gap-2 px-4 text-mission-muted hover:text-mission-glow hover:border-mission-glow/30 transition-colors"
