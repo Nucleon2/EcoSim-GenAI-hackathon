@@ -88,11 +88,6 @@ export function LandingPage({ onEnter }: LandingPageProps) {
               visible: { opacity: 1, transition: { duration: 0.6 } },
             }}
           >
-            <span>NASA Climate Data</span>
-            <span className="w-px h-3 bg-mission-border" />
-            <span>World Bank</span>
-            <span className="w-px h-3 bg-mission-border" />
-            <span>Global Carbon Project</span>
           </motion.div>
         </motion.div>
       </div>

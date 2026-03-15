@@ -1,4 +1,4 @@
-import { Globe2, Database } from "lucide-react"
+import { Globe2 } from "lucide-react"
 
 export function TopBar() {
   return (
@@ -8,12 +8,6 @@ export function TopBar() {
         <h1 className="text-sm font-semibold tracking-widest uppercase text-mission-glow">
           AI Climate Policy Copilot
         </h1>
-      </div>
-      <div className="hidden md:flex items-center gap-1.5 text-mission-muted">
-        <Database className="size-3" />
-        <span className="text-[9px] tracking-wider uppercase">
-          NASA &middot; World Bank &middot; Global Carbon Project
-        </span>
       </div>
     </header>
   )
