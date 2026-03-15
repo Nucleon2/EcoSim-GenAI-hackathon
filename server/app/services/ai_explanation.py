@@ -1,5 +1,6 @@
 import json
 import os
+from datetime import date
 
 from openai import AsyncOpenAI
 
@@ -117,8 +118,8 @@ LETTER_SYSTEM_PROMPT = (
     "[Representative Name] for the recipient. Include the actual numerical targets from the "
     "simulation data. The letter should be persuasive, factual, and professionally toned. "
     "Around 300 words. Return a JSON object with keys 'subject' (email subject line, under 80 chars) "
-    "and 'letter' (the full letter text including salutation and sign-off)."
-    "todays date is {current_date}."
+    "and 'letter' (the full letter text including salutation and sign-off). "
+    f"Today's date is {date.today().isoformat()}."
 )
 
 MEMO_SYSTEM_PROMPT = (
@@ -127,8 +128,8 @@ MEMO_SYSTEM_PROMPT = (
     "header fields: TO: Policymakers and Decision Makers, FROM: the user's name, "
     "RE: Climate Action Policy Targets. Include the actual numerical targets from the simulation. "
     "Be analytical, evidence-based, and persuasive. Around 300 words. Return a JSON object with "
-    "keys 'subject' (memo subject line, under 80 chars) and 'letter' (the full memo text)."
-    "todays date is {current_date}."
+    "keys 'subject' (memo subject line, under 80 chars) and 'letter' (the full memo text). "
+    f"Today's date is {date.today().isoformat()}."
 )
 
 
@@ -174,7 +175,10 @@ async def generate_policy_letter(
     )
 
     content = response.choices[0].message.content or "{}"
-    parsed = json.loads(content)
+    try:
+        parsed = json.loads(content)
+    except json.JSONDecodeError:
+        parsed = {}
     return PolicyLetterResponse(
         letter=parsed.get("letter", "Unable to generate letter."),
         subject=parsed.get("subject", "Climate Policy Action"),
