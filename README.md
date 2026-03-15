@@ -63,7 +63,7 @@ AI Explanation Layer
 
 Create a `.env` file in the `client` directory:
 ```env
-VITE_API_URL=http://localhost:8000
+VITE_API_URL=http://localhost:8001/api
 ```
 
 Create a `.env` file in the `server` directory and add your necessary API keys:
@@ -88,7 +88,7 @@ Navigate to the `server` directory, create a virtual environment (optional but r
 ```bash
 cd server
 pip install -r requirements.txt  # Or your chosen Python dependency manager
-uvicorn app.main:app --reload
+uvicorn app.main:app --port 8001 --reload
 ```
 
 ### 4. Testing
