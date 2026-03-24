@@ -1,5 +1,7 @@
 # AI Climate Policy Copilot (EcoSim)
 
+https://www.youtube.com/watch?v=Cu3123LARdg
+
 ## Overview
 **EcoSim** is an interactive web platform and AI-powered simulation tool that allows users to explore climate policy decisions and instantly understand their environmental impact. Built for a sustainability and AI hackathon, the platform acts as a decision-support tool. It visualizes environmental outcomes like global temperature change, emissions levels, and sea level rise dynamically, based on user-adjusted policy variables.
 
